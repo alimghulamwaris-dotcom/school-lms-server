@@ -22,7 +22,7 @@ const ensureBootstrap = async () => {
     await appBootstrapPromise
 }
 
-//Middlewares
+//Middlewaress
 app.use(helmet())
 app.use(cookieParser())
 

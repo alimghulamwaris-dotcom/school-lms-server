@@ -120996,3 +120996,9 @@
         "collectionCount": 27
     }
 }
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:43:36.035Z",
+    "message": "Created super admin user: admin@gmail.com",
+    "meta": {}
+}
