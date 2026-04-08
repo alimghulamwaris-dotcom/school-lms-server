@@ -2,11 +2,11 @@ import joi from 'joi'
 import {
     IAudienceOptionsQuery,
     ICampaignListQuery,
-    ICampaignSendMode,
     ICreateCampaignRequest,
     ICreateTemplateRequest,
     ICreateTestRequest
 } from '../types/whatsapp.interface'
+import { TWhatsAppSendMode } from '../_shared/types/whatsapp.interface'
 
 const audienceTypeValues = ['all_students', 'class_all_sections', 'class_section', 'selected_students', 'all_staff', 'staff_role', 'selected_staff']
 
@@ -42,7 +42,7 @@ const parseAudienceShape = (input: unknown): TAudienceValidationShape | null => 
 }
 
 type TCampaignValidationShape = {
-    sendMode: ICampaignSendMode
+    sendMode: TWhatsAppSendMode
     dailyTime?: string
 }
 
