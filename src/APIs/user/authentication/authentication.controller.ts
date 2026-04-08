@@ -6,12 +6,15 @@ import asyncHandler from '../../../handlers/async'
 import httpError from '../../../handlers/errorHandler/httpError'
 import httpResponse from '../../../handlers/httpResponse'
 import { CustomError } from '../../../utils/errors'
-import health from '../../../utils/health'
 import { validateSchema } from '../../../utils/joi-validate'
 import query from '../_shared/repo/token.repository'
 import { accountConfirmationService, loginService, registrationService } from './authentication.service'
 import { IConfirmRegistration, ILogin, ILoginRequest, IRegister, IRegisterRequest } from './types/authentication.interface'
 import { loginSchema, registerSchema } from './validation/validation.schema'
+
+const isProduction = config.ENV === EApplicationEnvironment.PRODUCTION
+const cookieSameSite: 'lax' | 'none' = isProduction ? 'none' : 'lax'
+const cookieSecure = isProduction
 
 export default {
     register: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
@@ -63,23 +66,20 @@ export default {
 
             const isLoggedIn = await loginService(payload)
             if (isLoggedIn.success === true) {
-                const DOMAIN = health.getDomain()
                 response
                     .cookie('accessToken', isLoggedIn.accessToken, {
                         path: '/v1',
-                        domain: DOMAIN,
-                        sameSite: 'strict',
+                        sameSite: cookieSameSite,
                         maxAge: 1000 * config.TOKENS.ACCESS.EXPIRY,
                         httpOnly: true,
-                        secure: !(config.ENV === EApplicationEnvironment.DEVELOPMENT)
+                        secure: cookieSecure
                     })
                     .cookie('refreshToken', isLoggedIn.refreshToken, {
                         path: '/v1',
-                        domain: DOMAIN,
-                        sameSite: 'strict',
+                        sameSite: cookieSameSite,
                         maxAge: 1000 * config.TOKENS.REFRESH.EXPIRY,
                         httpOnly: true,
-                        secure: !(config.ENV === EApplicationEnvironment.DEVELOPMENT)
+                        secure: cookieSecure
                     })
 
                 httpResponse(response, request, 200, responseMessage.auth.LOGIN_SUCCESSFUL, isLoggedIn)
@@ -102,23 +102,20 @@ export default {
                 await query.deleteToken(refreshToken)
             }
 
-            const DOMAIN = health.getDomain()
             response
                 .clearCookie('accessToken', {
                     path: '/v1',
-                    domain: DOMAIN,
-                    sameSite: 'strict',
+                    sameSite: cookieSameSite,
                     maxAge: 1000 * config.TOKENS.ACCESS.EXPIRY,
                     httpOnly: true,
-                    secure: !(config.ENV === EApplicationEnvironment.DEVELOPMENT)
+                    secure: cookieSecure
                 })
                 .clearCookie('refreshToken', {
                     path: '/v1',
-                    domain: DOMAIN,
-                    sameSite: 'strict',
+                    sameSite: cookieSameSite,
                     maxAge: 1000 * config.TOKENS.REFRESH.EXPIRY,
                     httpOnly: true,
-                    secure: !(config.ENV === EApplicationEnvironment.DEVELOPMENT)
+                    secure: cookieSecure
                 })
 
             httpResponse(response, request, 200, responseMessage.SUCCESS, null)
