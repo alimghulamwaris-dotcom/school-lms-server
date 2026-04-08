@@ -1,0 +1,19 @@
+export interface IStudent {
+    schoolId: string
+    name: string
+    grNumber: string
+    className: string
+    section: string
+    guardianName: string
+    guardianPhone: string
+    address: string
+    status: string
+    admissionDate: Date | null
+    previousSchool: string | null
+    photoUrl?: string
+    documentUrls?: string[]
+}
+
+export interface IStudentWithId extends IStudent {
+    _id: string
+}
