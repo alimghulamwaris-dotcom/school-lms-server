@@ -120372,3 +120372,627 @@
         }
     }
 }
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.014Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "examresults"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.104Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "tokens"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.199Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "equipmentissues"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.294Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "rlflx"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.379Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "whatsapptests"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.465Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "classrooms"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.559Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "librarybooks"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.646Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "feeinvoices"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.732Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "exams"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.817Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "attendances"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.901Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "feeslips"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:11.985Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "studentpromotions"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.071Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "libraryloans"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.156Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "students"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.239Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "whatsapptemplates"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.322Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "invitations"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.406Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "whatsappcampaigns"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.491Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "feeexpenses"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.575Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "equipment"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.659Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "staffattendances"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.743Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "admissions"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.830Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "staffs"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.913Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "users"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:12.997Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "schools"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.082Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "classteacherassignments"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.166Z",
+    "message": "Created collection in target DB",
+    "meta": {
+        "collection": "feereminders"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.366Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "examresults",
+        "indexName": "examId_1_studentId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.466Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "examresults",
+        "indexName": "schoolId_1_examId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.757Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "equipmentissues",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.856Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "equipmentissues",
+        "indexName": "equipmentId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:13.956Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "equipmentissues",
+        "indexName": "schoolId_1_status_1_issuedAt_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:14.153Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "rlflx",
+        "indexName": "expire_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:14.254Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "rlflx",
+        "indexName": "key_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:14.547Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "classrooms",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:14.661Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "classrooms",
+        "indexName": "classKey_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:14.762Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "classrooms",
+        "indexName": "schoolId_1_classKey_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:14.959Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "librarybooks",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.057Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "librarybooks",
+        "indexName": "schoolId_1_title_1_author_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.156Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "librarybooks",
+        "indexName": "schoolId_1_isbn_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.350Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "feeinvoices",
+        "indexName": "schoolId_1_invoiceNumber_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.451Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "feeinvoices",
+        "indexName": "schoolId_1_grNumber_1_month_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.647Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "exams",
+        "indexName": "schoolId_1_className_1_section_1_startDate_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.747Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "exams",
+        "indexName": "schoolId_1_className_1_section_1_academicYear_1_semesterNumber_1_startDate_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:15.941Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "attendances",
+        "indexName": "schoolId_1_className_1_section_1_date_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:16.327Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "studentpromotions",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:16.440Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "studentpromotions",
+        "indexName": "examId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:16.541Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "studentpromotions",
+        "indexName": "studentId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:16.640Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "studentpromotions",
+        "indexName": "schoolId_1_academicYear_1_studentId_1_examId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:16.740Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "studentpromotions",
+        "indexName": "schoolId_1_promotedAt_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:16.935Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "libraryloans",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:17.034Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "libraryloans",
+        "indexName": "bookId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:17.135Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "libraryloans",
+        "indexName": "schoolId_1_status_1_dueDate_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:17.331Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "students",
+        "indexName": "schoolId_1_grNumber_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:17.632Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "invitations",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:17.737Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "invitations",
+        "indexName": "email_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:17.837Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "invitations",
+        "indexName": "token_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.031Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "whatsappcampaigns",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.227Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "feeexpenses",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.327Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "feeexpenses",
+        "indexName": "schoolId_1_spentAt_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.427Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "feeexpenses",
+        "indexName": "schoolId_1_category_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.623Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "equipment",
+        "indexName": "schoolId_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.723Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "equipment",
+        "indexName": "schoolId_1_name_1_category_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:18.918Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "staffattendances",
+        "indexName": "schoolId_1_staffId_1_date_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:19.020Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "staffattendances",
+        "indexName": "schoolId_1_staffEmail_1_date_-1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:19.221Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "admissions",
+        "indexName": "schoolId_1_grNumber_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:19.514Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "users",
+        "indexName": "email_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:19.710Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "schools",
+        "indexName": "code_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:19.810Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "schools",
+        "indexName": "contactEmail_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:20.005Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "classteacherassignments",
+        "indexName": "schoolId_1_className_1_section_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:20.104Z",
+    "message": "Created index in target DB",
+    "meta": {
+        "collection": "classteacherassignments",
+        "indexName": "schoolId_1_teacherEmail_1_status_1"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:32:20.202Z",
+    "message": "Collection sync completed",
+    "meta": {
+        "sourceDb": "school-lms",
+        "targetDb": "school-lms-prod",
+        "collectionCount": 27
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-08T18:36:31.176Z",
+    "message": "Collection sync completed",
+    "meta": {
+        "sourceDb": "school-lms",
+        "targetDb": "school-lms-prod",
+        "collectionCount": 27
+    }
+}

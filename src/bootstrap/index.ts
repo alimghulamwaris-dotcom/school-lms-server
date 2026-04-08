@@ -3,7 +3,9 @@ import logger from '../handlers/logger'
 import database from '../services/database'
 import { startWhatsAppScheduler } from '../services/whatsappScheduler'
 
-export async function bootstrap(): Promise<void> {
+let bootstrapPromise: Promise<void> | null = null
+
+const runBootstrap = async (): Promise<void> => {
     try {
         // Connect to the database
         const connection = await database.connect()
@@ -21,4 +23,15 @@ export async function bootstrap(): Promise<void> {
         logger.error(`Error during bootstrap:`, { meta: error })
         throw error // Re-throw the error to stop server startup
     }
+}
+
+export async function bootstrap(): Promise<void> {
+    if (!bootstrapPromise) {
+        bootstrapPromise = runBootstrap().catch((error) => {
+            bootstrapPromise = null
+            throw error
+        })
+    }
+
+    return bootstrapPromise
 }
