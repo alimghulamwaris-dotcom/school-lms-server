@@ -1,6 +1,5 @@
 ﻿import { NextFunction, Request, Response } from 'express'
 import config from '../../../config/config'
-import { EApplicationEnvironment } from '../../../constant/application'
 import responseMessage from '../../../constant/responseMessage'
 import asyncHandler from '../../../handlers/async'
 import httpError from '../../../handlers/errorHandler/httpError'
@@ -12,9 +11,16 @@ import { accountConfirmationService, loginService, registrationService } from '.
 import { IConfirmRegistration, ILogin, ILoginRequest, IRegister, IRegisterRequest } from './types/authentication.interface'
 import { loginSchema, registerSchema } from './validation/validation.schema'
 
-const isProduction = config.ENV === EApplicationEnvironment.PRODUCTION
-const cookieSameSite: 'lax' | 'none' = isProduction ? 'none' : 'lax'
-const cookieSecure = isProduction
+const getCookiePolicy = (request: Request): { sameSite: 'none' | 'lax'; secure: boolean } => {
+    const origin = (request.headers.origin || '').toLowerCase()
+    const isLocalOrigin = origin.includes('localhost') || origin.includes('127.0.0.1')
+    const isCrossSite = !isLocalOrigin
+
+    return {
+        sameSite: isCrossSite ? 'none' : 'lax',
+        secure: isCrossSite
+    }
+}
 
 export default {
     register: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
@@ -66,20 +72,21 @@ export default {
 
             const isLoggedIn = await loginService(payload)
             if (isLoggedIn.success === true) {
+                const cookiePolicy = getCookiePolicy(request)
                 response
                     .cookie('accessToken', isLoggedIn.accessToken, {
                         path: '/v1',
-                        sameSite: cookieSameSite,
+                        sameSite: cookiePolicy.sameSite,
                         maxAge: 1000 * config.TOKENS.ACCESS.EXPIRY,
                         httpOnly: true,
-                        secure: cookieSecure
+                        secure: cookiePolicy.secure
                     })
                     .cookie('refreshToken', isLoggedIn.refreshToken, {
                         path: '/v1',
-                        sameSite: cookieSameSite,
+                        sameSite: cookiePolicy.sameSite,
                         maxAge: 1000 * config.TOKENS.REFRESH.EXPIRY,
                         httpOnly: true,
-                        secure: cookieSecure
+                        secure: cookiePolicy.secure
                     })
 
                 httpResponse(response, request, 200, responseMessage.auth.LOGIN_SUCCESSFUL, isLoggedIn)
@@ -102,20 +109,21 @@ export default {
                 await query.deleteToken(refreshToken)
             }
 
+            const cookiePolicy = getCookiePolicy(request)
             response
                 .clearCookie('accessToken', {
                     path: '/v1',
-                    sameSite: cookieSameSite,
+                    sameSite: cookiePolicy.sameSite,
                     maxAge: 1000 * config.TOKENS.ACCESS.EXPIRY,
                     httpOnly: true,
-                    secure: cookieSecure
+                    secure: cookiePolicy.secure
                 })
                 .clearCookie('refreshToken', {
                     path: '/v1',
-                    sameSite: cookieSameSite,
+                    sameSite: cookiePolicy.sameSite,
                     maxAge: 1000 * config.TOKENS.REFRESH.EXPIRY,
                     httpOnly: true,
-                    secure: cookieSecure
+                    secure: cookiePolicy.secure
                 })
 
             httpResponse(response, request, 200, responseMessage.SUCCESS, null)
