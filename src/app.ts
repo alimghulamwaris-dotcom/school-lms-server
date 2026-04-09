@@ -8,7 +8,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { bootstrap } from './bootstrap'
 
-
+//app
 const app: Application = express()
 let appBootstrapPromise: Promise<void> | null = null
 app.set('etag', false)
