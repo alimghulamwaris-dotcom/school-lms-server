@@ -30,6 +30,9 @@ export default {
     updateSchoolById: (id: string, payload: Partial<ISchool>) => {
         return schoolModel.findByIdAndUpdate(id, payload, { new: true })
     },
+    deleteSchoolById: (id: string) => {
+        return schoolModel.findByIdAndDelete(id)
+    },
     incrementGrCounterBySchoolId: (id: string) => {
         return schoolModel.findByIdAndUpdate(id, { $inc: { grCounter: 1 } }, { new: true })
     }

@@ -185,12 +185,23 @@ export const registerSchoolService = async (payload: ISchoolRegisterRequest) => 
     const subject = 'Verify your school account'
     const text = `Your school ${schoolName} has been created. Verify your account using this link:\n\n${verifyUrl}`
 
-    emailService.sendEmail(to, subject, text).catch((error) => {
+    try {
+        await emailService.sendEmail(to, subject, text)
+    } catch (error) {
         logger.error('Error sending school verification email', {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             meta: error
         })
-    })
+
+        try {
+            await schoolRepo.deleteSchoolById(String(school._id))
+        } catch (rollbackError) {
+            logger.error('Error rolling back school creation after email failure', {
+                meta: rollbackError
+            })
+        }
+
+        throw new CustomError('Unable to send verification email right now. Please try creating the school again.', 503)
+    }
 
     return {
         success: true,

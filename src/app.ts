@@ -10,6 +10,7 @@ import { bootstrap } from './bootstrap'
 
 const app: Application = express()
 let appBootstrapPromise: Promise<void> | null = null
+app.set('etag', false)
 
 const ensureBootstrap = async () => {
     if (!appBootstrapPromise) {
@@ -45,6 +46,16 @@ app.use(
 )
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '../', 'public')))
+app.use((request, response, next) => {
+    if (request.path.startsWith('/v1')) {
+        response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+        response.setHeader('Pragma', 'no-cache')
+        response.setHeader('Expires', '0')
+        response.setHeader('Surrogate-Control', 'no-store')
+        response.setHeader('Vary', 'Origin, Cookie')
+    }
+    next()
+})
 app.use((_request, _response, next) => {
     void ensureBootstrap()
         .then(() => {
