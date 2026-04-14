@@ -452,4 +452,17 @@ class WhatsAppService {
 
 const whatsappService = new WhatsAppService()
 
+// Reset stale sessions on every deploy
+void whatsappSessionModel.updateMany(
+    { status: { $in: ['connected', 'connecting'] } },
+    {
+        $set: {
+            status: 'disconnected',
+            qrCode: '',
+            phoneNumber: '',
+            errorMessage: 'Server restarted. Please reconnect.'
+        }
+    }
+)
+
 export default whatsappService
