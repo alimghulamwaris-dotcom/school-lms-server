@@ -29,7 +29,13 @@ export default asyncHandler(async (request: Request, _response: Response, next: 
             return next()
         }
 
-        const staff = await staffRepo.findStaffByEmail(req.authenticatedUser.email)
+        let staff = null
+        if (req.authenticatedSchoolId) {
+            staff = await staffRepo.findStaffByEmailAndSchool(req.authenticatedUser.email, req.authenticatedSchoolId)
+        }
+        if (!staff) {
+            staff = await staffRepo.findStaffByEmail(req.authenticatedUser.email)
+        }
         if (!staff || (staff.status && normalize(staff.status) !== 'active')) {
             return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
         }

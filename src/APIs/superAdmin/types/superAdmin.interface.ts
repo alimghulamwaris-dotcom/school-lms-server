@@ -18,3 +18,9 @@ export interface ISuperAdminListSchoolsRequest extends Request {
         limit?: string
     }
 }
+
+export interface ISuperAdminDeleteSchoolRequest extends Request {
+    params: {
+        schoolId: string
+    }
+}

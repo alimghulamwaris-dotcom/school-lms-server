@@ -20,7 +20,10 @@ export default {
     findAdmissionsBySchoolAndGrNumbers: (schoolId: string, grNumbers: string[]) => {
         return admissionModel.find({ schoolId, grNumber: { $in: grNumbers } })
     },
-    updateAdmissionById: (id: string, payload: Partial<IAdmission>) => {
+    updateAdmissionById: (id: string, payload: Partial<IAdmission> | Record<string, unknown>) => {
         return admissionModel.findByIdAndUpdate(id, payload, { new: true })
+    },
+    deleteAdmissionById: (id: string) => {
+        return admissionModel.findByIdAndDelete(id)
     }
 }

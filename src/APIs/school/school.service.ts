@@ -30,6 +30,21 @@ const generateSchoolCode = (schoolName: string) => {
     return `${prefix}${suffix}`
 }
 
+const normalizeParsedPhone = (countryCode: string, internationalNumber: string) => {
+    const normalizedCountryCode = (countryCode || '').replace(/\D/g, '')
+    const digits = (internationalNumber || '').replace(/\D/g, '')
+
+    if (!normalizedCountryCode) {
+        return digits
+    }
+
+    if (digits.startsWith(normalizedCountryCode)) {
+        return digits
+    }
+
+    return `${normalizedCountryCode}${digits}`
+}
+
 const getDefaultAcademicYear = () => {
     const year = new Date().getFullYear()
     return `${year}-${year + 1}`
@@ -164,7 +179,7 @@ export const registerSchoolService = async (payload: ISchoolRegisterRequest) => 
         code: schoolCode,
         adminUserId: null,
         contactEmail,
-        contactPhone: `${countryCode}${internationalNumber}`,
+        contactPhone: normalizeParsedPhone(countryCode, internationalNumber),
         password: hashedPassword,
         grPattern: 'GR-{YYYY}-{SEQ4}',
         grCounter: 0,

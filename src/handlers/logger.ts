@@ -28,14 +28,13 @@ const colorize = (level: string) => {
 }
 
 const logFormat = format.printf((info) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { level, message, timestamp, meta = {} } = info
 
     const customLevel = colorize(level.toUpperCase())
 
     const customTimestamp = green(timestamp as string)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const customMessage = message
+
+    const customMessage = String(message)
     const customMeta = util.inspect(meta, {
         showHidden: false,
         depth: null,
@@ -48,13 +47,12 @@ const logFormat = format.printf((info) => {
 })
 
 const fileFormat = format.printf((info) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { level, message, timestamp, meta = {} } = info
 
     const logMeta: Record<string, unknown> = {}
+    const safeMeta = meta && typeof meta === 'object' ? (meta as Record<string, unknown>) : {}
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    for (const [key, value] of Object.entries(meta)) {
+    for (const [key, value] of Object.entries(safeMeta)) {
         if (value instanceof Error) {
             logMeta[key] = {
                 name: value.name,
@@ -68,9 +66,9 @@ const fileFormat = format.printf((info) => {
 
     const logData = {
         level: level.toUpperCase(),
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         timestamp,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         message,
         meta: logMeta
     }

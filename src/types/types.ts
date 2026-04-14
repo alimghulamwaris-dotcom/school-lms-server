@@ -31,6 +31,7 @@ export type THttpError = {
 export interface IAuthenticateRequest extends Request {
     authenticatedUser?: IUser
     authenticatedSchool?: ISchool
+    authenticatedSchoolId?: string | null
 }
 
 export interface IDecryptedJwt extends JwtPayload {

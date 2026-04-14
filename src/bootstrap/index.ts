@@ -1,6 +1,7 @@
-import { initRateLimiter } from '../config/rate-limiter'
+﻿import { initRateLimiter } from '../config/rate-limiter'
 import logger from '../handlers/logger'
 import database from '../services/database'
+import whatsappService from '../services/whatsappService'
 import { startWhatsAppScheduler } from '../services/whatsappScheduler'
 
 let bootstrapPromise: Promise<void> | null = null
@@ -19,6 +20,9 @@ const runBootstrap = async (): Promise<void> => {
 
         startWhatsAppScheduler()
         logger.info(`WhatsApp scheduler initiated`)
+
+        await whatsappService.restoreConnectedSessions()
+        logger.info(`WhatsApp sessions restored`)
     } catch (error) {
         logger.error(`Error during bootstrap:`, { meta: error })
         throw error // Re-throw the error to stop server startup

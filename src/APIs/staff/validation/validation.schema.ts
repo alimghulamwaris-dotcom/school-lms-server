@@ -14,6 +14,9 @@ export const createStaffSchema = joi.object<ICreateStaffRequest, true>({
 })
 
 export const updateStaffSchema = joi.object<IUpdateStaffRequest, true>({
+    name: joi.string().min(2).max(72).optional(),
+    email: joi.string().email().trim().lowercase().optional(),
+    phone: joi.string().min(4).max(20).optional(),
     accessPages: joi.array().items(joi.string()).optional(),
     status: joi.string().optional(),
     role: joi.string().optional(),

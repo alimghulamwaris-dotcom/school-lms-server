@@ -25,6 +25,21 @@ dayjs.extend(utc)
 
 const normalize = (value: string) => value.trim().toLowerCase()
 
+const normalizeParsedPhone = (countryCode: string, internationalNumber: string) => {
+    const normalizedCountryCode = (countryCode || '').replace(/\D/g, '')
+    const digits = (internationalNumber || '').replace(/\D/g, '')
+
+    if (!normalizedCountryCode) {
+        return digits
+    }
+
+    if (digits.startsWith(normalizedCountryCode)) {
+        return digits
+    }
+
+    return `${normalizedCountryCode}${digits}`
+}
+
 export const registrationService = async (payload: IRegisterRequest) => {
     const { name, phoneNumber, email, password, invitationToken } = payload
 
@@ -111,7 +126,7 @@ export const registrationService = async (payload: IRegisterRequest) => {
         const existingStaff = await staffRepo.findStaffByEmailAndSchool(normalizedEmail, invitedSchoolId)
         if (existingStaff) {
             existingStaff.name = name
-            existingStaff.phone = `${countryCode}${internationalNumber}`
+            existingStaff.phone = normalizeParsedPhone(countryCode, internationalNumber)
             existingStaff.role = invitedRole
             existingStaff.accessPages = invitedAccessPages
             existingStaff.status = 'active'
@@ -122,7 +137,7 @@ export const registrationService = async (payload: IRegisterRequest) => {
                 name,
                 role: invitedRole,
                 email: normalizedEmail,
-                phone: `${countryCode}${internationalNumber}`,
+                phone: normalizeParsedPhone(countryCode, internationalNumber),
                 accessPages: invitedAccessPages,
                 status: 'active',
                 photoUrl: '',
@@ -207,9 +222,18 @@ export const loginService = async (payload: ILoginRequest) => {
             throw new CustomError('Please verify your email before login.', 403)
         }
 
-        const accessToken = jwt.generateToken({ userId: user._id, principalType: 'user' }, config.TOKENS.ACCESS.SECRET, config.TOKENS.ACCESS.EXPIRY)
+        const primarySchool = await schoolRepo.findSchoolByAdminUserId(String(user._id))
+        const staff = await staffRepo.findStaffByEmail(user.email)
+        const resolvedSchoolId = primarySchool ? String(primarySchool._id) : staff?.schoolId || null
+        const resolvedSchoolCode = primarySchool?.code || null
+
+        const accessToken = jwt.generateToken(
+            { userId: user._id, principalType: 'user', schoolId: resolvedSchoolId || undefined },
+            config.TOKENS.ACCESS.SECRET,
+            config.TOKENS.ACCESS.EXPIRY
+        )
         const refreshToken = jwt.generateToken(
-            { userId: user._id, principalType: 'user' },
+            { userId: user._id, principalType: 'user', schoolId: resolvedSchoolId || undefined },
             config.TOKENS.REFRESH.SECRET,
             config.TOKENS.REFRESH.EXPIRY
         )
@@ -222,15 +246,12 @@ export const loginService = async (payload: ILoginRequest) => {
         }
         await tokenRepository.createToken(token)
 
-        const primarySchool = await schoolRepo.findSchoolByAdminUserId(String(user._id))
-        const staff = await staffRepo.findStaffByEmail(user.email)
-
         return {
             success: true,
             principalType: 'user',
             role: user.role,
-            schoolId: primarySchool ? String(primarySchool._id) : staff?.schoolId || null,
-            schoolCode: primarySchool?.code || null,
+            schoolId: resolvedSchoolId,
+            schoolCode: resolvedSchoolCode,
             accessToken,
             refreshToken
         }

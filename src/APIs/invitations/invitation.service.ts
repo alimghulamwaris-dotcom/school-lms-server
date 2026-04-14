@@ -53,7 +53,13 @@ const assertPrincipalCanManageSchool = async (request: IAuthenticateRequest, sch
         throw new CustomError(responseMessage.NOT_FOUND('School'), 404)
     }
 
-    const linkedStaff = await staffRepo.findStaffByEmail(user.email)
+    let linkedStaff = null
+    if (request.authenticatedSchoolId) {
+        linkedStaff = await staffRepo.findStaffByEmailAndSchool(user.email, request.authenticatedSchoolId)
+    }
+    if (!linkedStaff) {
+        linkedStaff = await staffRepo.findStaffByEmail(user.email)
+    }
     const isPrimaryAdmin = school.adminUserId === String(user._id)
     const isAdminStaff =
         !!linkedStaff && linkedStaff.schoolId === schoolId && normalize(linkedStaff.role).includes('admin') && linkedStaff.status === 'active'
@@ -79,18 +85,8 @@ export const createInvitationService = async (request: IAuthenticateRequest, pay
         throw new CustomError('A pending invitation already exists for this email.', 422)
     }
 
-    const hasAdminAlready = !!school.adminUserId
-    if (invitedByType === 'school' && hasAdminAlready) {
-        throw new CustomError('Admin is already configured. Please sign in with admin account to invite more users.', 403)
-    }
-
-    let resolvedRole = payload.role?.trim() || 'Staff'
+    const resolvedRole = payload.role?.trim() || 'Staff'
     let resolvedAccessPages = payload.accessPages || []
-
-    if (invitedByType === 'school' && !hasAdminAlready) {
-        resolvedRole = 'Admin'
-        resolvedAccessPages = adminPages
-    }
 
     if (!Array.isArray(resolvedAccessPages) || resolvedAccessPages.length === 0) {
         resolvedAccessPages = normalize(resolvedRole) === 'admin' ? adminPages : defaultPages

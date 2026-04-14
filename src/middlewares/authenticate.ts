@@ -33,6 +33,7 @@ export default asyncHandler(async (request: Request, _response: Response, next: 
                 const user = await query.findUserById(decoded.userId)
                 if (user) {
                     req.authenticatedUser = user
+                    req.authenticatedSchoolId = decoded.schoolId || null
                     return next()
                 }
             }

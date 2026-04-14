@@ -17,6 +17,9 @@ export interface ICreateStaff extends Request {
 }
 
 export interface IUpdateStaffRequest {
+    name?: string
+    email?: string
+    phone?: string
     accessPages?: string[]
     status?: string
     role?: string
@@ -34,5 +37,11 @@ export interface IUpdateStaff extends Request {
 export interface IListStaff extends Request {
     query: {
         schoolId?: string
+    }
+}
+
+export interface IDeleteStaff extends Request {
+    params: {
+        id: string
     }
 }

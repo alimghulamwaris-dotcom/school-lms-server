@@ -5,6 +5,9 @@ export default {
     createStaff: (payload: IStaff) => {
         return staffModel.create(payload)
     },
+    findStaffById: (id: string) => {
+        return staffModel.findById(id)
+    },
     findStaffBySchool: (schoolId: string) => {
         return staffModel.find({ schoolId })
     },
@@ -16,5 +19,8 @@ export default {
     },
     updateStaff: (id: string, payload: Partial<IStaff>) => {
         return staffModel.findByIdAndUpdate(id, payload, { new: true })
+    },
+    deleteStaffById: (id: string) => {
+        return staffModel.findByIdAndDelete(id)
     }
 }

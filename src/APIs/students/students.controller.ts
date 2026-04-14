@@ -9,6 +9,7 @@ import { createStudentSchema, executePromotionsSchema, previewPromotionsSchema, 
 import {
     approveStudentService,
     createStudentService,
+    deleteStudentService,
     executePromotionsService,
     getStudentDetailService,
     listPromotionsService,
@@ -20,6 +21,7 @@ import {
     IApproveStudent,
     ICreateStudent,
     ICreateStudentRequest,
+    IDeleteStudent,
     IExecutePromotions,
     IExecutePromotionsRequest,
     IGetStudentDetail,
@@ -97,7 +99,21 @@ export default {
                 return httpError(next, error, request, 422)
             }
 
+            // const typedRequest = request as IUpdateStudent & IAuthenticateRequest
             const result = await updateStudentService(params.id, payload)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    remove: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const typedRequest = request as IDeleteStudent & IAuthenticateRequest
+            const result = await deleteStudentService(typedRequest.params.id)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
         } catch (error) {
             if (error instanceof CustomError) {

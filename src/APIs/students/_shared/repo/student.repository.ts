@@ -52,7 +52,10 @@ export default {
 
         return studentModel.find(query).sort({ createdAt: -1 })
     },
-    updateStudent: (id: string, payload: Partial<IStudent>) => {
+    updateStudent: (id: string, payload: Partial<IStudent> | Record<string, unknown>) => {
         return studentModel.findByIdAndUpdate(id, payload, { new: true })
+    },
+    deleteStudentById: (id: string) => {
+        return studentModel.findByIdAndDelete(id)
     }
 }

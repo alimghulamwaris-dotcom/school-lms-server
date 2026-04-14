@@ -24,7 +24,7 @@ const toPlainObject = (value: unknown): Record<string, unknown> => {
 export default {
     me: async (request: Request, response: Response, next: NextFunction) => {
         try {
-            const { authenticatedUser, authenticatedSchool } = request as unknown as IMyUser
+            const { authenticatedUser, authenticatedSchool, authenticatedSchoolId } = request as unknown as IMyUser
 
             if (authenticatedSchool) {
                 const schoolObj = toPlainObject(authenticatedSchool)
@@ -56,7 +56,13 @@ export default {
             }
 
             if (authenticatedUser.role === EUserRoles.USER) {
-                const staff = await staffRepo.findStaffByEmail(authenticatedUser.email)
+                let staff = null
+                if (authenticatedSchoolId) {
+                    staff = await staffRepo.findStaffByEmailAndSchool(authenticatedUser.email, authenticatedSchoolId)
+                }
+                if (!staff) {
+                    staff = await staffRepo.findStaffByEmail(authenticatedUser.email)
+                }
                 httpResponse(response, request, 200, responseMessage.SUCCESS, {
                     ...userObj,
                     accessPages: staff?.accessPages || [],
@@ -73,7 +79,13 @@ export default {
             }
 
             const primarySchool = await schoolRepo.findSchoolByAdminUserId(String(authenticatedUser._id))
-            const adminStaff = await staffRepo.findStaffByEmail(authenticatedUser.email)
+            let adminStaff = null
+            if (authenticatedSchoolId) {
+                adminStaff = await staffRepo.findStaffByEmailAndSchool(authenticatedUser.email, authenticatedSchoolId)
+            }
+            if (!adminStaff) {
+                adminStaff = await staffRepo.findStaffByEmail(authenticatedUser.email)
+            }
 
             const schoolId = primarySchool ? String(primarySchool._id) : adminStaff?.schoolId || null
             const schoolCode = primarySchool?.code || null

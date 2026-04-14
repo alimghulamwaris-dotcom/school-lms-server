@@ -31,8 +31,14 @@ export interface IListStudents extends Request {
 }
 
 export interface IUpdateStudentRequest {
+    name?: string
     className?: string
     section?: string
+    guardianName?: string
+    guardianPhone?: string
+    address?: string
+    admissionDate?: string
+    previousSchool?: string
     status?: string
     photoUrl?: string
     documentUrls?: string[]
@@ -46,6 +52,12 @@ export interface IUpdateStudent extends Request {
 }
 
 export interface IApproveStudent extends Request {
+    params: {
+        id: string
+    }
+}
+
+export interface IDeleteStudent extends Request {
     params: {
         id: string
     }

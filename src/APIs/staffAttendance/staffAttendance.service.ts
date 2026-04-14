@@ -29,6 +29,24 @@ const buildConfiguredCheckInDate = (date: Date, checkInTime: string) => {
     return configured
 }
 
+const resolveLateMeta = (checkInAt: Date | null | undefined, date: Date, checkInTime: string, graceMinutes: number) => {
+    if (!checkInAt) {
+        return {
+            isLate: false,
+            lateMinutes: 0
+        }
+    }
+
+    const scheduledCheckIn = buildConfiguredCheckInDate(date, checkInTime)
+    const lateBoundary = new Date(scheduledCheckIn.getTime() + graceMinutes * 60000)
+    const lateMinutes = checkInAt.getTime() > lateBoundary.getTime() ? Math.round((checkInAt.getTime() - lateBoundary.getTime()) / 60000) : 0
+
+    return {
+        isLate: lateMinutes > 0,
+        lateMinutes
+    }
+}
+
 const resolveRequestedDate = (value?: string) => {
     if (!value) {
         return toStartOfDay(new Date())
@@ -52,7 +70,7 @@ const resolveStaffContext = async (request: IAuthenticateRequest, schoolIdInput:
         throw new CustomError(responseMessage.UNAUTHORIZED, 401)
     }
 
-    let schoolId = schoolIdInput.trim()
+    let schoolId = schoolIdInput.trim() || (request.authenticatedSchoolId || '').trim()
     const email = normalize(user.email)
 
     if (!schoolId) {
@@ -94,6 +112,10 @@ const resolveManagerSchoolId = async (request: IAuthenticateRequest, schoolIdInp
         return schoolIdInput
     }
 
+    if (request.authenticatedSchoolId) {
+        return request.authenticatedSchoolId
+    }
+
     const school = await schoolRepo.findSchoolByAdminUserId(String(user._id))
     if (school) {
         return String(school._id)
@@ -120,10 +142,13 @@ export const checkInStaffService = async (schoolIdInput: string, request: IAuthe
     const existing = await staffAttendanceRepo.findBySchoolStaffDate(context.schoolId, String(context.staff._id), today)
 
     if (existing) {
+        Object.assign(existing, resolveLateMeta(existing.checkInAt, today, configuredCheckInTime, configuredGraceMinutes))
         return {
             success: true,
             alreadyCheckedIn: true,
-            attendance: existing
+            attendance: existing,
+            checkInTime: configuredCheckInTime,
+            graceMinutes: configuredGraceMinutes
         }
     }
 
@@ -204,28 +229,36 @@ export const myStaffAttendanceService = async (schoolIdInput: string, request: I
         limit: 30
     })
 
+    const attendanceWithLiveRule = attendance
+        ? Object.assign(attendance, resolveLateMeta(attendance.checkInAt, date, configuredCheckInTime, configuredGraceMinutes))
+        : null
+
+    const recentRecords = history.map((entry) =>
+        Object.assign(entry, resolveLateMeta(entry.checkInAt, entry.date, configuredCheckInTime, configuredGraceMinutes))
+    )
+
     let liveWorkedMinutes = 0
-    if (attendance?.checkInAt) {
-        if (attendance.checkOutAt && typeof attendance.workedMinutes === 'number') {
-            liveWorkedMinutes = attendance.workedMinutes
+    if (attendanceWithLiveRule?.checkInAt) {
+        if (attendanceWithLiveRule.checkOutAt && typeof attendanceWithLiveRule.workedMinutes === 'number') {
+            liveWorkedMinutes = attendanceWithLiveRule.workedMinutes
         } else {
-            liveWorkedMinutes = Math.max(0, Math.round((Date.now() - attendance.checkInAt.getTime()) / 60000))
+            liveWorkedMinutes = Math.max(0, Math.round((Date.now() - attendanceWithLiveRule.checkInAt.getTime()) / 60000))
         }
     }
 
-    const completedDays = history.filter((item) => item.checkOutAt && (item.workedMinutes || 0) > 0)
+    const completedDays = recentRecords.filter((item) => item.checkOutAt && (item.workedMinutes || 0) > 0)
     const totalWorkedMinutes = completedDays.reduce((sum, item) => sum + (item.workedMinutes || 0), 0)
     const averageWorkedMinutes = completedDays.length > 0 ? Math.round(totalWorkedMinutes / completedDays.length) : 0
 
     return {
         success: true,
-        attendance,
-        canCheckIn: !attendance,
-        canCheckOut: Boolean(attendance && !attendance.checkOutAt),
+        attendance: attendanceWithLiveRule,
+        canCheckIn: !attendanceWithLiveRule,
+        canCheckOut: Boolean(attendanceWithLiveRule && !attendanceWithLiveRule.checkOutAt),
         liveWorkedMinutes,
         averageWorkedMinutes,
-        attendanceDays: history.length,
-        recentRecords: history,
+        attendanceDays: recentRecords.length,
+        recentRecords,
         checkInTime: configuredCheckInTime,
         graceMinutes: configuredGraceMinutes
     }

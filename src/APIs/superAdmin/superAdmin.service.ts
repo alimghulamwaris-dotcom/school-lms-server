@@ -1,12 +1,23 @@
 import admissionModel from '../admissions/_shared/models/admission.model'
 import studentModel from '../students/_shared/models/student.model'
+import studentPromotionModel from '../students/_shared/models/studentPromotion.model'
 import userModel from '../user/_shared/models/user.model'
 import whatsappCampaignModel from '../whatsapp/_shared/models/whatsappCampaign.model'
 import { EUserRoles } from '../../constant/users'
 import schoolRepo from '../school/_shared/repo/school.repository'
 import staffModel from '../staff/_shared/models/staff.model'
+import staffAttendanceModel from '../staffAttendance/_shared/models/staffAttendance.model'
 import feeInvoiceModel from '../fees/_shared/models/feeInvoice.model'
 import feeExpenseModel from '../fees/_shared/models/feeExpense.model'
+import classroomModel from '../classes/_shared/models/classroom.model'
+import examModel from '../exams/_shared/models/exam.model'
+import examResultModel from '../exams/_shared/models/examResult.model'
+import attendanceModel from '../attendance/_shared/models/attendance.model'
+import classTeacherAssignmentModel from '../attendance/_shared/models/classTeacherAssignment.model'
+import equipmentModel from '../records/_shared/models/equipment.model'
+import equipmentIssueModel from '../records/_shared/models/equipmentIssue.model'
+import libraryBookModel from '../records/_shared/models/libraryBook.model'
+import libraryLoanModel from '../records/_shared/models/libraryLoan.model'
 import { registerSchoolService } from '../school/school.service'
 import { ISchoolRegisterRequest } from '../school/types/school.interface'
 import { ISuperAdminSchoolsQuery } from './types/superAdmin.interface'
@@ -156,4 +167,74 @@ export const listSuperAdminSchoolsService = async (payload: ISuperAdminSchoolsQu
 
 export const createSchoolBySuperAdminService = async (payload: ISchoolRegisterRequest) => {
     return registerSchoolService(payload)
+}
+
+export const deleteSchoolBySuperAdminService = async (schoolId: string) => {
+    // Validate schoolId
+    if (!schoolId || typeof schoolId !== 'string' || schoolId.trim() === '') {
+        throw new Error('Invalid school ID')
+    }
+
+    const trimmedSchoolId = schoolId.trim()
+
+    // First verify the school exists
+    const school = await schoolRepo.findSchoolById(trimmedSchoolId)
+    if (!school) {
+        throw new Error('School not found')
+    }
+
+    // Delete all related data sequentially to ensure proper cleanup
+    // Start with records that reference other entities
+
+    try {
+        // Delete attendance records and assignments
+        await attendanceModel.deleteMany({ schoolId: trimmedSchoolId })
+        await classTeacherAssignmentModel.deleteMany({ schoolId: trimmedSchoolId })
+        await staffAttendanceModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete exam results and exams
+        await examResultModel.deleteMany({ schoolId: trimmedSchoolId })
+        await examModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete library records
+        await libraryLoanModel.deleteMany({ schoolId: trimmedSchoolId })
+        await libraryBookModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete equipment records
+        await equipmentIssueModel.deleteMany({ schoolId: trimmedSchoolId })
+        await equipmentModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete fee records
+        await feeExpenseModel.deleteMany({ schoolId: trimmedSchoolId })
+        await feeInvoiceModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete WhatsApp campaigns
+        await whatsappCampaignModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete student promotions and students
+        await studentPromotionModel.deleteMany({ schoolId: trimmedSchoolId })
+        await studentModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete staff and admissions
+        await staffModel.deleteMany({ schoolId: trimmedSchoolId })
+        await admissionModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete classrooms
+        await classroomModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete the admin user associated with this school
+        if (school.adminUserId) {
+            await userModel.findByIdAndDelete(school.adminUserId)
+        }
+
+        // Finally delete the school itself
+        await schoolRepo.deleteSchoolById(trimmedSchoolId)
+
+        return {
+            success: true,
+            message: `School "${school.name}" and all associated data have been permanently deleted`
+        }
+    } catch (error) {
+        throw new Error(`Failed to delete school: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
 }

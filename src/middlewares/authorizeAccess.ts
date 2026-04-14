@@ -26,7 +26,13 @@ const authorizeAccess = (pageKey: string | string[]) => {
                 return next()
             }
 
-            const staff = await staffRepo.findStaffByEmail(user.email)
+            let staff = null
+            if (req.authenticatedSchoolId) {
+                staff = await staffRepo.findStaffByEmailAndSchool(user.email, req.authenticatedSchoolId)
+            }
+            if (!staff) {
+                staff = await staffRepo.findStaffByEmail(user.email)
+            }
             if (!staff) {
                 return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
             }

@@ -10,5 +10,6 @@ router.use('/super-admin', rateLimiter, authenticate, authorizeSuperAdmin)
 
 router.route('/super-admin/overview').get(superAdminController.overview)
 router.route('/super-admin/schools').get(superAdminController.listSchools).post(superAdminController.createSchool)
+router.route('/super-admin/schools/:schoolId').delete(superAdminController.deleteSchool)
 
 export default router

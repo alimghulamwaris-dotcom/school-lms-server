@@ -19,4 +19,8 @@ router
     .post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.createCampaign)
     .get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.listCampaigns)
 
+router.route('/whatsapp/status').get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.getStatus)
+router.route('/whatsapp/connect').post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.connect)
+router.route('/whatsapp/disconnect').post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.disconnect)
+
 export default router

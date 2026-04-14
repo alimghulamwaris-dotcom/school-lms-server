@@ -1,4 +1,4 @@
-﻿import dotenvFlow from 'dotenv-flow'
+import dotenvFlow from 'dotenv-flow'
 
 dotenvFlow.config()
 
@@ -43,10 +43,21 @@ export default {
 
     WHATSAPP: {
         ENABLED: process.env.WHATSAPP_ENABLED === 'true',
+        PROVIDER: (process.env.WHATSAPP_PROVIDER || 'meta').toLowerCase(),
         META: {
             API_VERSION: process.env.WHATSAPP_META_API_VERSION || 'v22.0',
             ACCESS_TOKEN: process.env.WHATSAPP_META_ACCESS_TOKEN || '',
             PHONE_NUMBER_ID: process.env.WHATSAPP_META_PHONE_NUMBER_ID || ''
+        },
+        GREEN: {
+            API_URL: process.env.WHATSAPP_GREEN_API_URL || 'https://api.green-api.com',
+            INSTANCE_ID: process.env.WHATSAPP_GREEN_INSTANCE_ID || '',
+            TOKEN: process.env.WHATSAPP_GREEN_TOKEN || ''
+        },
+        TWILIO: {
+            ACCOUNT_SID: process.env.WHATSAPP_TWILIO_ACCOUNT_SID || '',
+            AUTH_TOKEN: process.env.WHATSAPP_TWILIO_AUTH_TOKEN || '',
+            FROM_NUMBER: process.env.WHATSAPP_TWILIO_FROM_NUMBER || 'whatsapp:+14155238886'
         }
     }
 }

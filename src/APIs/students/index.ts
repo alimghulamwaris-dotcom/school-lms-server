@@ -20,6 +20,7 @@ router
     .get(rateLimiter, authenticate, authorizeAccess('Students'), authorizeOwnerOrAdmin, studentsController.listPromotions)
 router.route('/students/:id').get(rateLimiter, authenticate, authorizeAccess('Students'), studentsController.detail)
 router.route('/students/:id').patch(rateLimiter, authenticate, authorizeAccess('Students'), studentsController.update)
+router.route('/students/:id').delete(rateLimiter, authenticate, authorizeAccess('Students'), authorizeOwnerOrAdmin, studentsController.remove)
 router.route('/students/:id/approve').patch(rateLimiter, authenticate, authorizeAccess('Students'), authorizeOwnerOrAdmin, studentsController.approve)
 
 export default router

@@ -18,8 +18,14 @@ export const createStudentSchema = joi.object<ICreateStudentRequest, true>({
 })
 
 export const updateStudentSchema = joi.object<IUpdateStudentRequest, true>({
+    name: joi.string().min(2).max(72).optional(),
     className: joi.string().optional(),
     section: joi.string().optional(),
+    guardianName: joi.string().min(2).max(72).optional(),
+    guardianPhone: joi.string().min(4).max(20).optional(),
+    address: joi.string().allow('').optional(),
+    admissionDate: joi.string().allow('').optional(),
+    previousSchool: joi.string().allow('').optional(),
     status: joi.string().optional(),
     photoUrl: joi.string().allow('').optional(),
     documentUrls: joi.array().items(joi.string()).optional()

@@ -174,20 +174,18 @@ const mergeStudentsAndAdmissions = (
     const normalizedSection = normalize(filters.section || '')
     const normalizedStatus = normalize(filters.status || '')
     const normalizedSearch = normalize(filters.search || '')
-
+    const toStr = (val: unknown): string => {
+        if (val === null || val === undefined) return ''
+        if (typeof val === 'string') return val
+        if (typeof val === 'number') return String(val)
+        return String(val as string)
+    }
     return Array.from(byGr.values())
         .filter((item) => {
-            const className = normalize(String(item.className || ''))
-            const section = normalize(String(item.section || ''))
-            const status = normalize(String(item.status || ''))
-            const searchable = [
-                String(item.name || ''),
-                String(item.grNumber || ''),
-                String(item.guardianName || ''),
-                String(item.guardianPhone || '')
-            ]
-                .join(' ')
-                .toLowerCase()
+            const className = normalize(toStr(item.className))
+            const section = normalize(toStr(item.section))
+            const status = normalize(toStr(item.status))
+            const searchable = [toStr(item.name), toStr(item.grNumber), toStr(item.guardianName), toStr(item.guardianPhone)].join(' ').toLowerCase()
 
             if (normalizedClass && className !== normalizedClass) {
                 return false
@@ -205,8 +203,8 @@ const mergeStudentsAndAdmissions = (
             return true
         })
         .sort((a, b) => {
-            const aTime = new Date(String(a.createdAt || 0)).getTime()
-            const bTime = new Date(String(b.createdAt || 0)).getTime()
+            const aTime = a.createdAt ? new Date(toStr(a.createdAt)).getTime() : 0
+            const bTime = b.createdAt ? new Date(toStr(b.createdAt)).getTime() : 0
             return bTime - aTime
         })
 }
@@ -474,7 +472,7 @@ export const getStudentDetailService = async (id: string, schoolId: string) => {
         success: true,
         source,
         student: {
-            _id: record._id ? String(record._id) : id,
+            _id: record._id ? String(record._id as unknown as string) : id,
             schoolId: record.schoolId,
             name: record.name,
             grNumber: record.grNumber,
@@ -513,12 +511,13 @@ export const updateStudentService = async (id: string, payload: IUpdateStudentRe
         await ensureClassSectionExists(existingStudent.schoolId, nextClassName, nextSection)
     }
 
-    const updatePayload: IUpdateStudentRequest = {
+    const updatePayload = {
         ...payload,
-        section: payload.section !== undefined ? normalizeSection(payload.section) : payload.section
+        section: payload.section !== undefined ? normalizeSection(payload.section) : undefined,
+        admissionDate: payload.admissionDate ? new Date(payload.admissionDate) : undefined
     }
 
-    const student = await studentRepo.updateStudent(id, updatePayload)
+    const student = await studentRepo.updateStudent(id, updatePayload as Record<string, unknown>)
     return {
         success: true,
         student
@@ -562,6 +561,20 @@ export const approveStudentService = async (id: string) => {
     return {
         success: true,
         student: createdStudent
+    }
+}
+
+export const deleteStudentService = async (id: string) => {
+    const existingStudent = await studentRepo.findStudentById(id)
+    if (!existingStudent) {
+        throw new CustomError(responseMessage.NOT_FOUND('Student'), 404)
+    }
+
+    await studentRepo.deleteStudentById(id)
+
+    return {
+        success: true,
+        message: responseMessage.SUCCESS
     }
 }
 

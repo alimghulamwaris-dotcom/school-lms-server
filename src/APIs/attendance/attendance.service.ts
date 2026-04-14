@@ -71,7 +71,14 @@ const resolveRequesterContext = async (request: IAuthenticateRequest, schoolIdIn
             canManageAll = true
         }
 
-        const staff = await staffRepo.findStaffByEmail(email)
+        let staff = null
+        const scopedSchoolId = request.authenticatedSchoolId || schoolId
+        if (scopedSchoolId) {
+            staff = await staffRepo.findStaffByEmailAndSchool(email, scopedSchoolId)
+        }
+        if (!staff) {
+            staff = await staffRepo.findStaffByEmail(email)
+        }
         if (!schoolId && staff?.schoolId) {
             schoolId = staff.schoolId
         }

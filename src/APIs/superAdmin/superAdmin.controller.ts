@@ -7,8 +7,18 @@ import { CustomError } from '../../utils/errors'
 import { validateSchema } from '../../utils/joi-validate'
 import { ISchoolRegisterRequest } from '../school/types/school.interface'
 import { schoolRegisterSchema } from '../school/validation/validation.schema'
-import { createSchoolBySuperAdminService, getSuperAdminOverviewService, listSuperAdminSchoolsService } from './superAdmin.service'
-import { ISuperAdminCreateSchool, ISuperAdminListSchoolsRequest, ISuperAdminSchoolsQuery } from './types/superAdmin.interface'
+import {
+    createSchoolBySuperAdminService,
+    deleteSchoolBySuperAdminService,
+    getSuperAdminOverviewService,
+    listSuperAdminSchoolsService
+} from './superAdmin.service'
+import {
+    ISuperAdminCreateSchool,
+    ISuperAdminDeleteSchoolRequest,
+    ISuperAdminListSchoolsRequest,
+    ISuperAdminSchoolsQuery
+} from './types/superAdmin.interface'
 import { superAdminSchoolListSchema } from './validation/validation.schema'
 
 export default {
@@ -56,6 +66,25 @@ export default {
 
             const result = await createSchoolBySuperAdminService(payload)
             httpResponse(response, request, 201, responseMessage.school.SCHOOL_VERIFICATION_SENT, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    deleteSchool: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { params } = request as ISuperAdminDeleteSchoolRequest
+            const { schoolId } = params
+
+            if (!schoolId || typeof schoolId !== 'string') {
+                return httpError(next, new Error('Invalid school ID'), request, 400)
+            }
+
+            const result = await deleteSchoolBySuperAdminService(schoolId)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
         } catch (error) {
             if (error instanceof CustomError) {
                 httpError(next, error, request, error.statusCode)

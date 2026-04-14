@@ -23,5 +23,8 @@ export default {
             { $set: payload },
             { upsert: true, new: true, setDefaultsOnInsert: true }
         )
+    },
+    deactivateAssignmentsByTeacher: (schoolId: string, teacherEmail: string) => {
+        return classTeacherAssignmentModel.updateMany({ schoolId, teacherEmail, status: 'active' }, { $set: { status: 'inactive' } })
     }
 }

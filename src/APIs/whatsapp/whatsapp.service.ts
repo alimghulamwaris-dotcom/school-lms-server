@@ -5,6 +5,7 @@ import admissionRepo from '../admissions/_shared/repo/admission.repository'
 import { CustomError } from '../../utils/errors'
 import whatsappRepo from './_shared/repo/whatsapp.repository'
 import { sendWhatsAppText } from '../../services/whatsappProvider'
+import whatsappService from '../../services/whatsappService'
 import { IWhatsAppAudience, IWhatsAppCampaign, IWhatsAppRecipient } from './_shared/types/whatsapp.interface'
 import { ICampaignListQuery, ICreateCampaignRequest, ICreateTemplateRequest, ICreateTestRequest } from './types/whatsapp.interface'
 
@@ -17,7 +18,7 @@ const getRecordId = (value: unknown) => {
     }
 
     const data = value as { _id?: unknown }
-    return data._id ? String(data._id) : ''
+    return data._id ? String(data._id as unknown as string) : ''
 }
 
 const getStringValue = (value: unknown, fallback: string = '') => {
@@ -178,7 +179,7 @@ const mergeRecipients = (recipients: IWhatsAppRecipient[]) => {
     return Array.from(phoneMap.values())
 }
 
-const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[]) => {
+const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[], schoolId: string) => {
     const now = new Date()
     const dispatched: IWhatsAppRecipient[] = []
 
@@ -193,10 +194,7 @@ const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[]) => {
             continue
         }
 
-        const result = await sendWhatsAppText({
-            to: item.phone,
-            body
-        })
+        const result = await sendWhatsAppMessage(schoolId, item.phone, body)
 
         if (result.success) {
             dispatched.push({
@@ -286,6 +284,9 @@ export const listTemplatesService = async (schoolId: string) => {
 }
 
 export const createTestService = async (payload: ICreateTestRequest) => {
+    // Send the test message
+    const result = await sendWhatsAppMessage(payload.schoolId, payload.phone, payload.sampleData || 'Test message')
+
     const testMessage = await whatsappRepo.createTest({
         schoolId: payload.schoolId,
         templateName: payload.templateName,
@@ -294,7 +295,8 @@ export const createTestService = async (payload: ICreateTestRequest) => {
     })
 
     return {
-        success: true,
+        success: result.success,
+        error: result.error,
         testMessage
     }
 }
@@ -393,7 +395,7 @@ export const createCampaignService = async (payload: ICreateCampaignRequest) => 
     }
 
     if (payload.sendMode === 'now') {
-        const dispatched = await dispatchNow(payload.body, recipients)
+        const dispatched = await dispatchNow(payload.body, recipients, payload.schoolId)
         campaignPayload.recipients = dispatched.recipients
         campaignPayload.sentCount = dispatched.sentCount
         campaignPayload.failedCount = dispatched.failedCount
@@ -445,7 +447,7 @@ export const runDueDailyCampaigns = async () => {
         try {
             const recipients = await resolveRecipientsForAudience(schoolId, data.audience as IWhatsAppAudience)
             const body = getStringValue((campaign as { body?: unknown }).body)
-            const dispatched = await dispatchNow(body, recipients)
+            const dispatched = await dispatchNow(body, recipients, schoolId)
 
             await whatsappRepo.updateCampaignById(campaignId, {
                 recipients: dispatched.recipients,
@@ -485,4 +487,55 @@ export const listCampaignsService = async (query: ICampaignListQuery) => {
         success: true,
         campaigns
     }
+}
+
+export const getStatusService = async (schoolId: string) => {
+    const status = await whatsappService.getStatus(schoolId)
+
+    return {
+        status: status.status,
+        phoneNumber: status.phoneNumber,
+        qrCode: status.qrCode,
+        errorMessage: status.errorMessage
+    }
+}
+
+export const connectService = async (schoolId: string) => {
+    const status = await whatsappService.connect(schoolId)
+
+    return {
+        success: true,
+        schoolId,
+        status: status.status,
+        phoneNumber: status.phoneNumber,
+        qrCode: status.qrCode,
+        errorMessage: status.errorMessage
+    }
+}
+
+export const disconnectService = async (schoolId: string) => {
+    await whatsappService.disconnect(schoolId)
+
+    return {
+        success: true,
+        schoolId,
+        status: 'disconnected'
+    }
+}
+
+const sendWhatsAppMessage = async (schoolId: string, phoneNumber: string, message: string) => {
+    const liveResult = await whatsappService.sendMessage(schoolId, phoneNumber, message)
+
+    if (liveResult.success) {
+        return liveResult
+    }
+
+    if (liveResult.error !== 'WhatsApp not connected') {
+        return liveResult
+    }
+
+    return sendWhatsAppText({
+        to: phoneNumber,
+        body: message
+    })
 }
