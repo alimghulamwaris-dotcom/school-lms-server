@@ -3,6 +3,7 @@ import studentModel from '../students/_shared/models/student.model'
 import studentPromotionModel from '../students/_shared/models/studentPromotion.model'
 import userModel from '../user/_shared/models/user.model'
 import whatsappCampaignModel from '../whatsapp/_shared/models/whatsappCampaign.model'
+import invitationModel from '../invitations/_shared/models/invitation.model'
 import { EUserRoles } from '../../constant/users'
 import schoolRepo from '../school/_shared/repo/school.repository'
 import staffModel from '../staff/_shared/models/staff.model'
@@ -44,10 +45,7 @@ export const getSuperAdminOverviewService = async () => {
         verifiedSchools,
         totalStudents,
         totalStaffMembers,
-        totalUsers,
-        totalSuperAdmins,
-        totalAdmins,
-        pendingAdmissions,
+        totalAdmissions,
         totalVouchers,
         pendingVouchers,
         paidVouchers,
@@ -60,10 +58,7 @@ export const getSuperAdminOverviewService = async () => {
         schoolRepo.countSchools({ isVerified: true }),
         studentModel.countDocuments(),
         staffModel.countDocuments(),
-        userModel.countDocuments(),
-        userModel.countDocuments({ role: EUserRoles.SUPER_ADMIN }),
-        userModel.countDocuments({ role: EUserRoles.ADMIN }),
-        admissionModel.countDocuments({ status: 'pending' }),
+        admissionModel.countDocuments(),
         feeInvoiceModel.countDocuments(),
         feeInvoiceModel.countDocuments({ status: { $in: ['pending', 'partially_paid'] } }),
         feeInvoiceModel.countDocuments({ status: 'paid' }),
@@ -83,10 +78,7 @@ export const getSuperAdminOverviewService = async () => {
             verifiedSchools,
             students: totalStudents,
             staffMembers: totalStaffMembers,
-            users: totalUsers,
-            superAdmins: totalSuperAdmins,
-            admins: totalAdmins,
-            pendingAdmissions,
+            admissions: totalAdmissions,
             vouchers: totalVouchers,
             pendingVouchers,
             paidVouchers,
@@ -183,10 +175,16 @@ export const deleteSchoolBySuperAdminService = async (schoolId: string) => {
         throw new Error('School not found')
     }
 
-    // Delete all related data sequentially to ensure proper cleanup
-    // Start with records that reference other entities
-
     try {
+        // Get all staff members for this school BEFORE deleting them
+        // so we can find and delete their associated user accounts
+        const staffMembers = await staffModel.find({ schoolId: trimmedSchoolId }).lean()
+        const staffEmails = staffMembers.map((staff) => staff.email?.toLowerCase()).filter(Boolean)
+
+        // Get invitations to find accepted user IDs
+        const invitations = await invitationModel.find({ schoolId: trimmedSchoolId }).lean()
+        const acceptedUserIds = invitations.filter((inv) => inv.acceptedUserId).map((inv) => inv.acceptedUserId)
+
         // Delete attendance records and assignments
         await attendanceModel.deleteMany({ schoolId: trimmedSchoolId })
         await classTeacherAssignmentModel.deleteMany({ schoolId: trimmedSchoolId })
@@ -215,16 +213,36 @@ export const deleteSchoolBySuperAdminService = async (schoolId: string) => {
         await studentPromotionModel.deleteMany({ schoolId: trimmedSchoolId })
         await studentModel.deleteMany({ schoolId: trimmedSchoolId })
 
-        // Delete staff and admissions
+        // Delete invitations for this school
+        await invitationModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete staff records
         await staffModel.deleteMany({ schoolId: trimmedSchoolId })
+
+        // Delete admissions
         await admissionModel.deleteMany({ schoolId: trimmedSchoolId })
 
         // Delete classrooms
         await classroomModel.deleteMany({ schoolId: trimmedSchoolId })
 
-        // Delete the admin user associated with this school
+        // Delete user accounts associated with this school
+        // 1. School admin user
         if (school.adminUserId) {
             await userModel.findByIdAndDelete(school.adminUserId)
+        }
+
+        // 2. Staff users found via accepted invitations
+        if (acceptedUserIds.length > 0) {
+            await userModel.deleteMany({ _id: { $in: acceptedUserIds } })
+        }
+
+        // 3. Staff users found via staff email matching (excluding super_admins and already deleted)
+        // Only delete users who are not super_admins
+        if (staffEmails.length > 0) {
+            await userModel.deleteMany({
+                email: { $in: staffEmails },
+                role: { $ne: EUserRoles.SUPER_ADMIN }
+            })
         }
 
         // Finally delete the school itself
@@ -232,7 +250,7 @@ export const deleteSchoolBySuperAdminService = async (schoolId: string) => {
 
         return {
             success: true,
-            message: `School "${school.name}" and all associated data have been permanently deleted`
+            message: `School "${school.name}" and all associated data (including ${staffMembers.length} staff users) have been permanently deleted`
         }
     } catch (error) {
         throw new Error(`Failed to delete school: ${error instanceof Error ? error.message : 'Unknown error'}`)
