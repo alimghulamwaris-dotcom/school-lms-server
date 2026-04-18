@@ -1,9 +1,9 @@
 ﻿import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import responseMessage from '../../constant/responseMessage'
-import config from '../../config/config'
-import logger from '../../handlers/logger'
-import emailService from '../../services/email'
+// import config from '../../config/config'
+// import logger from '../../handlers/logger'
+// import emailService from '../../services/email'
 import { CustomError } from '../../utils/errors'
 import hashing from '../../utils/hashing'
 import parsers from '../../utils/parsers'
@@ -195,35 +195,37 @@ export const registerSchoolService = async (payload: ISchoolRegisterRequest) => 
         semesters: buildDefaultSemesters(2)
     })
 
-    const verifyUrl = `${config.CLIENT_URL}/verify-school?token=${verificationToken}`
-    const to = [contactEmail]
-    const subject = 'Verify your school account'
-    const text = `Your school ${schoolName} has been created. Verify your account using this link:\n\n${verifyUrl}`
-
-    try {
-        await emailService.sendEmail(to, subject, text)
-    } catch (error) {
-        logger.error('Error sending school verification email', {
-            meta: error
-        })
-
-        try {
-            await schoolRepo.deleteSchoolById(String(school._id))
-        } catch (rollbackError) {
-            logger.error('Error rolling back school creation after email failure', {
-                meta: rollbackError
-            })
-        }
-
-        throw new CustomError('Unable to send verification email right now. Please try creating the school again.', 503)
-    }
+    // Email sending commented out - now handled by frontend via /api/send-verification-email
+    // const verifyUrl = `${config.CLIENT_URL}/verify-school?token=${verificationToken}`
+    // const to = [contactEmail]
+    // const subject = 'Verify your school account'
+    // const text = `Your school ${schoolName} has been created. Verify your account using this link:\n\n${verifyUrl}`
+    //
+    // try {
+    //     await emailService.sendEmail(to, subject, text)
+    // } catch (error) {
+    //     logger.error('Error sending school verification email', {
+    //         meta: error
+    //     })
+    //
+    //     try {
+    //         await schoolRepo.deleteSchoolById(String(school._id))
+    //     } catch (rollbackError) {
+    //         logger.error('Error rolling back school creation after email failure', {
+    //             meta: rollbackError
+    //         })
+    //     }
+    //
+    //     throw new CustomError('Unable to send verification email right now. Please try creating the school again.', 503)
+    // }
 
     return {
         success: true,
         schoolId: school._id,
         schoolCode: school.code,
         contactEmail: school.contactEmail,
-        verified: school.isVerified
+        verified: school.isVerified,
+        verificationToken: school.verificationToken
     }
 }
 

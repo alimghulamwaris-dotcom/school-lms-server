@@ -28,7 +28,13 @@ const ensureBootstrap = async () => {
 app.use(helmet())
 app.use(cookieParser())
 
-const allowedOrigins = ['https://xyz.com', 'http://localhost:3000', 'http://127.0.0.1:3000', 'https://school-lms-client.vercel.app']
+const allowedOrigins = [
+    'https://xyz.com',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'https://school-lms-client.vercel.app'
+]
 
 app.use(
     cors({

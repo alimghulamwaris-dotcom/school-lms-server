@@ -321196,3 +321196,6070 @@
         }
     }
 }
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:10:01.209Z",
+    "message": "Database connection established",
+    "meta": {
+        "CONNECTION_NAME": "school-lms"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:10:01.240Z",
+    "message": "Rate limiter initiated",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:10:01.246Z",
+    "message": "WhatsApp scheduler initiated",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:10:02.795Z",
+    "message": "WhatsApp sessions restored",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:10:02.802Z",
+    "message": "Application started on port 5000",
+    "meta": {
+        "SERVER_URL": "http://localhost:5000"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:16:03.144Z",
+    "message": "Database connection established",
+    "meta": {
+        "CONNECTION_NAME": "school-lms"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:16:03.152Z",
+    "message": "Rate limiter initiated",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:16:03.154Z",
+    "message": "WhatsApp scheduler initiated",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:16:04.465Z",
+    "message": "WhatsApp sessions restored",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:16:04.474Z",
+    "message": "Application started on port 5000",
+    "meta": {
+        "SERVER_URL": "http://localhost:5000"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:20:36.536Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/login"
+        },
+        "message": "Login successful",
+        "data": {
+            "success": true,
+            "principalType": "user",
+            "role": "super_admin",
+            "schoolId": null,
+            "schoolCode": null,
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWQ2N2Y1NWQ4YTk5YzMzNDQ4MGRlOTEiLCJwcmluY2lwYWxUeXBlIjoidXNlciIsImlhdCI6MTc3NjUxMTIzNiwiZXhwIjoxNzc2NTE0ODM2fQ.8da94RrMddbpcjgV0OrZilBRdZedSJqCom9nUItXXG0",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWQ2N2Y1NWQ4YTk5YzMzNDQ4MGRlOTEiLCJwcmluY2lwYWxUeXBlIjoidXNlciIsImlhdCI6MTc3NjUxMTIzNiwiZXhwIjoxODA4MDQ3MjM2fQ.WdiWQVUH4tgkm1xMrPB5PX7aRflQXt0prfotzXFK2Z0"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:20:38.596Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "phoneNumber": {
+                "isoCode": "PK",
+                "countryCode": "92",
+                "internationalNumber": "3000000000"
+            },
+            "accountConfimation": {
+                "status": true,
+                "token": "3eaacc48-0ac2-440b-b0e1-34498962c188",
+                "code": "882123",
+                "timestamp": "2026-04-08T16:37:39.055Z"
+            },
+            "passwordReset": {
+                "token": null,
+                "expiry": null,
+                "lastResetAt": null
+            },
+            "_id": "69d67f55d8a99c334480de91",
+            "name": "Platform Owner",
+            "email": "admin@gmail.com",
+            "timezone": "Asia/Karachi",
+            "role": "super_admin",
+            "lastLoginAt": "2026-04-18T11:20:36.354Z",
+            "consent": true,
+            "createdAt": "2026-04-08T16:16:21.280Z",
+            "updatedAt": "2026-04-18T11:20:36.375Z",
+            "__v": 0,
+            "schoolId": null,
+            "schoolCode": null,
+            "accessPages": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:20:38.764Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/super-admin/schools?page=1&limit=30&search="
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "items": [],
+            "pagination": {
+                "page": 1,
+                "limit": 30,
+                "total": 0,
+                "totalPages": 1
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:20:39.137Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/super-admin/overview"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "totals": {
+                "schools": 0,
+                "verifiedSchools": 0,
+                "students": 0,
+                "staffMembers": 0,
+                "users": 3,
+                "superAdmins": 1,
+                "admins": 0,
+                "pendingAdmissions": 0,
+                "vouchers": 0,
+                "pendingVouchers": 0,
+                "paidVouchers": 0,
+                "campaigns": 0,
+                "feeIncome": 0,
+                "feeExpense": 0,
+                "netBalance": 0
+            },
+            "recentSchools": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:20:42.675Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "phoneNumber": {
+                "isoCode": "PK",
+                "countryCode": "92",
+                "internationalNumber": "3000000000"
+            },
+            "accountConfimation": {
+                "status": true,
+                "token": "3eaacc48-0ac2-440b-b0e1-34498962c188",
+                "code": "882123",
+                "timestamp": "2026-04-08T16:37:39.055Z"
+            },
+            "passwordReset": {
+                "token": null,
+                "expiry": null,
+                "lastResetAt": null
+            },
+            "_id": "69d67f55d8a99c334480de91",
+            "name": "Platform Owner",
+            "email": "admin@gmail.com",
+            "timezone": "Asia/Karachi",
+            "role": "super_admin",
+            "lastLoginAt": "2026-04-18T11:20:36.354Z",
+            "consent": true,
+            "createdAt": "2026-04-08T16:16:21.280Z",
+            "updatedAt": "2026-04-18T11:20:36.375Z",
+            "__v": 0,
+            "schoolId": null,
+            "schoolCode": null,
+            "accessPages": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:20:42.715Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "phoneNumber": {
+                "isoCode": "PK",
+                "countryCode": "92",
+                "internationalNumber": "3000000000"
+            },
+            "accountConfimation": {
+                "status": true,
+                "token": "3eaacc48-0ac2-440b-b0e1-34498962c188",
+                "code": "882123",
+                "timestamp": "2026-04-08T16:37:39.055Z"
+            },
+            "passwordReset": {
+                "token": null,
+                "expiry": null,
+                "lastResetAt": null
+            },
+            "_id": "69d67f55d8a99c334480de91",
+            "name": "Platform Owner",
+            "email": "admin@gmail.com",
+            "timezone": "Asia/Karachi",
+            "role": "super_admin",
+            "lastLoginAt": "2026-04-18T11:20:36.354Z",
+            "consent": true,
+            "createdAt": "2026-04-08T16:16:21.280Z",
+            "updatedAt": "2026-04-18T11:20:36.375Z",
+            "__v": 0,
+            "schoolId": null,
+            "schoolCode": null,
+            "accessPages": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:21:22.556Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/super-admin/schools"
+        },
+        "message": "School verification email has been sent.",
+        "data": {
+            "success": true,
+            "schoolId": "69e3692daab8996b4c685e0a",
+            "schoolCode": "NEW5282",
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "verified": false
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:22:27.637Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 404,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/verify/undefined"
+        },
+        "message": "School verification token is not found",
+        "data": null,
+        "trace": {
+            "error": "Error: School verification token is not found\n    at D:\\school-lms-server\\src\\APIs\\school\\school.service.ts:233:15\n    at Generator.next (<anonymous>)\n    at fulfilled (D:\\school-lms-server\\src\\APIs\\school\\school.service.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:31:09.755Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 401,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "You are not allowed to perform this task",
+        "data": null,
+        "trace": {
+            "error": "Error: You are not allowed to perform this task\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:41:25\n    at Generator.next (<anonymous>)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (D:\\school-lms-server\\src\\middlewares\\authenticate.ts:4:12)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:11:97\n    at D:\\school-lms-server\\src\\handlers\\async.ts:5:25\n    at Layer.handle [as handle_request] (D:\\school-lms-server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\school-lms-server\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at exports.default (D:\\school-lms-server\\src\\middlewares\\rateLimiter.ts:11:16)"
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:31:09.769Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 401,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "You are not allowed to perform this task",
+        "data": null,
+        "trace": {
+            "error": "Error: You are not allowed to perform this task\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:41:25\n    at Generator.next (<anonymous>)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (D:\\school-lms-server\\src\\middlewares\\authenticate.ts:4:12)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:11:97\n    at D:\\school-lms-server\\src\\handlers\\async.ts:5:25\n    at Layer.handle [as handle_request] (D:\\school-lms-server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\school-lms-server\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at exports.default (D:\\school-lms-server\\src\\middlewares\\rateLimiter.ts:11:16)"
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:31:15.967Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 403,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/login"
+        },
+        "message": "School is not verified yet. Please verify via email.",
+        "data": null,
+        "trace": {
+            "error": "Error: School is not verified yet. Please verify via email.\n    at D:\\school-lms-server\\src\\APIs\\user\\authentication\\authentication.service.ts:271:15\n    at Generator.next (<anonymous>)\n    at fulfilled (D:\\school-lms-server\\src\\APIs\\user\\authentication\\authentication.service.ts:5:58)"
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:31:51.233Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 404,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/verify/undefined"
+        },
+        "message": "School verification token is not found",
+        "data": null,
+        "trace": {
+            "error": "Error: School verification token is not found\n    at D:\\school-lms-server\\src\\APIs\\school\\school.service.ts:233:15\n    at Generator.next (<anonymous>)\n    at fulfilled (D:\\school-lms-server\\src\\APIs\\school\\school.service.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:32:02.581Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 404,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/verify/undefined"
+        },
+        "message": "School verification token is not found",
+        "data": null,
+        "trace": {
+            "error": "Error: School verification token is not found\n    at D:\\school-lms-server\\src\\APIs\\school\\school.service.ts:233:15\n    at Generator.next (<anonymous>)\n    at fulfilled (D:\\school-lms-server\\src\\APIs\\school\\school.service.ts:5:58)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:27.000Z",
+    "message": "Database connection established",
+    "meta": {
+        "CONNECTION_NAME": "school-lms"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:27.015Z",
+    "message": "Rate limiter initiated",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:27.016Z",
+    "message": "WhatsApp scheduler initiated",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:28.245Z",
+    "message": "WhatsApp sessions restored",
+    "meta": {}
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:28.253Z",
+    "message": "Application started on port 5000",
+    "meta": {
+        "SERVER_URL": "http://localhost:5000"
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:31.710Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/login"
+        },
+        "message": "Login successful",
+        "data": {
+            "success": true,
+            "principalType": "user",
+            "role": "super_admin",
+            "schoolId": null,
+            "schoolCode": null,
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWQ2N2Y1NWQ4YTk5YzMzNDQ4MGRlOTEiLCJwcmluY2lwYWxUeXBlIjoidXNlciIsImlhdCI6MTc3NjUxMjc5MSwiZXhwIjoxNzc2NTE2MzkxfQ.h7KtFFKIlb8_23vu03Rko4q3VE6XmzuP6ia-jP3CIF4",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWQ2N2Y1NWQ4YTk5YzMzNDQ4MGRlOTEiLCJwcmluY2lwYWxUeXBlIjoidXNlciIsImlhdCI6MTc3NjUxMjc5MSwiZXhwIjoxODA4MDQ4NzkxfQ.fGaQ8lpW2H9gUOsS84B-EwkTOwvG69axQ63G9VkoALY"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:32.880Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "phoneNumber": {
+                "isoCode": "PK",
+                "countryCode": "92",
+                "internationalNumber": "3000000000"
+            },
+            "accountConfimation": {
+                "status": true,
+                "token": "3eaacc48-0ac2-440b-b0e1-34498962c188",
+                "code": "882123",
+                "timestamp": "2026-04-08T16:37:39.055Z"
+            },
+            "passwordReset": {
+                "token": null,
+                "expiry": null,
+                "lastResetAt": null
+            },
+            "_id": "69d67f55d8a99c334480de91",
+            "name": "Platform Owner",
+            "email": "admin@gmail.com",
+            "timezone": "Asia/Karachi",
+            "role": "super_admin",
+            "lastLoginAt": "2026-04-18T11:46:31.564Z",
+            "consent": true,
+            "createdAt": "2026-04-08T16:16:21.280Z",
+            "updatedAt": "2026-04-18T11:46:31.580Z",
+            "__v": 0,
+            "schoolId": null,
+            "schoolCode": null,
+            "accessPages": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:33.327Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/super-admin/schools?page=1&limit=30&search="
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "items": [
+                {
+                    "_id": "69e3692daab8996b4c685e0a",
+                    "name": "new",
+                    "campus": "main",
+                    "code": "NEW5282",
+                    "contactEmail": "alimghulamwaris@gmail.com",
+                    "contactPhone": "923177843858",
+                    "isVerified": false,
+                    "adminUserId": null,
+                    "createdAt": "2026-04-18T11:21:17.773Z",
+                    "counts": {
+                        "students": 0,
+                        "staff": 0,
+                        "activeStaff": 0
+                    }
+                }
+            ],
+            "pagination": {
+                "page": 1,
+                "limit": 30,
+                "total": 1,
+                "totalPages": 1
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:33.563Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/super-admin/overview"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "totals": {
+                "schools": 1,
+                "verifiedSchools": 0,
+                "students": 0,
+                "staffMembers": 0,
+                "users": 3,
+                "superAdmins": 1,
+                "admins": 0,
+                "pendingAdmissions": 0,
+                "vouchers": 0,
+                "pendingVouchers": 0,
+                "paidVouchers": 0,
+                "campaigns": 0,
+                "feeIncome": 0,
+                "feeExpense": 0,
+                "netBalance": 0
+            },
+            "recentSchools": [
+                {
+                    "_id": "69e3692daab8996b4c685e0a",
+                    "name": "new",
+                    "campus": "main",
+                    "code": "NEW5282",
+                    "contactEmail": "alimghulamwaris@gmail.com",
+                    "contactPhone": "923177843858",
+                    "isVerified": false,
+                    "createdAt": "2026-04-18T11:21:17.773Z"
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:47.530Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "DELETE",
+            "url": "/v1/super-admin/schools/69e3692daab8996b4c685e0a"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "message": "School \"new\" and all associated data have been permanently deleted"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:47.745Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/super-admin/overview"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "totals": {
+                "schools": 0,
+                "verifiedSchools": 0,
+                "students": 0,
+                "staffMembers": 0,
+                "users": 3,
+                "superAdmins": 1,
+                "admins": 0,
+                "pendingAdmissions": 0,
+                "vouchers": 0,
+                "pendingVouchers": 0,
+                "paidVouchers": 0,
+                "campaigns": 0,
+                "feeIncome": 0,
+                "feeExpense": 0,
+                "netBalance": 0
+            },
+            "recentSchools": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:46:47.764Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/super-admin/schools?page=1&limit=30&search="
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "items": [],
+            "pagination": {
+                "page": 1,
+                "limit": 30,
+                "total": 0,
+                "totalPages": 1
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:47:01.907Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "phoneNumber": {
+                "isoCode": "PK",
+                "countryCode": "92",
+                "internationalNumber": "3000000000"
+            },
+            "accountConfimation": {
+                "status": true,
+                "token": "3eaacc48-0ac2-440b-b0e1-34498962c188",
+                "code": "882123",
+                "timestamp": "2026-04-08T16:37:39.055Z"
+            },
+            "passwordReset": {
+                "token": null,
+                "expiry": null,
+                "lastResetAt": null
+            },
+            "_id": "69d67f55d8a99c334480de91",
+            "name": "Platform Owner",
+            "email": "admin@gmail.com",
+            "timezone": "Asia/Karachi",
+            "role": "super_admin",
+            "lastLoginAt": "2026-04-18T11:46:31.564Z",
+            "consent": true,
+            "createdAt": "2026-04-08T16:16:21.280Z",
+            "updatedAt": "2026-04-18T11:46:31.580Z",
+            "__v": 0,
+            "schoolId": null,
+            "schoolCode": null,
+            "accessPages": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:47:01.933Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "phoneNumber": {
+                "isoCode": "PK",
+                "countryCode": "92",
+                "internationalNumber": "3000000000"
+            },
+            "accountConfimation": {
+                "status": true,
+                "token": "3eaacc48-0ac2-440b-b0e1-34498962c188",
+                "code": "882123",
+                "timestamp": "2026-04-08T16:37:39.055Z"
+            },
+            "passwordReset": {
+                "token": null,
+                "expiry": null,
+                "lastResetAt": null
+            },
+            "_id": "69d67f55d8a99c334480de91",
+            "name": "Platform Owner",
+            "email": "admin@gmail.com",
+            "timezone": "Asia/Karachi",
+            "role": "super_admin",
+            "lastLoginAt": "2026-04-18T11:46:31.564Z",
+            "consent": true,
+            "createdAt": "2026-04-08T16:16:21.280Z",
+            "updatedAt": "2026-04-18T11:46:31.580Z",
+            "__v": 0,
+            "schoolId": null,
+            "schoolCode": null,
+            "accessPages": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:47:38.999Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/super-admin/schools"
+        },
+        "message": "School verification email has been sent.",
+        "data": {
+            "success": true,
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "verified": false,
+            "verificationToken": "2f76dda0-fc1d-4b07-86a0-3b0849d59a70"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:25.251Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/verify/2f76dda0-fc1d-4b07-86a0-3b0849d59a70"
+        },
+        "message": "School has been verified successfully.",
+        "data": {
+            "success": true,
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "verified": true
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:49:28.770Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 401,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "You are not allowed to perform this task",
+        "data": null,
+        "trace": {
+            "error": "Error: You are not allowed to perform this task\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:41:25\n    at Generator.next (<anonymous>)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (D:\\school-lms-server\\src\\middlewares\\authenticate.ts:4:12)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:11:97\n    at D:\\school-lms-server\\src\\handlers\\async.ts:5:25\n    at Layer.handle [as handle_request] (D:\\school-lms-server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\school-lms-server\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at exports.default (D:\\school-lms-server\\src\\middlewares\\rateLimiter.ts:11:16)"
+        }
+    }
+}
+{
+    "level": "ERROR",
+    "timestamp": "2026-04-18T11:49:28.795Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": false,
+        "statusCode": 401,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "You are not allowed to perform this task",
+        "data": null,
+        "trace": {
+            "error": "Error: You are not allowed to perform this task\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:41:25\n    at Generator.next (<anonymous>)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:8:71\n    at new Promise (<anonymous>)\n    at __awaiter (D:\\school-lms-server\\src\\middlewares\\authenticate.ts:4:12)\n    at D:\\school-lms-server\\src\\middlewares\\authenticate.ts:11:97\n    at D:\\school-lms-server\\src\\handlers\\async.ts:5:25\n    at Layer.handle [as handle_request] (D:\\school-lms-server\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (D:\\school-lms-server\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at exports.default (D:\\school-lms-server\\src\\middlewares\\rateLimiter.ts:11:16)"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:41.982Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/login"
+        },
+        "message": "Login successful",
+        "data": {
+            "success": true,
+            "principalType": "school",
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY2hvb2xJZCI6IjY5ZTM2ZjVhZGRmMGI2NzM4ZjU3MjFlNiIsInByaW5jaXBhbFR5cGUiOiJzY2hvb2wiLCJpYXQiOjE3NzY1MTI5ODEsImV4cCI6MTc3NjUxNjU4MX0.gxwvhSRzmlqP_7P48a2dopz0FsLrjU2XvpwARobyb2g",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY2hvb2xJZCI6IjY5ZTM2ZjVhZGRmMGI2NzM4ZjU3MjFlNiIsInByaW5jaXBhbFR5cGUiOiJzY2hvb2wiLCJpYXQiOjE3NzY1MTI5ODEsImV4cCI6MTgwODA0ODk4MX0.z9l4NZ_SHRcFZ7uMzcMP7K6IWdxlt-29uLRto63dHLg"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:42.041Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:43.616Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:43.640Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:43.747Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:43.769Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:44.256Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/dashboard?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "stats": {
+                "students": 0,
+                "attendanceToday": 0,
+                "feeReminders": 0,
+                "templates": 0
+            },
+            "recentAdmissions": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:49:44.282Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/dashboard?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "stats": {
+                "students": 0,
+                "attendanceToday": 0,
+                "feeReminders": 0,
+                "templates": 0
+            },
+            "recentAdmissions": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.299Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.411Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.497Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/templates?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "templates": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.607Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/audience-options?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "options": {
+                "classes": [],
+                "students": [],
+                "staff": [],
+                "staffRoles": []
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.633Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/campaigns?schoolId=69e36f5addf0b6738f5721e6&limit=30"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "campaigns": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.640Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.726Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/templates?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "templates": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.773Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/audience-options?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "options": {
+                "classes": [],
+                "students": [],
+                "staff": [],
+                "staffRoles": []
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.813Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/campaigns?schoolId=69e36f5addf0b6738f5721e6&limit=30"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "campaigns": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:50:55.824Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:00.411Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:05.418Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:10.614Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:12.236Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:12.285Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:12.384Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:12.391Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:16.983Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/classes"
+        },
+        "message": "Class created successfully.",
+        "data": {
+            "success": true,
+            "classroom": {
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "className": "1",
+                "classKey": "1",
+                "sections": [],
+                "status": "active",
+                "_id": "69e37034ddf0b6738f572245",
+                "createdAt": "2026-04-18T11:51:16.826Z",
+                "updatedAt": "2026-04-18T11:51:16.826Z",
+                "__v": 0
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:17.300Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:16.826Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:21.019Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/classes/69e37034ddf0b6738f572245/sections"
+        },
+        "message": "Section added successfully.",
+        "data": {
+            "success": true,
+            "classroom": {
+                "_id": "69e37034ddf0b6738f572245",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "className": "1",
+                "classKey": "1",
+                "sections": [
+                    "A"
+                ],
+                "status": "active",
+                "createdAt": "2026-04-18T11:51:16.826Z",
+                "updatedAt": "2026-04-18T11:51:20.864Z",
+                "__v": 1
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:21.332Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:23.885Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:23.938Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:24.078Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/admissions?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "admissions": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:24.178Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/admissions?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "admissions": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:24.389Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "nextPreview": "GR-2026-0001"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:24.477Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "nextPreview": "GR-2026-0001"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:26.489Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:26.604Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:49:25.189Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:26.732Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:26.764Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:27.076Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "nextPreview": "GR-2026-0001"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:51:27.138Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 0,
+            "nextPreview": "GR-2026-0001"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:37.602Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/uploads"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "file": {
+                "url": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                "publicId": "school-lms/ne3zrrdmevkx0uk7k5su",
+                "resourceType": "image",
+                "bytes": 2988390,
+                "format": "png",
+                "originalFilename": "front-view-cute-young-boy-girl-posing-together (1)-Photoroom.png"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:40.796Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/admissions"
+        },
+        "message": "Admission created successfully.",
+        "data": {
+            "success": true,
+            "admission": {
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "pending",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                "documentUrls": [],
+                "_id": "69e37088ddf0b6738f572288",
+                "createdAt": "2026-04-18T11:52:40.484Z",
+                "updatedAt": "2026-04-18T11:52:40.484Z",
+                "__v": 0
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:41.415Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "nextPreview": "GR-2026-0002"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:44.761Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:44.803Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:44.836Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:44.965Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:44.984Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "pending",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:52:40.641Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:44.998Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "pending",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:52:40.641Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:45.037Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:45.208Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:45.215Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "pending",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:52:40.641Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:45.323Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "pending",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:52:40.641Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:50.449Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "PATCH",
+            "url": "/v1/students/69e37088ddf0b6738f57228a/approve"
+        },
+        "message": "Student approved successfully.",
+        "data": {
+            "success": true,
+            "student": {
+                "_id": "69e37088ddf0b6738f57228a",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "active",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                "documentUrls": [],
+                "createdAt": "2026-04-18T11:52:40.641Z",
+                "updatedAt": "2026-04-18T11:52:49.989Z",
+                "__v": 0
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:50.778Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:52:49.989Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:54.258Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:54.280Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:54.583Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students/69e37088ddf0b6738f57228a?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "source": "student",
+            "student": {
+                "_id": "69e37088ddf0b6738f57228a",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "active",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                "documentUrls": [],
+                "createdAt": "2026-04-18T11:52:40.641Z",
+                "updatedAt": "2026-04-18T11:52:49.989Z"
+            },
+            "attendance": {
+                "totalDays": 0,
+                "presentDays": 0,
+                "absentDays": 0,
+                "attendanceRate": 0,
+                "lastMarkedDate": null,
+                "recentLogs": []
+            },
+            "fees": {
+                "summary": {
+                    "totalInvoices": 0,
+                    "paidInvoices": 0,
+                    "pendingInvoices": 0,
+                    "totalBilled": 0,
+                    "totalPaid": 0,
+                    "totalBalance": 0,
+                    "lastInvoiceMonth": ""
+                },
+                "invoices": []
+            },
+            "progress": {
+                "profileCompletion": 100,
+                "attendanceRate": 0,
+                "feeStatus": "clear",
+                "approvalStatus": "active"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:54.645Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students/69e37088ddf0b6738f57228a?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "source": "student",
+            "student": {
+                "_id": "69e37088ddf0b6738f57228a",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "active",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                "documentUrls": [],
+                "createdAt": "2026-04-18T11:52:40.641Z",
+                "updatedAt": "2026-04-18T11:52:49.989Z"
+            },
+            "attendance": {
+                "totalDays": 0,
+                "presentDays": 0,
+                "absentDays": 0,
+                "attendanceRate": 0,
+                "lastMarkedDate": null,
+                "recentLogs": []
+            },
+            "fees": {
+                "summary": {
+                    "totalInvoices": 0,
+                    "paidInvoices": 0,
+                    "pendingInvoices": 0,
+                    "totalBilled": 0,
+                    "totalPaid": 0,
+                    "totalBalance": 0,
+                    "lastInvoiceMonth": ""
+                },
+                "invoices": []
+            },
+            "progress": {
+                "profileCompletion": 100,
+                "attendanceRate": 0,
+                "feeStatus": "clear",
+                "approvalStatus": "active"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:54.756Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:52:54.822Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:05.791Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:05.818Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:05.998Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/admissions?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "admissions": [
+                {
+                    "_id": "69e37088ddf0b6738f572288",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.484Z",
+                    "updatedAt": "2026-04-18T11:52:50.294Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:06.164Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/admissions?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "admissions": [
+                {
+                    "_id": "69e37088ddf0b6738f572288",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513156/school-lms/ne3zrrdmevkx0uk7k5su.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.484Z",
+                    "updatedAt": "2026-04-18T11:52:50.294Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:06.274Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "nextPreview": "GR-2026-0002"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:06.290Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/schools/gr-config?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "nextPreview": "GR-2026-0002"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:07.860Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/uploads"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "file": {
+                "url": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                "publicId": "school-lms/wdcqvhwo3dqlgxmxdqqm",
+                "resourceType": "image",
+                "bytes": 723621,
+                "format": "png",
+                "originalFilename": "kanwal.png"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:08.357Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "PATCH",
+            "url": "/v1/students/69e37088ddf0b6738f57228a"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "student": {
+                "_id": "69e37088ddf0b6738f57228a",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "active",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                "documentUrls": [],
+                "createdAt": "2026-04-18T11:52:40.641Z",
+                "updatedAt": "2026-04-18T11:53:08.201Z",
+                "__v": 0
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:14.708Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:14.722Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:14.823Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:14.953Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:14.965Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:53:08.201Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:14.988Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:53:08.201Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:15.042Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:15.216Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/classes?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "classes": [
+                {
+                    "_id": "69e37034ddf0b6738f572245",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "className": "1",
+                    "classKey": "1",
+                    "sections": [
+                        "A"
+                    ],
+                    "status": "active",
+                    "createdAt": "2026-04-18T11:51:16.826Z",
+                    "updatedAt": "2026-04-18T11:51:20.864Z",
+                    "__v": 1
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:15.243Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:53:08.201Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:15.285Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "students": [
+                {
+                    "_id": "69e37088ddf0b6738f57228a",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "name": "fakhir",
+                    "grNumber": "GR-2026-0001",
+                    "className": "1",
+                    "section": "A",
+                    "guardianName": "bin shakir",
+                    "guardianPhone": "923310424405",
+                    "address": "XYZ",
+                    "status": "active",
+                    "admissionDate": "2026-04-18T00:00:00.000Z",
+                    "previousSchool": null,
+                    "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                    "documentUrls": [],
+                    "createdAt": "2026-04-18T11:52:40.641Z",
+                    "updatedAt": "2026-04-18T11:53:08.201Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:17.087Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:17.098Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:17.390Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students/69e37088ddf0b6738f57228a?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "source": "student",
+            "student": {
+                "_id": "69e37088ddf0b6738f57228a",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "active",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                "documentUrls": [],
+                "createdAt": "2026-04-18T11:52:40.641Z",
+                "updatedAt": "2026-04-18T11:53:08.201Z"
+            },
+            "attendance": {
+                "totalDays": 0,
+                "presentDays": 0,
+                "absentDays": 0,
+                "attendanceRate": 0,
+                "lastMarkedDate": null,
+                "recentLogs": []
+            },
+            "fees": {
+                "summary": {
+                    "totalInvoices": 0,
+                    "paidInvoices": 0,
+                    "pendingInvoices": 0,
+                    "totalBilled": 0,
+                    "totalPaid": 0,
+                    "totalBalance": 0,
+                    "lastInvoiceMonth": ""
+                },
+                "invoices": []
+            },
+            "progress": {
+                "profileCompletion": 100,
+                "attendanceRate": 0,
+                "feeStatus": "clear",
+                "approvalStatus": "active"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:17.410Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/students/69e37088ddf0b6738f57228a?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "source": "student",
+            "student": {
+                "_id": "69e37088ddf0b6738f57228a",
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "name": "fakhir",
+                "grNumber": "GR-2026-0001",
+                "className": "1",
+                "section": "A",
+                "guardianName": "bin shakir",
+                "guardianPhone": "923310424405",
+                "address": "XYZ",
+                "status": "active",
+                "admissionDate": "2026-04-18T00:00:00.000Z",
+                "previousSchool": null,
+                "photoUrl": "https://res.cloudinary.com/dud3ditge/image/upload/v1776513187/school-lms/wdcqvhwo3dqlgxmxdqqm.png",
+                "documentUrls": [],
+                "createdAt": "2026-04-18T11:52:40.641Z",
+                "updatedAt": "2026-04-18T11:53:08.201Z"
+            },
+            "attendance": {
+                "totalDays": 0,
+                "presentDays": 0,
+                "absentDays": 0,
+                "attendanceRate": 0,
+                "lastMarkedDate": null,
+                "recentLogs": []
+            },
+            "fees": {
+                "summary": {
+                    "totalInvoices": 0,
+                    "paidInvoices": 0,
+                    "pendingInvoices": 0,
+                    "totalBilled": 0,
+                    "totalPaid": 0,
+                    "totalBalance": 0,
+                    "lastInvoiceMonth": ""
+                },
+                "invoices": []
+            },
+            "progress": {
+                "profileCompletion": 100,
+                "attendanceRate": 0,
+                "feeStatus": "clear",
+                "approvalStatus": "active"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:17.572Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:17.622Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.261Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.318Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/user/me"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "_id": "69e36f5addf0b6738f5721e6",
+            "name": "new",
+            "campus": "main",
+            "code": "NEW4146",
+            "adminUserId": null,
+            "contactEmail": "alimghulamwaris@gmail.com",
+            "contactPhone": "923177843851",
+            "grPattern": "GR-{YYYY}-{SEQ4}",
+            "grCounter": 1,
+            "isVerified": true,
+            "verificationToken": null,
+            "verificationExpiry": null,
+            "staffCheckInTime": "08:00",
+            "staffCheckInGraceMinutes": 0,
+            "academicYear": "2026-2027",
+            "academicYearStatus": "open",
+            "currentSemesterNumber": 1,
+            "passPercentage": 50,
+            "semesters": [
+                {
+                    "number": 1,
+                    "name": "Semester 1",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "active"
+                },
+                {
+                    "number": 2,
+                    "name": "Semester 2",
+                    "startDate": null,
+                    "endDate": null,
+                    "status": "upcoming"
+                }
+            ],
+            "createdAt": "2026-04-18T11:47:38.946Z",
+            "updatedAt": "2026-04-18T11:52:40.030Z",
+            "__v": 0,
+            "role": "school_owner",
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "schoolCode": "NEW4146",
+            "accessPages": [
+                "Dashboard",
+                "Attendance",
+                "Messages",
+                "Students",
+                "Staff",
+                "Admissions",
+                "Fees",
+                "Exams"
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.433Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/templates?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "templates": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.452Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/audience-options?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "options": {
+                "classes": [
+                    {
+                        "_id": "69e37034ddf0b6738f572245",
+                        "className": "1",
+                        "sections": [
+                            "A"
+                        ]
+                    }
+                ],
+                "students": [
+                    {
+                        "_id": "69e37088ddf0b6738f57228a",
+                        "name": "fakhir",
+                        "className": "1",
+                        "section": "A",
+                        "guardianName": "bin shakir",
+                        "guardianPhone": "923310424405"
+                    }
+                ],
+                "staff": [],
+                "staffRoles": []
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.467Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/campaigns?schoolId=69e36f5addf0b6738f5721e6&limit=30"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "campaigns": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.489Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.637Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/templates?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "templates": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.663Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/audience-options?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "options": {
+                "classes": [
+                    {
+                        "_id": "69e37034ddf0b6738f572245",
+                        "className": "1",
+                        "sections": [
+                            "A"
+                        ]
+                    }
+                ],
+                "students": [
+                    {
+                        "_id": "69e37088ddf0b6738f57228a",
+                        "name": "fakhir",
+                        "className": "1",
+                        "section": "A",
+                        "guardianName": "bin shakir",
+                        "guardianPhone": "923310424405"
+                    }
+                ],
+                "staff": [],
+                "staffRoles": []
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.756Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/campaigns?schoolId=69e36f5addf0b6738f5721e6&limit=30"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "campaigns": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:53:59.836Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:04.526Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:09.466Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:14.459Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:19.462Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:24.462Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:29.458Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:34.461Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:39.450Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "disconnected"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:39.948Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/whatsapp/connect"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "schoolId": "69e36f5addf0b6738f5721e6",
+            "status": "connecting"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:40.258Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connecting"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:44.458Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connecting",
+            "qrCode": "2@B71gnqbk+jZ68VGBVPxI851ZSPHxdizqWgQT2Ih/T1IuU517zDsfa3LZivUUMBYFSVRqrIOeIwx7vNUD3H2ZtTkJ81mzV+c+tSA=,LqGq4LkOAMvDvYvbSTEAm68ajEqaBF/dR3NeH7ykfkg=,JtIpZxZlnmbEBxwkT1y85cUK536h9x2H3hnTInc+bSA=,oic3ttZLNv0ioHGrICGJK68iVkxUV0EPi3m12AB5OIs="
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:49.471Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connecting",
+            "qrCode": "2@B71gnqbk+jZ68VGBVPxI851ZSPHxdizqWgQT2Ih/T1IuU517zDsfa3LZivUUMBYFSVRqrIOeIwx7vNUD3H2ZtTkJ81mzV+c+tSA=,LqGq4LkOAMvDvYvbSTEAm68ajEqaBF/dR3NeH7ykfkg=,JtIpZxZlnmbEBxwkT1y85cUK536h9x2H3hnTInc+bSA=,oic3ttZLNv0ioHGrICGJK68iVkxUV0EPi3m12AB5OIs="
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:54.676Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connecting"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:54:59.470Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:04.479Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:09.456Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:12.280Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 201,
+        "request": {
+            "ip": "::1",
+            "method": "POST",
+            "url": "/v1/whatsapp/campaigns"
+        },
+        "message": "WhatsApp campaign saved successfully.",
+        "data": {
+            "success": true,
+            "campaign": {
+                "schoolId": "69e36f5addf0b6738f5721e6",
+                "title": "hi",
+                "body": "shutu",
+                "messageType": "daily_diary",
+                "templateName": "",
+                "audience": {
+                    "type": "all_students",
+                    "studentIds": [],
+                    "staffIds": [],
+                    "staffRoles": [],
+                    "customPhones": [],
+                    "className": "",
+                    "section": ""
+                },
+                "sendMode": "now",
+                "dailyTime": null,
+                "nextRunAt": null,
+                "lastRunAt": "2026-04-18T11:55:12.117Z",
+                "status": "sent",
+                "recipientCount": 1,
+                "sentCount": 1,
+                "failedCount": 0,
+                "recipients": [
+                    {
+                        "targetType": "parent",
+                        "targetId": "69e37088ddf0b6738f57228a",
+                        "name": "bin shakir (Parent of fakhir)",
+                        "phone": "923310424405",
+                        "className": "1",
+                        "section": "A",
+                        "role": "",
+                        "status": "sent",
+                        "sentAt": "2026-04-18T11:55:11.014Z",
+                        "error": ""
+                    }
+                ],
+                "_id": "69e37120ddf0b6738f572377",
+                "createdAt": "2026-04-18T11:55:12.122Z",
+                "updatedAt": "2026-04-18T11:55:12.122Z",
+                "__v": 0
+            },
+            "summary": {
+                "recipientCount": 1,
+                "sentCount": 1,
+                "failedCount": 0,
+                "status": "sent",
+                "sendMode": "now"
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:12.597Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/templates?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "templates": []
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:12.602Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/audience-options?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "options": {
+                "classes": [
+                    {
+                        "_id": "69e37034ddf0b6738f572245",
+                        "className": "1",
+                        "sections": [
+                            "A"
+                        ]
+                    }
+                ],
+                "students": [
+                    {
+                        "_id": "69e37088ddf0b6738f57228a",
+                        "name": "fakhir",
+                        "className": "1",
+                        "section": "A",
+                        "guardianName": "bin shakir",
+                        "guardianPhone": "923310424405"
+                    }
+                ],
+                "staff": [],
+                "staffRoles": []
+            }
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:12.613Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/campaigns?schoolId=69e36f5addf0b6738f5721e6&limit=30"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "success": true,
+            "campaigns": [
+                {
+                    "audience": {
+                        "type": "all_students",
+                        "studentIds": [],
+                        "staffIds": [],
+                        "staffRoles": [],
+                        "customPhones": [],
+                        "className": "",
+                        "section": ""
+                    },
+                    "_id": "69e37120ddf0b6738f572377",
+                    "schoolId": "69e36f5addf0b6738f5721e6",
+                    "title": "hi",
+                    "body": "shutu",
+                    "messageType": "daily_diary",
+                    "templateName": "",
+                    "sendMode": "now",
+                    "dailyTime": null,
+                    "nextRunAt": null,
+                    "lastRunAt": "2026-04-18T11:55:12.117Z",
+                    "status": "sent",
+                    "recipientCount": 1,
+                    "sentCount": 1,
+                    "failedCount": 0,
+                    "recipients": [
+                        {
+                            "targetType": "parent",
+                            "targetId": "69e37088ddf0b6738f57228a",
+                            "name": "bin shakir (Parent of fakhir)",
+                            "phone": "923310424405",
+                            "className": "1",
+                            "section": "A",
+                            "role": "",
+                            "status": "sent",
+                            "sentAt": "2026-04-18T11:55:11.014Z",
+                            "error": ""
+                        }
+                    ],
+                    "createdAt": "2026-04-18T11:55:12.122Z",
+                    "updatedAt": "2026-04-18T11:55:12.122Z",
+                    "__v": 0
+                }
+            ]
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:14.451Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:19.469Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:24.461Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:29.457Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:34.471Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:39.470Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:44.460Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:49.473Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:54.468Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:55:59.458Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:04.467Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:09.468Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:14.469Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:19.461Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:24.459Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:29.465Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:34.462Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:39.456Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:44.453Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:49.461Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:54.474Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:56:59.466Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:04.465Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:09.467Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:14.467Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:19.476Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:24.471Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:29.480Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:34.471Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:39.462Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:45.050Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:50.063Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
+{
+    "level": "INFO",
+    "timestamp": "2026-04-18T11:57:55.035Z",
+    "message": "Controller Response",
+    "meta": {
+        "success": true,
+        "statusCode": 200,
+        "request": {
+            "ip": "::1",
+            "method": "GET",
+            "url": "/v1/whatsapp/status?schoolId=69e36f5addf0b6738f5721e6"
+        },
+        "message": "Operation is completed",
+        "data": {
+            "status": "connected",
+            "phoneNumber": "923177843851"
+        }
+    }
+}
