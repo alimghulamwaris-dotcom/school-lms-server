@@ -1,4 +1,4 @@
-﻿import { ensureClassSectionExists } from '../classes/classes.service'
+import { ensureClassSectionExists } from '../classes/classes.service'
 import responseMessage from '../../constant/responseMessage'
 import { CustomError } from '../../utils/errors'
 import { generateUniqueGrNumber } from '../../services/grNumber'
@@ -96,6 +96,7 @@ const mapAdmissionToStudentPayload = (admission: {
     schoolId: string
     name: string
     grNumber: string
+    feeAmount: number
     className: string
     section?: string
     guardianName: string
@@ -110,6 +111,7 @@ const mapAdmissionToStudentPayload = (admission: {
         schoolId: admission.schoolId,
         name: admission.name,
         grNumber: admission.grNumber,
+        feeAmount: admission.feeAmount || 0,
         className: admission.className,
         section: normalizeSection(admission.section),
         guardianName: admission.guardianName,
@@ -397,6 +399,7 @@ export const createStudentService = async (payload: ICreateStudentRequest) => {
         schoolId: payload.schoolId,
         name: payload.name,
         grNumber: resolvedGrNumber,
+        feeAmount: payload.feeAmount || 0,
         className: payload.className,
         section: normalizeSection(payload.section),
         guardianName: payload.guardianName,

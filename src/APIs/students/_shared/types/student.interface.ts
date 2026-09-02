@@ -2,6 +2,7 @@ export interface IStudent {
     schoolId: string
     name: string
     grNumber: string
+    feeAmount: number
     className: string
     section: string
     guardianName: string

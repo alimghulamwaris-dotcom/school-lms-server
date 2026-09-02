@@ -1,4 +1,4 @@
-﻿import dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import responseMessage from '../../constant/responseMessage'
 // import config from '../../config/config'
@@ -8,12 +8,11 @@ import { CustomError } from '../../utils/errors'
 import hashing from '../../utils/hashing'
 import parsers from '../../utils/parsers'
 import code from '../../utils/code'
-import { getSchoolGrConfig, updateSchoolGrPattern } from '../../services/grNumber'
+import { getSchoolGrConfig } from '../../services/grNumber'
 import schoolRepo from './_shared/repo/school.repository'
 import {
     ISchoolAcademicConfigRequest,
     ISchoolAdvanceSemesterRequest,
-    ISchoolGrConfigRequest,
     ISchoolRolloverAcademicYearRequest,
     ISchoolRegisterRequest,
     ISchoolSemesterInput,
@@ -278,10 +277,6 @@ export const lookupSchoolService = async (codeValue: string) => {
 
 export const getSchoolGrConfigService = async (schoolId: string) => {
     return getSchoolGrConfig(schoolId)
-}
-
-export const updateSchoolGrConfigService = async (payload: ISchoolGrConfigRequest) => {
-    return updateSchoolGrPattern(payload.schoolId, payload.grPattern)
 }
 
 export const getSchoolStaffAttendanceConfigService = async (schoolId: string) => {

@@ -1,4 +1,4 @@
-﻿import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import responseMessage from '../../constant/responseMessage'
 import httpError from '../../handlers/errorHandler/httpError'
 import httpResponse from '../../handlers/httpResponse'
@@ -14,7 +14,6 @@ import {
     registerSchoolService,
     rolloverSchoolAcademicYearService,
     updateSchoolAcademicConfigService,
-    updateSchoolGrConfigService,
     updateSchoolStaffAttendanceConfigService,
     verifySchoolService
 } from './school.service'
@@ -25,8 +24,6 @@ import {
     ISchoolAdvanceSemester,
     ISchoolAdvanceSemesterRequest,
     ISchoolGrConfigQuery,
-    ISchoolGrConfigRequest,
-    ISchoolGrConfigUpdate,
     ISchoolLookup,
     ISchoolRegister,
     ISchoolRegisterRequest,
@@ -42,7 +39,6 @@ import {
     schoolAcademicConfigSchema,
     schoolAdvanceSemesterSchema,
     schoolGrConfigQuerySchema,
-    schoolGrConfigSchema,
     schoolLookupSchema,
     schoolRegisterSchema,
     schoolRolloverAcademicYearSchema,
@@ -118,24 +114,6 @@ export default {
             }
 
             const result = await getSchoolGrConfigService(payload.schoolId)
-            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
-        } catch (error) {
-            if (error instanceof CustomError) {
-                httpError(next, error, request, error.statusCode)
-            } else {
-                httpError(next, error, request, 500)
-            }
-        }
-    }),
-    updateGrConfig: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
-        try {
-            const { body } = request as ISchoolGrConfigUpdate
-            const { error, payload } = validateSchema<ISchoolGrConfigRequest>(schoolGrConfigSchema, body)
-            if (error) {
-                return httpError(next, error, request, 422)
-            }
-
-            const result = await updateSchoolGrConfigService(payload)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
         } catch (error) {
             if (error instanceof CustomError) {

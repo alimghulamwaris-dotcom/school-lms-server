@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { IStudent } from '../types/student.interface'
 
 const studentSchema = new mongoose.Schema<IStudent>(
@@ -14,6 +14,12 @@ const studentSchema = new mongoose.Schema<IStudent>(
         grNumber: {
             type: String,
             required: true
+        },
+        feeAmount: {
+            type: Number,
+            required: true,
+            min: 0,
+            default: 0
         },
         className: {
             type: String,

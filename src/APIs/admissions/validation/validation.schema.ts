@@ -4,7 +4,8 @@ import { ICreateAdmissionRequest, IImportAdmissionsRequest } from '../types/admi
 export const createAdmissionSchema = joi.object<ICreateAdmissionRequest, true>({
     schoolId: joi.string().required(),
     name: joi.string().min(2).max(72).required(),
-    grNumber: joi.string().min(2).max(40).allow('').optional(),
+    grNumber: joi.string().min(2).max(40).required(),
+    feeAmount: joi.number().min(0).required(),
     className: joi.string().min(1).max(40).required(),
     section: joi.string().max(10).optional(),
     guardianName: joi.string().min(2).max(72).required(),
@@ -21,6 +22,7 @@ const importAdmissionItemSchema = joi.object({
     schoolId: joi.string().required(),
     name: joi.string().min(2).max(72).required(),
     grNumber: joi.string().min(2).max(40).required(),
+    feeAmount: joi.number().min(0).required(),
     className: joi.string().min(1).max(40).required(),
     section: joi.string().max(10).optional(),
     guardianName: joi.string().min(2).max(72).required(),

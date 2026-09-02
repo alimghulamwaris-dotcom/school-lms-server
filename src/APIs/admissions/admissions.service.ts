@@ -1,7 +1,6 @@
-﻿import { ensureClassSectionExists } from '../classes/classes.service'
+import { ensureClassSectionExists } from '../classes/classes.service'
 import responseMessage from '../../constant/responseMessage'
 import { CustomError } from '../../utils/errors'
-import { generateUniqueGrNumber } from '../../services/grNumber'
 import studentRepo from '../students/_shared/repo/student.repository'
 import admissionRepo from './_shared/repo/admission.repository'
 import { ICreateAdmissionRequest, IImportAdmissionItem, IImportAdmissionsRequest } from './types/admission.interface'
@@ -13,6 +12,7 @@ const mapAdmission = (payload: ICreateAdmissionRequest & { grNumber: string }) =
         schoolId: payload.schoolId,
         name: payload.name,
         grNumber: payload.grNumber.trim(),
+        feeAmount: payload.feeAmount,
         className: payload.className,
         section: normalizeSection(payload.section),
         guardianName: payload.guardianName,
@@ -31,6 +31,7 @@ const mapStudentFromAdmission = (payload: ICreateAdmissionRequest & { grNumber: 
         schoolId: payload.schoolId,
         name: payload.name,
         grNumber: payload.grNumber.trim(),
+        feeAmount: payload.feeAmount,
         className: payload.className,
         section: normalizeSection(payload.section),
         guardianName: payload.guardianName,
@@ -44,12 +45,8 @@ const mapStudentFromAdmission = (payload: ICreateAdmissionRequest & { grNumber: 
     }
 }
 
-const resolveAdmissionGrNumber = async (schoolId: string, grNumber?: string) => {
-    const manualGrNumber = typeof grNumber === 'string' ? grNumber.trim() : ''
-
-    if (!manualGrNumber) {
-        return generateUniqueGrNumber(schoolId)
-    }
+const resolveAdmissionGrNumber = async (schoolId: string, grNumber: string) => {
+    const manualGrNumber = grNumber.trim()
 
     const [existingAdmission, existingStudent] = await Promise.all([
         admissionRepo.findAdmissionBySchoolAndGr(schoolId, manualGrNumber),

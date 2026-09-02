@@ -1,4 +1,4 @@
-﻿import mongoose from 'mongoose'
+import mongoose from 'mongoose'
 import { IAdmission } from '../types/admission.interface'
 
 const admissionSchema = new mongoose.Schema<IAdmission>(
@@ -14,6 +14,12 @@ const admissionSchema = new mongoose.Schema<IAdmission>(
         grNumber: {
             type: String,
             required: true
+        },
+        feeAmount: {
+            type: Number,
+            required: true,
+            min: 0,
+            default: 0
         },
         className: {
             type: String,

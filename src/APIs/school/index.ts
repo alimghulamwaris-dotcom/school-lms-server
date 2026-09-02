@@ -11,10 +11,7 @@ const router = Router()
 router.route('/schools/register').post(rateLimiter, authenticate, authorizeSuperAdmin, schoolController.register)
 router.route('/schools/verify/:token').get(rateLimiter, schoolController.verify)
 router.route('/schools/lookup').get(rateLimiter, schoolController.lookup)
-router
-    .route('/schools/gr-config')
-    .get(rateLimiter, authenticate, authorizeAccess(['Students', 'Admissions']), schoolController.getGrConfig)
-    .patch(rateLimiter, authenticate, authorizeAccess(['Students', 'Admissions']), schoolController.updateGrConfig)
+router.route('/schools/gr-config').get(rateLimiter, authenticate, authorizeAccess(['Students', 'Admissions']), schoolController.getGrConfig)
 router
     .route('/schools/staff-attendance-config')
     .get(rateLimiter, authenticate, authorizeOwnerOrAdmin, schoolController.getStaffAttendanceConfig)

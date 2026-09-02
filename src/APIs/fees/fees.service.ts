@@ -1,4 +1,5 @@
-﻿import responseMessage from '../../constant/responseMessage'
+import { Types } from 'mongoose'
+import responseMessage from '../../constant/responseMessage'
 import { CustomError } from '../../utils/errors'
 import admissionRepo from '../admissions/_shared/repo/admission.repository'
 import studentRepo from '../students/_shared/repo/student.repository'
@@ -26,6 +27,7 @@ type TVoucherCandidate = {
     className: string
     section: string
     status: string
+    feeAmount: number
 }
 
 type TInvoiceNumberContext = {
@@ -160,7 +162,7 @@ const calculateTotals = (items: { label: string; amount: number }[], discount: n
 }
 
 const mapStudentToCandidate = (student: {
-    _id?: unknown
+    _id?: string | Types.ObjectId
     grNumber: string
     name: string
     guardianName: string
@@ -168,16 +170,18 @@ const mapStudentToCandidate = (student: {
     className: string
     section?: string
     status?: string
+    feeAmount?: number
 }): TVoucherCandidate => {
     return {
-        studentId: student._id ? String(student._id) : null,
+        studentId: student._id ? (typeof student._id === 'string' ? student._id : student._id.toHexString()) : null,
         grNumber: student.grNumber,
         studentName: student.name,
         guardianName: student.guardianName,
         guardianPhone: student.guardianPhone,
         className: student.className,
         section: normalizeSection(student.section),
-        status: student.status || 'active'
+        status: student.status || 'active',
+        feeAmount: student.feeAmount || 0
     }
 }
 
@@ -190,6 +194,7 @@ const mapAdmissionToCandidate = (admission: {
     className: string
     section?: string
     status?: string
+    feeAmount?: number
 }): TVoucherCandidate => {
     return {
         studentId: null,
@@ -199,7 +204,8 @@ const mapAdmissionToCandidate = (admission: {
         guardianPhone: admission.guardianPhone,
         className: admission.className,
         section: normalizeSection(admission.section),
-        status: admission.status || 'pending'
+        status: admission.status || 'pending',
+        feeAmount: admission.feeAmount || 0
     }
 }
 
@@ -330,10 +336,14 @@ export const createFeeInvoiceService = async (payload: ICreateFeeInvoiceRequest)
 
     const { issueDate, dueDate } = parseInvoiceDates(payload.issueDate, payload.dueDate)
     const cleanedItems = cleanInvoiceItems(payload.items)
+    const invoiceItems = [
+        { label: 'Tuition Fee', amount: student.feeAmount || 0 },
+        ...cleanedItems.filter((item) => normalize(item.label) !== 'tuition fee')
+    ]
 
     const discount = parsePositiveAmount(payload.discount, 0)
     const lateFee = parsePositiveAmount(payload.lateFee, 0)
-    const totals = calculateTotals(cleanedItems, discount, lateFee, 0)
+    const totals = calculateTotals(invoiceItems, discount, lateFee, 0)
 
     const invoice = await feesRepo.createInvoice({
         schoolId: payload.schoolId,
@@ -348,7 +358,7 @@ export const createFeeInvoiceService = async (payload: ICreateFeeInvoiceRequest)
         month: payload.month,
         issueDate,
         dueDate,
-        items: cleanedItems,
+        items: invoiceItems,
         subtotal: totals.subtotal,
         discount,
         lateFee,
@@ -380,37 +390,44 @@ export const bulkGenerateFeeInvoicesService = async (payload: IBulkGenerateFeeIn
     const cleanedItems = cleanInvoiceItems(payload.items)
     const discount = parsePositiveAmount(payload.discount, 0)
     const lateFee = parsePositiveAmount(payload.lateFee, 0)
-    const totals = calculateTotals(cleanedItems, discount, lateFee, 0)
     const { issueDate, dueDate } = parseInvoiceDates(payload.issueDate, payload.dueDate)
 
     const invoiceContext = await getInvoiceNumberContext(payload.schoolId)
 
     const invoicePayloads = candidates
         .filter((candidate) => !existingGrSet.has(candidate.grNumber))
-        .map((candidate) => ({
-            schoolId: payload.schoolId,
-            invoiceNumber: generateNextInvoiceNumber(invoiceContext),
-            studentId: candidate.studentId,
-            grNumber: candidate.grNumber,
-            studentName: candidate.studentName,
-            guardianName: candidate.guardianName,
-            guardianPhone: candidate.guardianPhone,
-            className: candidate.className,
-            section: candidate.section,
-            month: payload.month,
-            issueDate,
-            dueDate,
-            items: cleanedItems,
-            subtotal: totals.subtotal,
-            discount,
-            lateFee,
-            totalAmount: totals.totalAmount,
-            paidAmount: totals.paidAmount,
-            balanceAmount: totals.balanceAmount,
-            status: totals.status,
-            notes: payload.notes || '',
-            paymentHistory: []
-        }))
+        .map((candidate) => {
+            const candidateItems = [
+                { label: 'Tuition Fee', amount: candidate.feeAmount || 0 },
+                ...cleanedItems.filter((item) => normalize(item.label) !== 'tuition fee')
+            ]
+            const candidateTotals = calculateTotals(candidateItems, discount, lateFee, 0)
+
+            return {
+                schoolId: payload.schoolId,
+                invoiceNumber: generateNextInvoiceNumber(invoiceContext),
+                studentId: candidate.studentId,
+                grNumber: candidate.grNumber,
+                studentName: candidate.studentName,
+                guardianName: candidate.guardianName,
+                guardianPhone: candidate.guardianPhone,
+                className: candidate.className,
+                section: candidate.section,
+                month: payload.month,
+                issueDate,
+                dueDate,
+                items: candidateItems,
+                subtotal: candidateTotals.subtotal,
+                discount,
+                lateFee,
+                totalAmount: candidateTotals.totalAmount,
+                paidAmount: candidateTotals.paidAmount,
+                balanceAmount: candidateTotals.balanceAmount,
+                status: candidateTotals.status,
+                notes: payload.notes || '',
+                paymentHistory: []
+            }
+        })
 
     const createdInvoices = invoicePayloads.length > 0 ? await feesRepo.createInvoices(invoicePayloads) : []
 

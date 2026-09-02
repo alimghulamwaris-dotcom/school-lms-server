@@ -5,6 +5,7 @@ export const createStudentSchema = joi.object<ICreateStudentRequest, true>({
     schoolId: joi.string().required(),
     name: joi.string().min(2).max(72).required(),
     grNumber: joi.string().min(2).max(40).allow('').optional(),
+    feeAmount: joi.number().min(0).optional(),
     className: joi.string().min(1).max(40).required(),
     section: joi.string().max(10).optional(),
     guardianName: joi.string().min(2).max(72).required(),
