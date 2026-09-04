@@ -9,3 +9,5 @@ logs
 .env.development
 .env.production
 .env.test
+
+.eslintcache
