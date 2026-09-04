@@ -8,6 +8,8 @@ router.route('/register').post(authenticationController.register)
 router.route('/registeration/confirm/:token').patch(authenticationController.confirmRegistration)
 
 router.route('/login').post(authenticationController.login)
+// Deliberately NOT behind `authenticate`: the access token is already expired when this is called.
+router.route('/user/refresh').patch(authenticationController.refresh)
 router.route('/logout').put(authenticate, authenticationController.logout)
 
 export default router

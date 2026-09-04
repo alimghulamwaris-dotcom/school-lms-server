@@ -13,7 +13,7 @@ export default (request: Request, _response: Response, next: NextFunction) => {
             return
         }
 
-        httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
+        httpError(next, new Error(responseMessage.FORBIDDEN), request, 403)
     } catch (error) {
         httpError(next, error, request, 500)
     }

@@ -19,7 +19,7 @@ const authorizeAccess = (pageKey: string | string[]) => {
 
             const user = req.authenticatedUser
             if (!user) {
-                return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 401)
+                return httpError(next, new Error(responseMessage.SESSION_EXPIRED), request, 401)
             }
 
             if (user.role === EUserRoles.ADMIN) {
@@ -34,11 +34,11 @@ const authorizeAccess = (pageKey: string | string[]) => {
                 staff = await staffRepo.findStaffByEmail(user.email)
             }
             if (!staff) {
-                return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
+                return httpError(next, new Error(responseMessage.FORBIDDEN), request, 403)
             }
 
             if (staff.status && staff.status !== 'active') {
-                return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
+                return httpError(next, new Error(responseMessage.FORBIDDEN), request, 403)
             }
 
             const allowedPages = (staff.accessPages || []).map(normalize)
@@ -46,7 +46,7 @@ const authorizeAccess = (pageKey: string | string[]) => {
             const normalizedKeys = pageKeys.map(normalize)
             const isAllowed = normalizedKeys.some((key) => allowedPages.includes(key))
             if (!isAllowed) {
-                return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
+                return httpError(next, new Error(responseMessage.FORBIDDEN), request, 403)
             }
 
             return next()

@@ -7,7 +7,7 @@ import httpResponse from '../../../handlers/httpResponse'
 import { CustomError } from '../../../utils/errors'
 import { validateSchema } from '../../../utils/joi-validate'
 import query from '../_shared/repo/token.repository'
-import { accountConfirmationService, loginService, registrationService } from './authentication.service'
+import { accountConfirmationService, loginService, refreshSessionService, registrationService } from './authentication.service'
 import { IConfirmRegistration, ILogin, ILoginRequest, IRegister, IRegisterRequest } from './types/authentication.interface'
 import { loginSchema, registerSchema } from './validation/validation.schema'
 
@@ -90,6 +90,42 @@ export default {
                     })
 
                 httpResponse(response, request, 200, responseMessage.auth.LOGIN_SUCCESSFUL, isLoggedIn)
+            }
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    refresh: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { cookies } = request
+            const { refreshToken } = cookies as {
+                refreshToken: string | undefined
+            }
+
+            const refreshed = await refreshSessionService(refreshToken)
+            if (refreshed.success === true) {
+                const cookiePolicy = getCookiePolicy(request)
+                response
+                    .cookie('accessToken', refreshed.accessToken, {
+                        path: '/v1',
+                        sameSite: cookiePolicy.sameSite,
+                        maxAge: 1000 * config.TOKENS.ACCESS.EXPIRY,
+                        httpOnly: true,
+                        secure: cookiePolicy.secure
+                    })
+                    .cookie('refreshToken', refreshed.refreshToken, {
+                        path: '/v1',
+                        sameSite: cookiePolicy.sameSite,
+                        maxAge: 1000 * config.TOKENS.REFRESH.EXPIRY,
+                        httpOnly: true,
+                        secure: cookiePolicy.secure
+                    })
+
+                httpResponse(response, request, 200, responseMessage.SUCCESS, { success: true })
             }
         } catch (error) {
             if (error instanceof CustomError) {

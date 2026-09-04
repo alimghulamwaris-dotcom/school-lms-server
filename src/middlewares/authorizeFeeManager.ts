@@ -22,7 +22,7 @@ export default asyncHandler(async (request: Request, _response: Response, next: 
         }
 
         if (!req.authenticatedUser) {
-            return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 401)
+            return httpError(next, new Error(responseMessage.SESSION_EXPIRED), request, 401)
         }
 
         if (req.authenticatedUser.role === EUserRoles.ADMIN) {
@@ -37,14 +37,14 @@ export default asyncHandler(async (request: Request, _response: Response, next: 
             staff = await staffRepo.findStaffByEmail(req.authenticatedUser.email)
         }
         if (!staff || (staff.status && normalize(staff.status) !== 'active')) {
-            return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
+            return httpError(next, new Error(responseMessage.FORBIDDEN), request, 403)
         }
 
         if (isFeeManagerRole(staff.role)) {
             return next()
         }
 
-        return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 403)
+        return httpError(next, new Error(responseMessage.FORBIDDEN), request, 403)
     } catch (error) {
         return httpError(next, error, request, 500)
     }
