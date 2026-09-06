@@ -18,6 +18,9 @@ router
 router
     .route('/students/promotions')
     .get(rateLimiter, authenticate, authorizeAccess('Students'), authorizeOwnerOrAdmin, studentsController.listPromotions)
+router
+    .route('/students/bulk-approve')
+    .patch(rateLimiter, authenticate, authorizeAccess('Students'), authorizeOwnerOrAdmin, studentsController.bulkApprove)
 router.route('/students/:id').get(rateLimiter, authenticate, authorizeAccess('Students'), studentsController.detail)
 router.route('/students/:id').patch(rateLimiter, authenticate, authorizeAccess('Students'), studentsController.update)
 router.route('/students/:id').delete(rateLimiter, authenticate, authorizeAccess('Students'), authorizeOwnerOrAdmin, studentsController.remove)

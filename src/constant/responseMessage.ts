@@ -32,6 +32,7 @@
         STAFF_UPDATED: `Staff member updated successfully.`,
         STUDENT_CREATED: `Student created successfully.`,
         STUDENT_APPROVED: `Student approved successfully.`,
+        STUDENTS_BULK_APPROVED: `Bulk approval completed.`,
         GR_ALREADY_EXISTS: `GR number already exists for this school.`,
         ADMISSION_CREATED: `Admission created successfully.`,
         ATTENDANCE_CREATED: `Attendance recorded successfully.`,

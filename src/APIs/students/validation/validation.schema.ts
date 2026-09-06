@@ -1,5 +1,11 @@
 import joi from 'joi'
-import { ICreateStudentRequest, IExecutePromotionsRequest, IPreviewPromotionsRequest, IUpdateStudentRequest } from '../types/student.interface'
+import {
+    IBulkApproveStudentsRequest,
+    ICreateStudentRequest,
+    IExecutePromotionsRequest,
+    IPreviewPromotionsRequest,
+    IUpdateStudentRequest
+} from '../types/student.interface'
 
 export const createStudentSchema = joi.object<ICreateStudentRequest, true>({
     schoolId: joi.string().required(),
@@ -57,4 +63,8 @@ export const executePromotionsSchema = joi.object<IExecutePromotionsRequest, tru
             })
         )
         .optional()
+})
+
+export const bulkApproveStudentsSchema = joi.object<IBulkApproveStudentsRequest, true>({
+    ids: joi.array().items(joi.string().min(1)).min(1).max(500).required()
 })

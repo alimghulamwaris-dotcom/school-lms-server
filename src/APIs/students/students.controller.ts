@@ -5,9 +5,16 @@ import httpError from '../../handlers/errorHandler/httpError'
 import asyncHandler from '../../handlers/async'
 import { CustomError } from '../../utils/errors'
 import { validateSchema } from '../../utils/joi-validate'
-import { createStudentSchema, executePromotionsSchema, previewPromotionsSchema, updateStudentSchema } from './validation/validation.schema'
+import {
+    bulkApproveStudentsSchema,
+    createStudentSchema,
+    executePromotionsSchema,
+    previewPromotionsSchema,
+    updateStudentSchema
+} from './validation/validation.schema'
 import {
     approveStudentService,
+    bulkApproveStudentService,
     createStudentService,
     deleteStudentService,
     executePromotionsService,
@@ -19,6 +26,8 @@ import {
 } from './students.service'
 import {
     IApproveStudent,
+    IBulkApproveStudents,
+    IBulkApproveStudentsRequest,
     ICreateStudent,
     ICreateStudentRequest,
     IDeleteStudent,
@@ -128,6 +137,23 @@ export default {
             const { params } = request as IApproveStudent
             const result = await approveStudentService(params.id)
             httpResponse(response, request, 200, responseMessage.school.STUDENT_APPROVED, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    bulkApprove: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { body } = request as IBulkApproveStudents
+            const { error, payload } = validateSchema<IBulkApproveStudentsRequest>(bulkApproveStudentsSchema, body)
+            if (error) {
+                return httpError(next, error, request, 422)
+            }
+            const result = await bulkApproveStudentService(payload.ids)
+            httpResponse(response, request, 200, responseMessage.school.STUDENTS_BULK_APPROVED, result)
         } catch (error) {
             if (error instanceof CustomError) {
                 httpError(next, error, request, error.statusCode)
