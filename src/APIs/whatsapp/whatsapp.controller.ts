@@ -18,6 +18,7 @@ import {
     createCampaignService,
     createTemplateService,
     createTestService,
+    deleteCampaignService,
     deleteTemplateService,
     getAudienceOptionsService,
     getStatusService,
@@ -38,6 +39,7 @@ import {
     IUpdateTemplate,
     IUpdateTemplateRequest,
     IDeleteTemplate,
+    IDeleteCampaign,
     // ICreateTestRequest,
     IListCampaigns,
     IListTemplates
@@ -220,6 +222,29 @@ export default {
 
             const result = await listCampaignsService(payload)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    deleteCampaign: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { params } = request as IDeleteCampaign
+            const { id } = params
+            if (!id) {
+                return httpError(next, new CustomError('Campaign ID is required', 400), request, 400)
+            }
+
+            const schoolId = resolveSchoolId(request, (request.body as { schoolId?: string })?.schoolId || (request.query?.schoolId as string))
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const result = await deleteCampaignService(id, schoolId)
+            httpResponse(response, request, 200, responseMessage.school.WHATSAPP_CAMPAIGN_DELETED, result)
         } catch (error) {
             if (error instanceof CustomError) {
                 httpError(next, error, request, error.statusCode)

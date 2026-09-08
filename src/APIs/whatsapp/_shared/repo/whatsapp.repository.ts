@@ -36,5 +36,11 @@ export default {
     },
     updateCampaignById: (id: string, payload: Partial<IWhatsAppCampaign>) => {
         return whatsappCampaignModel.findByIdAndUpdate(id, payload, { new: true })
+    },
+    findCampaignById: (id: string) => {
+        return whatsappCampaignModel.findById(id)
+    },
+    deleteCampaignById: (id: string) => {
+        return whatsappCampaignModel.findByIdAndDelete(id)
     }
 }

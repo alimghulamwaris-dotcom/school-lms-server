@@ -56,6 +56,7 @@
         TEMPLATE_UPDATED: `Template updated successfully.`,
         TEMPLATE_DELETED: `Template deleted successfully.`,
         TEST_MESSAGE_SENT: `Test message sent successfully.`,
-        WHATSAPP_CAMPAIGN_CREATED: `WhatsApp campaign saved successfully.`
+        WHATSAPP_CAMPAIGN_CREATED: `WhatsApp campaign saved successfully.`,
+        WHATSAPP_CAMPAIGN_DELETED: `Scheduled campaign cancelled successfully.`
     }
 }

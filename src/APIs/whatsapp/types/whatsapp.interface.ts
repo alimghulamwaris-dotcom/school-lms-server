@@ -63,6 +63,12 @@ export interface IDeleteTemplate extends Request {
     }
 }
 
+export interface IDeleteCampaign extends Request {
+    params: {
+        id: string
+    }
+}
+
 export interface ICreateTest extends Request {
     body: ICreateTestRequest
 }

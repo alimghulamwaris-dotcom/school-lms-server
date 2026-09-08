@@ -562,6 +562,27 @@ export const listCampaignsService = async (query: ICampaignListQuery) => {
     }
 }
 
+export const deleteCampaignService = async (id: string, schoolId: string) => {
+    const existingCampaign = await whatsappRepo.findCampaignById(id)
+    if (!existingCampaign) {
+        throw new CustomError(responseMessage.NOT_FOUND('Campaign'), 404)
+    }
+
+    if (existingCampaign.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.UNAUTHORIZED, 401)
+    }
+
+    if (existingCampaign.status !== 'scheduled') {
+        throw new CustomError('Only scheduled campaigns can be cancelled or deleted', 400)
+    }
+
+    const deletedCampaign = await whatsappRepo.deleteCampaignById(id)
+    return {
+        success: true,
+        campaign: deletedCampaign
+    }
+}
+
 export const getStatusService = async (schoolId: string) => {
     const status = await whatsappService.getStatus(schoolId)
 
