@@ -36,6 +36,8 @@ export interface IWhatsAppRecipient {
     targetId: string
     name: string
     phone: string
+    studentName?: string
+    guardianName?: string
     className?: string
     section?: string
     role?: string

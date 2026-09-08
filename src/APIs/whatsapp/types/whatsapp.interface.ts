@@ -10,6 +10,15 @@ export interface ICreateTemplateRequest {
     variables: string[]
 }
 
+export interface IUpdateTemplateRequest {
+    schoolId?: string
+    name?: string
+    category?: string
+    language?: string
+    body?: string
+    variables?: string[]
+}
+
 export interface ICreateTestRequest {
     schoolId: string
     templateName: string
@@ -39,6 +48,19 @@ export interface IAudienceOptionsQuery {
 
 export interface ICreateTemplate extends Request {
     body: ICreateTemplateRequest
+}
+
+export interface IUpdateTemplate extends Request {
+    params: {
+        id: string
+    }
+    body: IUpdateTemplateRequest
+}
+
+export interface IDeleteTemplate extends Request {
+    params: {
+        id: string
+    }
 }
 
 export interface ICreateTest extends Request {

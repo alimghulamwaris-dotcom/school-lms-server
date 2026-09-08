@@ -3,11 +3,18 @@ import staffRepo from '../staff/_shared/repo/staff.repository'
 import studentRepo from '../students/_shared/repo/student.repository'
 import admissionRepo from '../admissions/_shared/repo/admission.repository'
 import { CustomError } from '../../utils/errors'
+import responseMessage from '../../constant/responseMessage'
 import whatsappRepo from './_shared/repo/whatsapp.repository'
 import { sendWhatsAppText } from '../../services/whatsappProvider'
 import whatsappService from '../../services/whatsappService'
 import { IWhatsAppAudience, IWhatsAppCampaign, IWhatsAppRecipient } from './_shared/types/whatsapp.interface'
-import { ICampaignListQuery, ICreateCampaignRequest, ICreateTemplateRequest, ICreateTestRequest } from './types/whatsapp.interface'
+import {
+    ICampaignListQuery,
+    ICreateCampaignRequest,
+    ICreateTemplateRequest,
+    ICreateTestRequest,
+    IUpdateTemplateRequest
+} from './types/whatsapp.interface'
 
 const normalize = (value: string) => value.trim().toLowerCase()
 const normalizePhone = (value?: string) => (value || '').replace(/\D/g, '')
@@ -135,6 +142,8 @@ const toStudentRecipient = (item: unknown): IWhatsAppRecipient => {
         targetType: 'parent',
         targetId: getRecordId(item),
         name: guardianName ? `${guardianName} (Parent of ${studentName})` : studentName,
+        studentName,
+        guardianName,
         phone: normalizePhone(getStringValue(data.guardianPhone)),
         className: getStringValue(data.className),
         section: getStringValue(data.section),
@@ -142,6 +151,38 @@ const toStudentRecipient = (item: unknown): IWhatsAppRecipient => {
         sentAt: null,
         error: ''
     }
+}
+
+export const applyTemplateVariables = (body: string, recipient: IWhatsAppRecipient): string => {
+    let studentName = recipient.studentName || ''
+    let guardianName = recipient.guardianName || ''
+
+    if (!studentName && recipient.name) {
+        const match = recipient.name.match(/\(Parent of (.*)\)/)
+        if (match) {
+            studentName = match[1].trim()
+            if (!guardianName) {
+                guardianName = recipient.name.replace(/\(Parent of .*\)/, '').trim()
+            }
+        } else if (recipient.targetType !== 'parent') {
+            studentName = recipient.name
+        }
+    }
+
+    return body.replace(/\{(student_name|guardian_name|class_name|section)\}/g, (_match: string, key: string) => {
+        switch (key) {
+            case 'student_name':
+                return studentName
+            case 'guardian_name':
+                return guardianName
+            case 'class_name':
+                return recipient.className || ''
+            case 'section':
+                return recipient.section || ''
+            default:
+                return ''
+        }
+    })
 }
 
 const toStaffRecipient = (item: unknown): IWhatsAppRecipient => {
@@ -194,7 +235,8 @@ const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[], schoo
             continue
         }
 
-        const result = await sendWhatsAppMessage(schoolId, item.phone, body)
+        const personalizedBody = applyTemplateVariables(body, item)
+        const result = await sendWhatsAppMessage(schoolId, item.phone, personalizedBody)
 
         if (result.success) {
             dispatched.push({
@@ -272,6 +314,32 @@ export const createTemplateService = async (payload: ICreateTemplateRequest) => 
     return {
         success: true,
         template
+    }
+}
+
+export const updateTemplateService = async (id: string, schoolId: string, payload: Partial<IUpdateTemplateRequest>) => {
+    const existingTemplate = await whatsappRepo.findTemplateById(id)
+    if (!existingTemplate || existingTemplate.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.NOT_FOUND('Template'), 404)
+    }
+
+    const updatedTemplate = await whatsappRepo.updateTemplate(id, payload)
+    return {
+        success: true,
+        template: updatedTemplate
+    }
+}
+
+export const deleteTemplateService = async (id: string, schoolId: string) => {
+    const existingTemplate = await whatsappRepo.findTemplateById(id)
+    if (!existingTemplate || existingTemplate.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.NOT_FOUND('Template'), 404)
+    }
+
+    const deletedTemplate = await whatsappRepo.deleteTemplate(id)
+    return {
+        success: true,
+        template: deletedTemplate
     }
 }
 

@@ -4,9 +4,11 @@ import {
     ICampaignListQuery,
     ICreateCampaignRequest,
     ICreateTemplateRequest,
-    ICreateTestRequest
+    ICreateTestRequest,
+    IUpdateTemplateRequest
 } from '../types/whatsapp.interface'
 import { TWhatsAppSendMode } from '../_shared/types/whatsapp.interface'
+import { TEMPLATE_VARIABLE_KEYS } from '../_shared/constants/templateVariables'
 
 const audienceTypeValues = ['all_students', 'class_all_sections', 'class_section', 'selected_students', 'all_staff', 'staff_role', 'selected_staff']
 
@@ -109,7 +111,22 @@ export const createTemplateSchema = joi.object<ICreateTemplateRequest, true>({
     category: joi.string().required(),
     language: joi.string().required(),
     body: joi.string().required(),
-    variables: joi.array().items(joi.string()).default([])
+    variables: joi
+        .array()
+        .items(joi.string().valid(...TEMPLATE_VARIABLE_KEYS))
+        .default([])
+})
+
+export const updateTemplateSchema = joi.object<IUpdateTemplateRequest, true>({
+    schoolId: joi.string().optional(),
+    name: joi.string().min(2).max(100).optional(),
+    category: joi.string().min(2).max(50).optional(),
+    language: joi.string().min(2).max(30).optional(),
+    body: joi.string().min(1).max(2000).optional(),
+    variables: joi
+        .array()
+        .items(joi.string().valid(...TEMPLATE_VARIABLE_KEYS))
+        .optional()
 })
 
 export const createTestSchema = joi.object<ICreateTestRequest, true>({

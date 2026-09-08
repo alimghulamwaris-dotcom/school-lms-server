@@ -53,6 +53,8 @@
         LIBRARY_BOOK_ISSUED: `Library book issued successfully.`,
         LIBRARY_BOOK_RETURNED: `Library book returned successfully.`,
         TEMPLATE_CREATED: `Template created successfully.`,
+        TEMPLATE_UPDATED: `Template updated successfully.`,
+        TEMPLATE_DELETED: `Template deleted successfully.`,
         TEST_MESSAGE_SENT: `Test message sent successfully.`,
         WHATSAPP_CAMPAIGN_CREATED: `WhatsApp campaign saved successfully.`
     }

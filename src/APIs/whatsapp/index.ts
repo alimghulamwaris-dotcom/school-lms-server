@@ -11,6 +11,11 @@ router
     .post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.createTemplate)
     .get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.listTemplates)
 
+router
+    .route('/whatsapp/templates/:id')
+    .patch(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.updateTemplate)
+    .delete(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.deleteTemplate)
+
 router.route('/whatsapp/test').post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.createTest)
 router.route('/whatsapp/audience-options').get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.audienceOptions)
 
