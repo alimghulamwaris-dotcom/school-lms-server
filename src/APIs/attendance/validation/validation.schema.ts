@@ -1,5 +1,5 @@
 import joi from 'joi'
-import { IAssignTeacherRequest, ICreateAttendanceRequest } from '../types/attendance.interface'
+import { IAssignTeacherRequest, ICreateAttendanceRequest, IUpdateAttendanceReminderConfigRequest } from '../types/attendance.interface'
 
 const attendanceRecordSchema = joi.object({
     studentId: joi.string().allow('', null).optional(),
@@ -17,6 +17,7 @@ export const createAttendanceSchema = joi.object<ICreateAttendanceRequest, true>
     records: joi.array().items(attendanceRecordSchema).min(1).required(),
     notes: joi.string().allow('').optional(),
     sendWhatsapp: joi.boolean().optional(),
+    whatsappTemplateId: joi.string().allow('', null).optional(),
     saveRegister: joi.boolean().optional()
 })
 
@@ -25,4 +26,9 @@ export const assignTeacherSchema = joi.object<IAssignTeacherRequest, true>({
     className: joi.string().required(),
     section: joi.string().required(),
     teacherEmail: joi.string().email().required()
+})
+
+export const updateAttendanceReminderConfigSchema = joi.object<IUpdateAttendanceReminderConfigRequest, true>({
+    schoolId: joi.string().required(),
+    attendanceReminderEnabled: joi.boolean().required()
 })

@@ -1,14 +1,22 @@
 import staffRepo from '../staff/_shared/repo/staff.repository'
 import studentRepo from '../students/_shared/repo/student.repository'
 import classroomRepo from '../classes/_shared/repo/classroom.repository'
+import schoolRepo from '../school/_shared/repo/school.repository'
 import { ensureClassSectionExists } from '../classes/classes.service'
 import responseMessage from '../../constant/responseMessage'
 import { EUserRoles } from '../../constant/users'
 import { CustomError } from '../../utils/errors'
 import { IAuthenticateRequest } from '../../types/types'
+import logger from '../../handlers/logger'
+import { sendAttendanceWhatsAppRemindersService } from '../whatsapp/whatsapp.service'
 import attendanceRepo from './_shared/repo/attendance.repository'
 import classTeacherAssignmentRepo from './_shared/repo/classTeacherAssignment.repository'
-import { IAssignTeacherRequest, IAttendanceStudentEntryRequest, ICreateAttendanceRequest } from './types/attendance.interface'
+import {
+    IAssignTeacherRequest,
+    IAttendanceStudentEntryRequest,
+    ICreateAttendanceRequest,
+    IUpdateAttendanceReminderConfigRequest
+} from './types/attendance.interface'
 
 const normalize = (value: string) => value.trim().toLowerCase()
 const normalizeSection = (value?: string) => (value ? value.trim().toUpperCase() : '')
@@ -233,6 +241,19 @@ export const createAttendanceService = async (payload: ICreateAttendanceRequest,
         ? await attendanceRepo.updateAttendanceById(String(existing._id), attendancePayload)
         : await attendanceRepo.createAttendance(attendancePayload)
 
+    if (payload.sendWhatsapp) {
+        schoolRepo
+            .findSchoolById(context.schoolId)
+            .then((school) => {
+                if (school && school.attendanceReminderEnabled !== false) {
+                    void sendAttendanceWhatsAppRemindersService(context.schoolId, className, section, date, records, payload.whatsappTemplateId)
+                }
+            })
+            .catch((err: unknown) => {
+                logger.error('Failed to trigger attendance WhatsApp reminder', { meta: err })
+            })
+    }
+
     return {
         success: true,
         attendance
@@ -417,5 +438,36 @@ export const assignTeacherToClassService = async (payload: IAssignTeacherRequest
     return {
         success: true,
         assignment
+    }
+}
+
+export const getAttendanceReminderConfigService = async (schoolId: string, request: IAuthenticateRequest) => {
+    const context = await resolveRequesterContext(request, schoolId)
+    const school = await schoolRepo.findSchoolById(context.schoolId)
+    if (!school) {
+        throw new CustomError(responseMessage.NOT_FOUND('School'), 404)
+    }
+    return {
+        success: true,
+        schoolId: context.schoolId,
+        attendanceReminderEnabled: school.attendanceReminderEnabled !== false
+    }
+}
+
+export const updateAttendanceReminderConfigService = async (payload: IUpdateAttendanceReminderConfigRequest, request: IAuthenticateRequest) => {
+    const context = await resolveRequesterContext(request, payload.schoolId)
+    if (!context.canManageAll) {
+        throw new CustomError(responseMessage.UNAUTHORIZED, 403)
+    }
+    const updatedSchool = await schoolRepo.updateSchoolById(context.schoolId, {
+        attendanceReminderEnabled: payload.attendanceReminderEnabled
+    })
+    if (!updatedSchool) {
+        throw new CustomError(responseMessage.NOT_FOUND('School'), 404)
+    }
+    return {
+        success: true,
+        schoolId: context.schoolId,
+        attendanceReminderEnabled: updatedSchool.attendanceReminderEnabled !== false
     }
 }

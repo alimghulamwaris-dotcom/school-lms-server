@@ -29,6 +29,7 @@ export interface ISchool {
     academicYearStatus: TAcademicYearStatus
     currentSemesterNumber: number
     passPercentage: number
+    attendanceReminderEnabled?: boolean
     semesters: ISchoolSemester[]
 }
 

@@ -11,5 +11,9 @@ router.route('/attendance').get(rateLimiter, authenticate, authorizeAccess('Atte
 router.route('/attendance/scope').get(rateLimiter, authenticate, authorizeAccess('Attendance'), attendanceController.scope)
 router.route('/attendance/summary').get(rateLimiter, authenticate, authorizeAccess('Attendance'), attendanceController.summary)
 router.route('/attendance/assign-teacher').post(rateLimiter, authenticate, authorizeAccess('Attendance'), attendanceController.assignTeacher)
+router
+    .route('/attendance/reminder-config')
+    .get(rateLimiter, authenticate, authorizeAccess('Attendance'), attendanceController.getReminderConfig)
+    .patch(rateLimiter, authenticate, authorizeAccess('Attendance'), attendanceController.updateReminderConfig)
 
 export default router

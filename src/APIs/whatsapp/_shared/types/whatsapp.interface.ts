@@ -40,6 +40,8 @@ export interface IWhatsAppRecipient {
     guardianName?: string
     className?: string
     section?: string
+    statusText?: string
+    dateText?: string
     role?: string
     status: TWhatsAppRecipientStatus
     sentAt?: Date | null

@@ -4,6 +4,7 @@ import studentRepo from '../students/_shared/repo/student.repository'
 import admissionRepo from '../admissions/_shared/repo/admission.repository'
 import { CustomError } from '../../utils/errors'
 import responseMessage from '../../constant/responseMessage'
+import logger from '../../handlers/logger'
 import whatsappRepo from './_shared/repo/whatsapp.repository'
 import { sendWhatsAppText } from '../../services/whatsappProvider'
 import whatsappService from '../../services/whatsappService'
@@ -169,7 +170,7 @@ export const applyTemplateVariables = (body: string, recipient: IWhatsAppRecipie
         }
     }
 
-    return body.replace(/\{(student_name|guardian_name|class_name|section)\}/g, (_match: string, key: string) => {
+    return body.replace(/\{(student_name|guardian_name|class_name|section|status|date)\}/g, (_match: string, key: string) => {
         switch (key) {
             case 'student_name':
                 return studentName
@@ -179,6 +180,10 @@ export const applyTemplateVariables = (body: string, recipient: IWhatsAppRecipie
                 return recipient.className || ''
             case 'section':
                 return recipient.section || ''
+            case 'status':
+                return recipient.statusText || ''
+            case 'date':
+                return recipient.dateText || ''
             default:
                 return ''
         }
@@ -588,6 +593,92 @@ export const disconnectService = async (schoolId: string) => {
         success: true,
         schoolId,
         status: 'disconnected'
+    }
+}
+
+export interface IAttendanceReminderItem {
+    grNumber: string
+    studentName: string
+    status: string
+}
+
+export const sendAttendanceWhatsAppRemindersService = async (
+    schoolId: string,
+    className: string,
+    section: string,
+    date: Date,
+    records: IAttendanceReminderItem[],
+    whatsappTemplateId?: string
+) => {
+    try {
+        const DEFAULT_TEMPLATE = 'Dear {guardian_name}, {student_name} from class {class_name} has been marked {status} for attendance on {date}.'
+        let templateBody = DEFAULT_TEMPLATE
+        if (whatsappTemplateId && whatsappTemplateId !== 'default') {
+            const customTemplate = await whatsappRepo.findTemplateById(whatsappTemplateId)
+            if (customTemplate && customTemplate.schoolId === schoolId && customTemplate.category.toLowerCase() === 'attendance') {
+                templateBody = customTemplate.body
+            }
+        }
+
+        const studentLikeRecords = await fetchStudentLikeRecords(schoolId)
+        const studentMap = new Map<string, { guardianName?: string; guardianPhone?: string }>()
+        for (const item of studentLikeRecords) {
+            const gr = getStringValue(item.grNumber)
+            if (gr) {
+                studentMap.set(gr, {
+                    guardianName: getStringValue(item.guardianName),
+                    guardianPhone: normalizePhone(getStringValue(item.guardianPhone))
+                })
+            }
+        }
+
+        const formattedDate = date.toISOString().slice(0, 10)
+
+        for (const rec of records) {
+            const studentInfo = studentMap.get(rec.grNumber)
+            const guardianPhone = studentInfo?.guardianPhone || ''
+            if (!guardianPhone || guardianPhone.length < 8) {
+                continue
+            }
+
+            const formatStatus = (s: string) => {
+                const lower = s.toLowerCase()
+                if (lower === 'present') return 'Present'
+                if (lower === 'absent') return 'Absent'
+                if (lower === 'on_leave') return 'On Leave'
+                return s
+            }
+
+            const guardianName = studentInfo?.guardianName || ''
+            const recipient: IWhatsAppRecipient = {
+                targetType: 'parent',
+                targetId: '',
+                name: guardianName ? `${guardianName} (Parent of ${rec.studentName})` : rec.studentName,
+                studentName: rec.studentName,
+                guardianName,
+                phone: guardianPhone,
+                className,
+                section,
+                statusText: formatStatus(rec.status),
+                dateText: formattedDate,
+                status: 'queued',
+                sentAt: null,
+                error: ''
+            }
+
+            const personalizedBody = applyTemplateVariables(templateBody, recipient)
+            try {
+                await sendWhatsAppMessage(schoolId, guardianPhone, personalizedBody)
+            } catch (err) {
+                logger.error('Failed to send attendance reminder to phone', {
+                    meta: { phone: guardianPhone, error: err }
+                })
+            }
+        }
+    } catch (err) {
+        logger.error('Error in sendAttendanceWhatsAppRemindersService', {
+            meta: { schoolId, className, section, error: err }
+        })
     }
 }
 
