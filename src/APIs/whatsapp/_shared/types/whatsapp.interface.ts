@@ -9,7 +9,7 @@ export type TWhatsAppAudienceType =
     | 'staff_role'
     | 'selected_staff'
 
-export type TWhatsAppSendMode = 'now' | 'daily'
+export type TWhatsAppSendMode = 'now' | 'daily' | 'monthly'
 
 export type TWhatsAppRecipientStatus = 'queued' | 'sent' | 'failed'
 
@@ -42,6 +42,9 @@ export interface IWhatsAppRecipient {
     section?: string
     statusText?: string
     dateText?: string
+    amountText?: string
+    dueDateText?: string
+    feeMonthText?: string
     role?: string
     status: TWhatsAppRecipientStatus
     sentAt?: Date | null
@@ -66,7 +69,12 @@ export interface IWhatsAppCampaign {
     templateName?: string
     audience: IWhatsAppAudience
     sendMode: TWhatsAppSendMode
+    dayOfMonth?: number | null
     dailyTime?: string | null
+    purpose?: string
+    whatsappTemplateId?: string | null
+    includeLateFee?: boolean
+    recipientFilter?: 'unpaid' | 'overdue' | 'all'
     nextRunAt?: Date | null
     lastRunAt?: Date | null
     status: TWhatsAppCampaignStatus

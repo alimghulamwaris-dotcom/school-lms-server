@@ -34,7 +34,12 @@ export interface ICreateCampaignRequest {
     templateName?: string
     audience: IWhatsAppAudience
     sendMode: TWhatsAppSendMode
+    dayOfMonth?: number | null
     dailyTime?: string
+    purpose?: string
+    whatsappTemplateId?: string | null
+    includeLateFee?: boolean
+    recipientFilter?: 'unpaid' | 'overdue' | 'all'
 }
 
 export interface ICampaignListQuery {
@@ -80,6 +85,7 @@ export interface ICreateCampaign extends Request {
 export interface IListTemplates extends Request {
     query: {
         schoolId?: string
+        category?: string
     }
 }
 

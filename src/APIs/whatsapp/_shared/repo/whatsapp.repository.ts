@@ -16,8 +16,21 @@ export default {
     deleteTemplate: (id: string) => {
         return whatsappTemplateModel.findByIdAndDelete(id)
     },
-    listTemplates: (schoolId: string) => {
-        return whatsappTemplateModel.find({ schoolId }).sort({ createdAt: -1 })
+    listTemplates: (schoolId: string, category?: string) => {
+        let categoryFilter: Record<string, unknown> = {}
+        if (category) {
+            if (category.toLowerCase() === 'fees' || category.toLowerCase() === 'fee_reminder') {
+                categoryFilter = { category: new RegExp('^(fees|fee_reminder)$', 'i') }
+            } else {
+                categoryFilter = { category: new RegExp(`^${category}$`, 'i') }
+            }
+        }
+        return whatsappTemplateModel
+            .find({
+                schoolId,
+                ...categoryFilter
+            })
+            .sort({ createdAt: -1 })
     },
     createTest: (payload: IWhatsAppTest) => {
         return whatsappTestModel.create(payload)
@@ -30,7 +43,7 @@ export default {
     },
     findDueDailyCampaigns: (now: Date, limit: number = 25) => {
         return whatsappCampaignModel
-            .find({ sendMode: 'daily', status: 'scheduled', nextRunAt: { $lte: now } })
+            .find({ sendMode: { $in: ['daily', 'monthly'] }, status: 'scheduled', nextRunAt: { $lte: now } })
             .sort({ nextRunAt: 1 })
             .limit(limit)
     },

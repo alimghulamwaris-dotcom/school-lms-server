@@ -89,7 +89,7 @@ export default {
             if (!schoolId) {
                 return httpError(next, new CustomError('School ID required', 400), request, 400)
             }
-            const result = await listTemplatesService(schoolId)
+            const result = await listTemplatesService(schoolId, query.category)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
         } catch (error) {
             if (error instanceof CustomError) {

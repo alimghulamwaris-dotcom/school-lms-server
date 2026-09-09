@@ -4,7 +4,10 @@ export const TEMPLATE_VARIABLES = [
     { key: 'class_name', label: 'Class' },
     { key: 'section', label: 'Section' },
     { key: 'status', label: 'Attendance status' },
-    { key: 'date', label: 'Date' }
+    { key: 'date', label: 'Date' },
+    { key: 'amount', label: 'Fee amount / Balance' },
+    { key: 'due_date', label: 'Due date' },
+    { key: 'fee_month', label: 'Fee month' }
 ] as const
 
 export const TEMPLATE_VARIABLE_KEYS = TEMPLATE_VARIABLES.map((item) => item.key)
