@@ -13,6 +13,7 @@ import schoolRepo from './_shared/repo/school.repository'
 import {
     ISchoolAcademicConfigRequest,
     ISchoolAdvanceSemesterRequest,
+    ISchoolBrandingRequest,
     ISchoolRolloverAcademicYearRequest,
     ISchoolRegisterRequest,
     ISchoolSemesterInput,
@@ -403,5 +404,43 @@ export const rolloverSchoolAcademicYearService = async (payload: ISchoolRollover
         currentSemesterNumber: school.currentSemesterNumber,
         totalSemesters: school.semesters.length,
         semesters: school.semesters
+    }
+}
+
+export const getSchoolBrandingService = async (schoolId: string) => {
+    const school = await schoolRepo.findSchoolById(schoolId)
+    if (!school) {
+        throw new CustomError(responseMessage.NOT_FOUND('School'), 404)
+    }
+
+    return {
+        success: true,
+        schoolId,
+        name: school.name,
+        campus: school.campus,
+        logoUrl: school.logoUrl ?? null,
+        address: school.address ?? null
+    }
+}
+
+export const updateSchoolBrandingService = async (payload: ISchoolBrandingRequest) => {
+    const school = await schoolRepo.findSchoolById(payload.schoolId)
+    if (!school) {
+        throw new CustomError(responseMessage.NOT_FOUND('School'), 404)
+    }
+
+    if (payload.logoUrl !== undefined) {
+        school.logoUrl = payload.logoUrl || null
+    }
+    if (payload.address !== undefined) {
+        school.address = (payload.address || '').trim() || null
+    }
+    await school.save()
+
+    return {
+        success: true,
+        schoolId: payload.schoolId,
+        logoUrl: school.logoUrl ?? null,
+        address: school.address ?? null
     }
 }

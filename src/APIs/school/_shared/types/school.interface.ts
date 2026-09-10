@@ -30,6 +30,8 @@ export interface ISchool {
     currentSemesterNumber: number
     passPercentage: number
     attendanceReminderEnabled?: boolean
+    logoUrl?: string | null
+    address?: string | null
     semesters: ISchoolSemester[]
 }
 
