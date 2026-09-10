@@ -101,3 +101,17 @@ export interface ISchoolRolloverAcademicYearRequest {
 export interface ISchoolRolloverAcademicYear extends Request {
     body: ISchoolRolloverAcademicYearRequest
 }
+
+export interface ISchoolBrandingRequest {
+    schoolId: string
+    logoUrl?: string | null
+    address?: string | null
+}
+
+export interface ISchoolBrandingUpdate extends Request {
+    body: ISchoolBrandingRequest
+}
+
+export interface ISchoolBrandingQuery extends Request {
+    query: { schoolId?: string }
+}

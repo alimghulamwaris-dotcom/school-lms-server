@@ -1,3 +1,4 @@
+import counterModel from '../models/counter.model'
 import feeExpenseModel from '../models/feeExpense.model'
 import feeInvoiceModel from '../models/feeInvoice.model'
 import feeReminderModel from '../models/feeReminder.model'
@@ -26,8 +27,37 @@ export default {
     findInvoiceById: (id: string) => {
         return feeInvoiceModel.findById(id)
     },
-    findLatestInvoiceBySchool: (schoolId: string) => {
-        return feeInvoiceModel.findOne({ schoolId }).sort({ createdAt: -1 })
+    getNextInvoiceSequence: async (schoolId: string, year: number, count: number = 1): Promise<{ start: number; end: number }> => {
+        const counterName = `invoice_${year}`
+
+        const counter = await counterModel.findOne({ schoolId, name: counterName })
+        if (!counter) {
+            // Repair/initialize from existing invoices for this school and year
+            const invoices = await feeInvoiceModel.find({ schoolId, invoiceNumber: new RegExp(`^INV-${year}-`) }, { invoiceNumber: 1 }).lean()
+
+            let maxSeq = 0
+            for (const inv of invoices) {
+                const match = inv.invoiceNumber.match(/(\d+)$/)
+                if (match) {
+                    const num = parseInt(match[1], 10)
+                    if (!Number.isNaN(num) && num > maxSeq) {
+                        maxSeq = num
+                    }
+                }
+            }
+
+            try {
+                await counterModel.updateOne({ schoolId, name: counterName }, { $setOnInsert: { value: maxSeq } }, { upsert: true })
+            } catch {
+                // Ignore any concurrent upsert conflict
+            }
+        }
+
+        const updated = await counterModel.findOneAndUpdate({ schoolId, name: counterName }, { $inc: { value: count } }, { new: true, upsert: true })
+
+        const end = updated.value
+        const start = end - count + 1
+        return { start, end }
     },
     listInvoicesByFilters: (
         schoolId: string,

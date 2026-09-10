@@ -2,12 +2,21 @@
 import staffRepo from '../staff/_shared/repo/staff.repository'
 import studentRepo from '../students/_shared/repo/student.repository'
 import admissionRepo from '../admissions/_shared/repo/admission.repository'
+import feeInvoiceModel from '../fees/_shared/models/feeInvoice.model'
 import { CustomError } from '../../utils/errors'
+import responseMessage from '../../constant/responseMessage'
+import logger from '../../handlers/logger'
 import whatsappRepo from './_shared/repo/whatsapp.repository'
 import { sendWhatsAppText } from '../../services/whatsappProvider'
 import whatsappService from '../../services/whatsappService'
 import { IWhatsAppAudience, IWhatsAppCampaign, IWhatsAppRecipient } from './_shared/types/whatsapp.interface'
-import { ICampaignListQuery, ICreateCampaignRequest, ICreateTemplateRequest, ICreateTestRequest } from './types/whatsapp.interface'
+import {
+    ICampaignListQuery,
+    ICreateCampaignRequest,
+    ICreateTemplateRequest,
+    ICreateTestRequest,
+    IUpdateTemplateRequest
+} from './types/whatsapp.interface'
 
 const normalize = (value: string) => value.trim().toLowerCase()
 const normalizePhone = (value?: string) => (value || '').replace(/\D/g, '')
@@ -39,6 +48,30 @@ const getNextRunAt = (dailyTime: string) => {
     }
 
     return next
+}
+
+export const getNextMonthlyRunAt = (dayOfMonth: number, dailyTime: string = '08:00', fromDate: Date = new Date()): Date => {
+    const [hourText, minuteText] = dailyTime.split(':')
+    const hour = Number(hourText) || 0
+    const minute = Number(minuteText) || 0
+
+    let year = fromDate.getFullYear()
+    let month = fromDate.getMonth() // 0-indexed
+
+    const getDaysInMonth = (y: number, m: number) => new Date(y, m + 1, 0).getDate()
+    const clampedDay = Math.min(dayOfMonth, getDaysInMonth(year, month))
+    const candidate = new Date(year, month, clampedDay, hour, minute, 0, 0)
+
+    if (candidate.getTime() <= fromDate.getTime()) {
+        month += 1
+        if (month > 11) {
+            month = 0
+            year += 1
+        }
+        const nextClampedDay = Math.min(dayOfMonth, getDaysInMonth(year, month))
+        return new Date(year, month, nextClampedDay, hour, minute, 0, 0)
+    }
+    return candidate
 }
 
 const mergeStudentLikeRecords = (students: unknown[], admissions: unknown[]) => {
@@ -135,6 +168,8 @@ const toStudentRecipient = (item: unknown): IWhatsAppRecipient => {
         targetType: 'parent',
         targetId: getRecordId(item),
         name: guardianName ? `${guardianName} (Parent of ${studentName})` : studentName,
+        studentName,
+        guardianName,
         phone: normalizePhone(getStringValue(data.guardianPhone)),
         className: getStringValue(data.className),
         section: getStringValue(data.section),
@@ -142,6 +177,51 @@ const toStudentRecipient = (item: unknown): IWhatsAppRecipient => {
         sentAt: null,
         error: ''
     }
+}
+
+export const applyTemplateVariables = (body: string, recipient: IWhatsAppRecipient): string => {
+    let studentName = recipient.studentName || ''
+    let guardianName = recipient.guardianName || ''
+
+    if (!studentName && recipient.name) {
+        const match = recipient.name.match(/\(Parent of (.*)\)/)
+        if (match) {
+            studentName = match[1].trim()
+            if (!guardianName) {
+                guardianName = recipient.name.replace(/\(Parent of .*\)/, '').trim()
+            }
+        } else if (recipient.targetType !== 'parent') {
+            studentName = recipient.name
+        }
+    }
+
+    return body.replace(
+        /\{(student_name|guardian_name|class_name|section|status|date|amount|due_date|fee_month)\}/g,
+        (_match: string, key: string) => {
+            switch (key) {
+                case 'student_name':
+                    return studentName
+                case 'guardian_name':
+                    return guardianName
+                case 'class_name':
+                    return recipient.className || ''
+                case 'section':
+                    return recipient.section || ''
+                case 'status':
+                    return recipient.statusText || ''
+                case 'date':
+                    return recipient.dateText || ''
+                case 'amount':
+                    return recipient.amountText || ''
+                case 'due_date':
+                    return recipient.dueDateText || ''
+                case 'fee_month':
+                    return recipient.feeMonthText || ''
+                default:
+                    return ''
+            }
+        }
+    )
 }
 
 const toStaffRecipient = (item: unknown): IWhatsAppRecipient => {
@@ -179,6 +259,23 @@ const mergeRecipients = (recipients: IWhatsAppRecipient[]) => {
     return Array.from(phoneMap.values())
 }
 
+const sendWhatsAppMessage = async (schoolId: string, phoneNumber: string, message: string) => {
+    const liveResult = await whatsappService.sendMessage(schoolId, phoneNumber, message)
+
+    if (liveResult.success) {
+        return liveResult
+    }
+
+    if (liveResult.error !== 'WhatsApp not connected') {
+        return liveResult
+    }
+
+    return sendWhatsAppText({
+        to: phoneNumber,
+        body: message
+    })
+}
+
 const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[], schoolId: string) => {
     const now = new Date()
     const dispatched: IWhatsAppRecipient[] = []
@@ -194,7 +291,8 @@ const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[], schoo
             continue
         }
 
-        const result = await sendWhatsAppMessage(schoolId, item.phone, body)
+        const personalizedBody = applyTemplateVariables(body, item)
+        const result = await sendWhatsAppMessage(schoolId, item.phone, personalizedBody)
 
         if (result.success) {
             dispatched.push({
@@ -230,11 +328,78 @@ const fetchStudentLikeRecords = async (schoolId: string) => {
     return mergeStudentLikeRecords(students as unknown[], admissions as unknown[])
 }
 
-const resolveRecipientsForAudience = async (schoolId: string, audience: IWhatsAppAudience) => {
+export const resolveRecipientsForAudience = async (
+    schoolId: string,
+    audience: IWhatsAppAudience,
+    options?: {
+        purpose?: string
+        messageType?: string
+        includeLateFee?: boolean
+        recipientFilter?: 'unpaid' | 'overdue' | 'all'
+    }
+) => {
     const [studentLikeRecords, staff] = await Promise.all([fetchStudentLikeRecords(schoolId), staffRepo.findStaffBySchool(schoolId)])
 
-    const studentRecipients = resolveStudentsByAudience(studentLikeRecords, audience).map(toStudentRecipient)
-    const staffRecipients = resolveStaffByAudience(staff as unknown[], audience).map(toStaffRecipient)
+    const isFeeReminder = options?.purpose === 'fee_reminder' || options?.messageType === 'fee_reminder'
+    const recipientFilter = options?.recipientFilter || (options?.includeLateFee ? 'overdue' : 'unpaid')
+    const invoiceByStudentId = new Map<string, { balanceAmount?: number; totalAmount?: number; dueDate?: Date; month?: string; status?: string }>()
+    const invoiceByGr = new Map<string, { balanceAmount?: number; totalAmount?: number; dueDate?: Date; month?: string; status?: string }>()
+
+    if (isFeeReminder) {
+        const invoices = await feeInvoiceModel
+            .find({
+                schoolId,
+                status: { $ne: 'paid' },
+                balanceAmount: { $gt: 0 }
+            })
+            .sort({ createdAt: -1 })
+        for (const inv of invoices) {
+            if (inv.studentId && !invoiceByStudentId.has(inv.studentId)) {
+                invoiceByStudentId.set(inv.studentId, inv)
+            }
+            if (inv.grNumber && !invoiceByGr.has(inv.grNumber)) {
+                invoiceByGr.set(inv.grNumber, inv)
+            }
+        }
+    }
+
+    let filteredStudents = resolveStudentsByAudience(studentLikeRecords, audience)
+
+    if (isFeeReminder && recipientFilter !== 'all') {
+        const now = new Date()
+        filteredStudents = filteredStudents.filter((item) => {
+            const itemId = getRecordId(item)
+            const gr = getStringValue((item as Record<string, unknown>).grNumber)
+            const invoice = (itemId && invoiceByStudentId.get(itemId)) || (gr && invoiceByGr.get(gr))
+            if (!invoice) return false
+            if (recipientFilter === 'overdue') {
+                const isOverdue = invoice.dueDate && new Date(invoice.dueDate).getTime() < now.getTime()
+                return isOverdue
+            }
+            return true
+        })
+    }
+
+    const studentRecipients: IWhatsAppRecipient[] = filteredStudents.map((item) => {
+        const base = toStudentRecipient(item)
+        if (isFeeReminder) {
+            const itemId = getRecordId(item)
+            const gr = getStringValue((item as Record<string, unknown>).grNumber)
+            const invoice = (itemId && invoiceByStudentId.get(itemId)) || (gr && invoiceByGr.get(gr))
+            if (invoice) {
+                base.amountText = `Rs ${invoice.balanceAmount ?? invoice.totalAmount ?? 0}`
+                base.dueDateText = invoice.dueDate ? new Date(invoice.dueDate).toLocaleDateString() : ''
+                base.feeMonthText = invoice.month || ''
+            } else {
+                base.amountText = ''
+                base.dueDateText = ''
+                base.feeMonthText = ''
+            }
+        }
+        return base
+    })
+
+    const staffRecipients = isFeeReminder ? [] : resolveStaffByAudience(staff as unknown[], audience).map(toStaffRecipient)
 
     const customRecipients = (audience.customPhones || []).map((phone) => ({
         targetType: 'custom' as const,
@@ -250,7 +415,12 @@ const resolveRecipientsForAudience = async (schoolId: string, audience: IWhatsAp
 }
 
 const buildCampaignRecipients = async (payload: ICreateCampaignRequest) => {
-    const merged = await resolveRecipientsForAudience(payload.schoolId, payload.audience)
+    const merged = await resolveRecipientsForAudience(payload.schoolId, payload.audience, {
+        purpose: payload.purpose || (payload.messageType === 'fee_reminder' ? 'fee_reminder' : 'general'),
+        messageType: payload.messageType,
+        includeLateFee: !!payload.includeLateFee,
+        recipientFilter: payload.recipientFilter
+    })
 
     if (merged.length === 0) {
         throw new CustomError('No recipients found for selected audience.', 422)
@@ -275,8 +445,34 @@ export const createTemplateService = async (payload: ICreateTemplateRequest) => 
     }
 }
 
-export const listTemplatesService = async (schoolId: string) => {
-    const templates = await whatsappRepo.listTemplates(schoolId)
+export const updateTemplateService = async (id: string, schoolId: string, payload: Partial<IUpdateTemplateRequest>) => {
+    const existingTemplate = await whatsappRepo.findTemplateById(id)
+    if (!existingTemplate || existingTemplate.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.NOT_FOUND('Template'), 404)
+    }
+
+    const updatedTemplate = await whatsappRepo.updateTemplate(id, payload)
+    return {
+        success: true,
+        template: updatedTemplate
+    }
+}
+
+export const deleteTemplateService = async (id: string, schoolId: string) => {
+    const existingTemplate = await whatsappRepo.findTemplateById(id)
+    if (!existingTemplate || existingTemplate.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.NOT_FOUND('Template'), 404)
+    }
+
+    const deletedTemplate = await whatsappRepo.deleteTemplate(id)
+    return {
+        success: true,
+        template: deletedTemplate
+    }
+}
+
+export const listTemplatesService = async (schoolId: string, category?: string) => {
+    const templates = await whatsappRepo.listTemplates(schoolId, category)
     return {
         success: true,
         templates
@@ -284,7 +480,6 @@ export const listTemplatesService = async (schoolId: string) => {
 }
 
 export const createTestService = async (payload: ICreateTestRequest) => {
-    // Send the test message
     const result = await sendWhatsAppMessage(payload.schoolId, payload.phone, payload.sampleData || 'Test message')
 
     const testMessage = await whatsappRepo.createTest({
@@ -374,18 +569,44 @@ export const getAudienceOptionsService = async (schoolId: string) => {
 }
 
 export const createCampaignService = async (payload: ICreateCampaignRequest) => {
-    const recipients = await buildCampaignRecipients(payload)
+    const purpose = payload.purpose || (payload.messageType === 'fee_reminder' ? 'fee_reminder' : 'general')
+    const dayOfMonth = typeof payload.dayOfMonth === 'number' ? payload.dayOfMonth : null
+    const recipientFilter = payload.recipientFilter || (payload.includeLateFee ? 'overdue' : 'unpaid')
+    const includeLateFee = recipientFilter === 'overdue'
+    const whatsappTemplateId = payload.whatsappTemplateId || null
+
+    let finalBody = payload.body
+    if (!finalBody && whatsappTemplateId) {
+        const customTemplate = await whatsappRepo.findTemplateById(whatsappTemplateId)
+        if (customTemplate) {
+            finalBody = customTemplate.body
+        }
+    }
+
+    const recipients = await buildCampaignRecipients({ ...payload, body: finalBody, purpose, includeLateFee, recipientFilter, whatsappTemplateId })
+
+    let nextRunAt: Date | null = null
+    if (payload.sendMode === 'monthly' && dayOfMonth && payload.dailyTime) {
+        nextRunAt = getNextMonthlyRunAt(dayOfMonth, payload.dailyTime)
+    } else if (payload.sendMode === 'daily' && payload.dailyTime) {
+        nextRunAt = getNextRunAt(payload.dailyTime)
+    }
 
     const campaignPayload: IWhatsAppCampaign = {
         schoolId: payload.schoolId,
         title: payload.title,
-        body: payload.body,
+        body: finalBody,
         messageType: payload.messageType,
         templateName: payload.templateName || '',
         audience: payload.audience,
         sendMode: payload.sendMode,
-        dailyTime: payload.sendMode === 'daily' ? payload.dailyTime || null : null,
-        nextRunAt: payload.sendMode === 'daily' && payload.dailyTime ? getNextRunAt(payload.dailyTime) : null,
+        dayOfMonth,
+        dailyTime: payload.sendMode === 'now' ? null : payload.dailyTime || null,
+        purpose,
+        whatsappTemplateId,
+        includeLateFee,
+        recipientFilter,
+        nextRunAt,
         lastRunAt: null,
         status: 'scheduled',
         recipientCount: recipients.length,
@@ -395,7 +616,7 @@ export const createCampaignService = async (payload: ICreateCampaignRequest) => 
     }
 
     if (payload.sendMode === 'now') {
-        const dispatched = await dispatchNow(payload.body, recipients, payload.schoolId)
+        const dispatched = await dispatchNow(finalBody, recipients, payload.schoolId)
         campaignPayload.recipients = dispatched.recipients
         campaignPayload.sentCount = dispatched.sentCount
         campaignPayload.failedCount = dispatched.failedCount
@@ -435,17 +656,32 @@ export const runDueDailyCampaigns = async () => {
             schoolId?: unknown
             audience?: unknown
             dailyTime?: unknown
+            sendMode?: unknown
+            dayOfMonth?: unknown
+            purpose?: unknown
+            messageType?: unknown
+            includeLateFee?: unknown
+            recipientFilter?: unknown
         }
 
         const schoolId = getStringValue(data.schoolId)
         const dailyTime = getStringValue(data.dailyTime)
+        const sendMode = getStringValue(data.sendMode) as 'daily' | 'monthly'
+        const dayOfMonth = typeof data.dayOfMonth === 'number' ? data.dayOfMonth : null
 
         if (!schoolId || !dailyTime) {
             continue
         }
 
+        const nextRun = sendMode === 'monthly' && dayOfMonth ? getNextMonthlyRunAt(dayOfMonth, dailyTime) : getNextRunAt(dailyTime)
+
         try {
-            const recipients = await resolveRecipientsForAudience(schoolId, data.audience as IWhatsAppAudience)
+            const recipients = await resolveRecipientsForAudience(schoolId, data.audience as IWhatsAppAudience, {
+                purpose: getStringValue(data.purpose),
+                messageType: getStringValue(data.messageType),
+                includeLateFee: !!data.includeLateFee,
+                recipientFilter: (data.recipientFilter as 'unpaid' | 'overdue' | 'all') || (data.includeLateFee ? 'overdue' : 'unpaid')
+            })
             const body = getStringValue((campaign as { body?: unknown }).body)
             const dispatched = await dispatchNow(body, recipients, schoolId)
 
@@ -456,8 +692,9 @@ export const runDueDailyCampaigns = async () => {
                 failedCount: dispatched.failedCount,
                 status: 'scheduled',
                 dailyTime,
+                dayOfMonth,
                 lastRunAt: new Date(),
-                nextRunAt: getNextRunAt(dailyTime)
+                nextRunAt: nextRun
             })
             processed += 1
         } catch {
@@ -466,8 +703,9 @@ export const runDueDailyCampaigns = async () => {
                 failedCount: 0,
                 status: 'scheduled',
                 dailyTime,
+                dayOfMonth,
                 lastRunAt: new Date(),
-                nextRunAt: getNextRunAt(dailyTime)
+                nextRunAt: nextRun
             })
             processed += 1
         }
@@ -486,6 +724,27 @@ export const listCampaignsService = async (query: ICampaignListQuery) => {
     return {
         success: true,
         campaigns
+    }
+}
+
+export const deleteCampaignService = async (id: string, schoolId: string) => {
+    const existingCampaign = await whatsappRepo.findCampaignById(id)
+    if (!existingCampaign) {
+        throw new CustomError(responseMessage.NOT_FOUND('Campaign'), 404)
+    }
+
+    if (existingCampaign.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.UNAUTHORIZED, 401)
+    }
+
+    if (existingCampaign.status !== 'scheduled') {
+        throw new CustomError('Only scheduled campaigns can be cancelled or deleted', 400)
+    }
+
+    const deletedCampaign = await whatsappRepo.deleteCampaignById(id)
+    return {
+        success: true,
+        campaign: deletedCampaign
     }
 }
 
@@ -523,19 +782,88 @@ export const disconnectService = async (schoolId: string) => {
     }
 }
 
-const sendWhatsAppMessage = async (schoolId: string, phoneNumber: string, message: string) => {
-    const liveResult = await whatsappService.sendMessage(schoolId, phoneNumber, message)
+export interface IAttendanceReminderItem {
+    grNumber: string
+    studentName: string
+    status: string
+}
 
-    if (liveResult.success) {
-        return liveResult
+export const sendAttendanceWhatsAppRemindersService = async (
+    schoolId: string,
+    className: string,
+    section: string,
+    date: Date,
+    records: IAttendanceReminderItem[],
+    whatsappTemplateId?: string
+) => {
+    try {
+        const DEFAULT_TEMPLATE = 'Dear {guardian_name}, {student_name} from class {class_name} has been marked {status} for attendance on {date}.'
+        let templateBody = DEFAULT_TEMPLATE
+        if (whatsappTemplateId && whatsappTemplateId !== 'default') {
+            const customTemplate = await whatsappRepo.findTemplateById(whatsappTemplateId)
+            if (customTemplate && customTemplate.schoolId === schoolId && customTemplate.category.toLowerCase() === 'attendance') {
+                templateBody = customTemplate.body
+            }
+        }
+
+        const studentLikeRecords = await fetchStudentLikeRecords(schoolId)
+        const studentMap = new Map<string, { guardianName?: string; guardianPhone?: string }>()
+        for (const item of studentLikeRecords) {
+            const gr = getStringValue(item.grNumber)
+            if (gr) {
+                studentMap.set(gr, {
+                    guardianName: getStringValue(item.guardianName),
+                    guardianPhone: normalizePhone(getStringValue(item.guardianPhone))
+                })
+            }
+        }
+
+        const formattedDate = date.toISOString().slice(0, 10)
+
+        for (const rec of records) {
+            const studentInfo = studentMap.get(rec.grNumber)
+            const guardianPhone = studentInfo?.guardianPhone || ''
+            if (!guardianPhone || guardianPhone.length < 8) {
+                continue
+            }
+
+            const formatStatus = (s: string) => {
+                const lower = s.toLowerCase()
+                if (lower === 'present') return 'Present'
+                if (lower === 'absent') return 'Absent'
+                if (lower === 'on_leave') return 'On Leave'
+                return s
+            }
+
+            const guardianName = studentInfo?.guardianName || ''
+            const recipient: IWhatsAppRecipient = {
+                targetType: 'parent',
+                targetId: '',
+                name: guardianName ? `${guardianName} (Parent of ${rec.studentName})` : rec.studentName,
+                studentName: rec.studentName,
+                guardianName,
+                phone: guardianPhone,
+                className,
+                section,
+                statusText: formatStatus(rec.status),
+                dateText: formattedDate,
+                status: 'queued',
+                sentAt: null,
+                error: ''
+            }
+
+            const personalizedBody = applyTemplateVariables(templateBody, recipient)
+            try {
+                await sendWhatsAppMessage(schoolId, guardianPhone, personalizedBody)
+            } catch (err) {
+                logger.error('Failed to send attendance reminder to phone', {
+                    meta: { phone: guardianPhone, error: err }
+                })
+            }
+        }
+    } catch (err) {
+        logger.error('Error in sendAttendanceWhatsAppRemindersService', {
+            meta: { schoolId, className, section, error: err }
+        })
     }
-
-    if (liveResult.error !== 'WhatsApp not connected') {
-        return liveResult
-    }
-
-    return sendWhatsAppText({
-        to: phoneNumber,
-        body: message
-    })
 }

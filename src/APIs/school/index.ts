@@ -22,5 +22,9 @@ router
     .put(rateLimiter, authenticate, authorizeOwnerOrAdmin, schoolController.updateAcademicConfig)
 router.route('/schools/academic-config/advance-semester').post(rateLimiter, authenticate, authorizeOwnerOrAdmin, schoolController.advanceSemester)
 router.route('/schools/academic-config/rollover').post(rateLimiter, authenticate, authorizeOwnerOrAdmin, schoolController.rolloverAcademicYear)
+router
+    .route('/schools/branding')
+    .get(rateLimiter, authenticate, authorizeAccess('Fees'), schoolController.getBranding)
+    .patch(rateLimiter, authenticate, authorizeOwnerOrAdmin, schoolController.updateBranding)
 
 export default router

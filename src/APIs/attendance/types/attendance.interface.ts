@@ -18,6 +18,7 @@ export interface ICreateAttendanceRequest {
     records: IAttendanceStudentEntryRequest[]
     notes?: string
     sendWhatsapp?: boolean
+    whatsappTemplateId?: string
     saveRegister?: boolean
 }
 
@@ -60,4 +61,19 @@ export interface IAttendanceSummary extends Request {
         section?: string
         date?: string
     }
+}
+
+export interface IGetAttendanceReminderConfig extends Request {
+    query: {
+        schoolId?: string
+    }
+}
+
+export interface IUpdateAttendanceReminderConfigRequest {
+    schoolId: string
+    attendanceReminderEnabled: boolean
+}
+
+export interface IUpdateAttendanceReminderConfig extends Request {
+    body: IUpdateAttendanceReminderConfigRequest
 }

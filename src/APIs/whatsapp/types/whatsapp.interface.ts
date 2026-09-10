@@ -10,6 +10,15 @@ export interface ICreateTemplateRequest {
     variables: string[]
 }
 
+export interface IUpdateTemplateRequest {
+    schoolId?: string
+    name?: string
+    category?: string
+    language?: string
+    body?: string
+    variables?: string[]
+}
+
 export interface ICreateTestRequest {
     schoolId: string
     templateName: string
@@ -25,7 +34,12 @@ export interface ICreateCampaignRequest {
     templateName?: string
     audience: IWhatsAppAudience
     sendMode: TWhatsAppSendMode
+    dayOfMonth?: number | null
     dailyTime?: string
+    purpose?: string
+    whatsappTemplateId?: string | null
+    includeLateFee?: boolean
+    recipientFilter?: 'unpaid' | 'overdue' | 'all'
 }
 
 export interface ICampaignListQuery {
@@ -41,6 +55,25 @@ export interface ICreateTemplate extends Request {
     body: ICreateTemplateRequest
 }
 
+export interface IUpdateTemplate extends Request {
+    params: {
+        id: string
+    }
+    body: IUpdateTemplateRequest
+}
+
+export interface IDeleteTemplate extends Request {
+    params: {
+        id: string
+    }
+}
+
+export interface IDeleteCampaign extends Request {
+    params: {
+        id: string
+    }
+}
+
 export interface ICreateTest extends Request {
     body: ICreateTestRequest
 }
@@ -52,6 +85,7 @@ export interface ICreateCampaign extends Request {
 export interface IListTemplates extends Request {
     query: {
         schoolId?: string
+        category?: string
     }
 }
 

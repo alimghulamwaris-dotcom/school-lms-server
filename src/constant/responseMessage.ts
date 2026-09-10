@@ -4,6 +4,8 @@
     NOT_FOUND: (entity: string) => `${entity} is not found`,
     TOO_MANY_REQUESTS: `So many requests`,
     UNAUTHORIZED: 'You are not allowed to perform this task',
+    SESSION_EXPIRED: 'Your session has expired. Please log in again.',
+    FORBIDDEN: 'You do not have permission to perform this task.',
 
     auth: {
         ALREADY_EXISTS: (entity: string, identifier: string) => `${identifier} already exists for the ${entity}`,
@@ -30,6 +32,7 @@
         STAFF_UPDATED: `Staff member updated successfully.`,
         STUDENT_CREATED: `Student created successfully.`,
         STUDENT_APPROVED: `Student approved successfully.`,
+        STUDENTS_BULK_APPROVED: `Bulk approval completed.`,
         GR_ALREADY_EXISTS: `GR number already exists for this school.`,
         ADMISSION_CREATED: `Admission created successfully.`,
         ATTENDANCE_CREATED: `Attendance recorded successfully.`,
@@ -50,7 +53,10 @@
         LIBRARY_BOOK_ISSUED: `Library book issued successfully.`,
         LIBRARY_BOOK_RETURNED: `Library book returned successfully.`,
         TEMPLATE_CREATED: `Template created successfully.`,
+        TEMPLATE_UPDATED: `Template updated successfully.`,
+        TEMPLATE_DELETED: `Template deleted successfully.`,
         TEST_MESSAGE_SENT: `Test message sent successfully.`,
-        WHATSAPP_CAMPAIGN_CREATED: `WhatsApp campaign saved successfully.`
+        WHATSAPP_CAMPAIGN_CREATED: `WhatsApp campaign saved successfully.`,
+        WHATSAPP_CAMPAIGN_DELETED: `Scheduled campaign cancelled successfully.`
     }
 }

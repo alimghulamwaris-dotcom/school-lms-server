@@ -4,9 +4,11 @@ import {
     ICampaignListQuery,
     ICreateCampaignRequest,
     ICreateTemplateRequest,
-    ICreateTestRequest
+    ICreateTestRequest,
+    IUpdateTemplateRequest
 } from '../types/whatsapp.interface'
 import { TWhatsAppSendMode } from '../_shared/types/whatsapp.interface'
+import { TEMPLATE_VARIABLE_KEYS } from '../_shared/constants/templateVariables'
 
 const audienceTypeValues = ['all_students', 'class_all_sections', 'class_section', 'selected_students', 'all_staff', 'staff_role', 'selected_staff']
 
@@ -43,6 +45,7 @@ const parseAudienceShape = (input: unknown): TAudienceValidationShape | null => 
 
 type TCampaignValidationShape = {
     sendMode: TWhatsAppSendMode
+    dayOfMonth?: number | null
     dailyTime?: string
 }
 
@@ -52,12 +55,13 @@ const parseCampaignShape = (input: unknown): TCampaignValidationShape | null => 
     }
 
     const value = input as Record<string, unknown>
-    if (value.sendMode !== 'now' && value.sendMode !== 'daily') {
+    if (value.sendMode !== 'now' && value.sendMode !== 'daily' && value.sendMode !== 'monthly') {
         return null
     }
 
     return {
         sendMode: value.sendMode,
+        dayOfMonth: typeof value.dayOfMonth === 'number' ? value.dayOfMonth : null,
         dailyTime: typeof value.dailyTime === 'string' ? value.dailyTime : ''
     }
 }
@@ -109,7 +113,22 @@ export const createTemplateSchema = joi.object<ICreateTemplateRequest, true>({
     category: joi.string().required(),
     language: joi.string().required(),
     body: joi.string().required(),
-    variables: joi.array().items(joi.string()).default([])
+    variables: joi
+        .array()
+        .items(joi.string().valid(...TEMPLATE_VARIABLE_KEYS))
+        .default([])
+})
+
+export const updateTemplateSchema = joi.object<IUpdateTemplateRequest, true>({
+    schoolId: joi.string().optional(),
+    name: joi.string().min(2).max(100).optional(),
+    category: joi.string().min(2).max(50).optional(),
+    language: joi.string().min(2).max(30).optional(),
+    body: joi.string().min(1).max(2000).optional(),
+    variables: joi
+        .array()
+        .items(joi.string().valid(...TEMPLATE_VARIABLE_KEYS))
+        .optional()
 })
 
 export const createTestSchema = joi.object<ICreateTestRequest, true>({
@@ -130,12 +149,17 @@ export const createCampaignSchema = joi
         body: joi.string().min(2).max(2000).required(),
         templateName: joi.string().allow('').optional(),
         audience: audienceSchema.required(),
-        sendMode: joi.string().valid('now', 'daily').required(),
+        sendMode: joi.string().valid('now', 'daily', 'monthly').required(),
+        dayOfMonth: joi.number().integer().min(1).max(31).allow(null).optional(),
         dailyTime: joi
             .string()
             .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
             .allow('')
-            .optional()
+            .optional(),
+        purpose: joi.string().allow('').optional(),
+        whatsappTemplateId: joi.string().allow('', null).optional(),
+        includeLateFee: joi.boolean().optional(),
+        recipientFilter: joi.string().valid('unpaid', 'overdue', 'all').optional()
     })
     .custom((rawValue: unknown, helpers: joi.CustomHelpers) => {
         const value = parseCampaignShape(rawValue)
@@ -146,10 +170,13 @@ export const createCampaignSchema = joi
         if (value.sendMode === 'daily' && !value.dailyTime) {
             return helpers.error('any.invalid')
         }
+        if (value.sendMode === 'monthly' && (!value.dailyTime || !value.dayOfMonth || value.dayOfMonth < 1 || value.dayOfMonth > 31)) {
+            return helpers.error('any.invalid')
+        }
         return rawValue
-    }, 'daily schedule validation')
+    }, 'schedule validation')
     .messages({
-        'any.invalid': 'Daily time is required when send mode is daily.'
+        'any.invalid': 'Schedule configuration is invalid for the selected send mode.'
     })
 
 export const campaignListQuerySchema = joi.object<ICampaignListQuery, true>({

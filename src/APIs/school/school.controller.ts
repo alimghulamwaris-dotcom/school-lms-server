@@ -8,12 +8,14 @@ import { validateSchema } from '../../utils/joi-validate'
 import {
     advanceSchoolSemesterService,
     getSchoolAcademicConfigService,
+    getSchoolBrandingService,
     getSchoolGrConfigService,
     getSchoolStaffAttendanceConfigService,
     lookupSchoolService,
     registerSchoolService,
     rolloverSchoolAcademicYearService,
     updateSchoolAcademicConfigService,
+    updateSchoolBrandingService,
     updateSchoolStaffAttendanceConfigService,
     verifySchoolService
 } from './school.service'
@@ -23,6 +25,9 @@ import {
     ISchoolAcademicConfigUpdate,
     ISchoolAdvanceSemester,
     ISchoolAdvanceSemesterRequest,
+    ISchoolBrandingQuery,
+    ISchoolBrandingRequest,
+    ISchoolBrandingUpdate,
     ISchoolGrConfigQuery,
     ISchoolLookup,
     ISchoolRegister,
@@ -38,6 +43,8 @@ import {
     schoolAcademicConfigQuerySchema,
     schoolAcademicConfigSchema,
     schoolAdvanceSemesterSchema,
+    schoolBrandingQuerySchema,
+    schoolBrandingSchema,
     schoolGrConfigQuerySchema,
     schoolLookupSchema,
     schoolRegisterSchema,
@@ -223,6 +230,36 @@ export default {
 
             const result = await rolloverSchoolAcademicYearService(payload)
             httpResponse(response, request, 200, responseMessage.school.ACADEMIC_YEAR_ROLLED_OVER, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    getBranding: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { query } = request as ISchoolBrandingQuery
+            const { error, payload } = validateSchema<{ schoolId: string }>(schoolBrandingQuerySchema, query)
+            if (error) return httpError(next, error, request, 422)
+            const result = await getSchoolBrandingService(payload.schoolId)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    updateBranding: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { body } = request as ISchoolBrandingUpdate
+            const { error, payload } = validateSchema<ISchoolBrandingRequest>(schoolBrandingSchema, body)
+            if (error) return httpError(next, error, request, 422)
+            const result = await updateSchoolBrandingService(payload)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
         } catch (error) {
             if (error instanceof CustomError) {
                 httpError(next, error, request, error.statusCode)

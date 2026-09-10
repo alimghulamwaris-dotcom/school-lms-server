@@ -5,6 +5,9 @@ export default {
     createToken: (payload: IToken) => {
         return tokenModel.create(payload)
     },
+    findToken: (token: string) => {
+        return tokenModel.findOne({ token: token })
+    },
     deleteToken: (token: string) => {
         return tokenModel.deleteOne({ token: token })
     }

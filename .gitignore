@@ -2,7 +2,12 @@ node_modules
 
 dist
 
+auth
+logs
+
 .env
 .env.development
 .env.production
 .env.test
+
+.eslintcache

@@ -1,5 +1,6 @@
 ﻿import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken'
 import config from '../../../config/config'
 import responseMessage from '../../../constant/responseMessage'
 import { EUserRoles } from '../../../constant/users'
@@ -20,6 +21,7 @@ import query from '../_shared/repo/user.repository'
 import { IUser } from '../_shared/types/users.interface'
 import { ILoginRequest, IRegisterRequest } from './types/authentication.interface'
 import validate from './validation/validations'
+import { IDecryptedJwt } from '../../../types/types'
 
 dayjs.extend(utc)
 
@@ -289,6 +291,69 @@ export const loginService = async (payload: ILoginRequest) => {
         role: 'school_owner',
         schoolId: String(school._id),
         schoolCode: school.code,
+        accessToken,
+        refreshToken
+    }
+}
+
+export const refreshSessionService = async (currentRefreshToken: string | undefined) => {
+    if (!currentRefreshToken) {
+        throw new CustomError(responseMessage.SESSION_EXPIRED, 401)
+    }
+
+    // The refresh token must still exist in the store, otherwise it was rotated away or logged out.
+    const storedToken = await tokenRepository.findToken(currentRefreshToken)
+    if (!storedToken) {
+        throw new CustomError(responseMessage.SESSION_EXPIRED, 401)
+    }
+
+    let decoded: IDecryptedJwt
+    try {
+        decoded = jwt.verifyToken(currentRefreshToken, config.TOKENS.REFRESH.SECRET) as IDecryptedJwt
+    } catch (error) {
+        if (error instanceof TokenExpiredError || error instanceof JsonWebTokenError) {
+            await tokenRepository.deleteToken(currentRefreshToken)
+            throw new CustomError(responseMessage.SESSION_EXPIRED, 401)
+        }
+        throw error
+    }
+
+    // Rebuild exactly the same payload shape login issues.
+    let payload: { userId?: string; schoolId?: string; principalType: 'user' | 'school' }
+
+    if (decoded.principalType === 'school' && decoded.schoolId) {
+        const school = await schoolRepo.findSchoolById(decoded.schoolId)
+        if (!school) {
+            await tokenRepository.deleteToken(currentRefreshToken)
+            throw new CustomError(responseMessage.SESSION_EXPIRED, 401)
+        }
+
+        payload = { schoolId: String(school._id), principalType: 'school' }
+    } else if (decoded.userId) {
+        const user = await query.findUserById(decoded.userId)
+        if (!user) {
+            await tokenRepository.deleteToken(currentRefreshToken)
+            throw new CustomError(responseMessage.SESSION_EXPIRED, 401)
+        }
+
+        payload = { userId: String(user._id), principalType: 'user' }
+        if (decoded.schoolId) {
+            payload.schoolId = decoded.schoolId
+        }
+    } else {
+        await tokenRepository.deleteToken(currentRefreshToken)
+        throw new CustomError(responseMessage.SESSION_EXPIRED, 401)
+    }
+
+    const accessToken = jwt.generateToken(payload, config.TOKENS.ACCESS.SECRET, config.TOKENS.ACCESS.EXPIRY)
+    const refreshToken = jwt.generateToken(payload, config.TOKENS.REFRESH.SECRET, config.TOKENS.REFRESH.EXPIRY)
+
+    // Rotate: store the new refresh token, then invalidate the old one.
+    await tokenRepository.createToken({ token: refreshToken })
+    await tokenRepository.deleteToken(currentRefreshToken)
+
+    return {
+        success: true,
         accessToken,
         refreshToken
     }

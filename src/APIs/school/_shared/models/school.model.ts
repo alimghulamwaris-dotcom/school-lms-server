@@ -120,6 +120,19 @@ const schoolSchema = new mongoose.Schema(
             type: Number,
             default: 50
         },
+        attendanceReminderEnabled: {
+            type: Boolean,
+            default: true
+        },
+        logoUrl: {
+            type: String,
+            default: null
+        },
+        address: {
+            type: String,
+            default: null,
+            maxlength: 300
+        },
         semesters: {
             type: [semesterSchema],
             default: defaultSemesters

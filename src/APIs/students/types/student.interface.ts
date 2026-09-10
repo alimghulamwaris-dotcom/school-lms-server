@@ -58,6 +58,14 @@ export interface IApproveStudent extends Request {
     }
 }
 
+export interface IBulkApproveStudentsRequest {
+    ids: string[]
+}
+
+export interface IBulkApproveStudents extends Request {
+    body: IBulkApproveStudentsRequest
+}
+
 export interface IDeleteStudent extends Request {
     params: {
         id: string

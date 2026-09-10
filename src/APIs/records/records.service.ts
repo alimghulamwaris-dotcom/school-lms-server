@@ -61,9 +61,14 @@ const ensureStringValue = (value: unknown, label: string) => {
         if (trimmed) return trimmed
     }
 
-    if (value !== null && value !== undefined) {
+    if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
         const converted = String(value).trim()
         if (converted) return converted
+    }
+    if (value && typeof value === 'object' && typeof (value as { toString?: () => string }).toString === 'function') {
+        const str = (value as { toString: () => string }).toString()
+        const converted = typeof str === 'string' ? str.trim() : ''
+        if (converted && converted !== '[object Object]') return converted
     }
 
     throw new CustomError(`${label} is missing.`, 422)

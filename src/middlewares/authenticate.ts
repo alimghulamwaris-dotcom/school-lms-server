@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { TokenExpiredError } from 'jsonwebtoken'
 import { IAuthenticateRequest, IDecryptedJwt } from '../types/types'
 import jwt from '../utils/jwt'
 import config from '../config/config'
@@ -38,8 +39,11 @@ export default asyncHandler(async (request: Request, _response: Response, next: 
                 }
             }
         }
-        httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 401)
+        httpError(next, new Error(responseMessage.SESSION_EXPIRED), request, 401)
     } catch (error) {
+        if (error instanceof TokenExpiredError) {
+            return httpError(next, new Error(responseMessage.SESSION_EXPIRED), request, 401)
+        }
         httpError(next, error, request, 500)
     }
 })

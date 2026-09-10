@@ -39,7 +39,7 @@ export default {
             }
 
             if (!authenticatedUser) {
-                return httpError(next, new Error(responseMessage.UNAUTHORIZED), request, 401)
+                return httpError(next, new Error(responseMessage.SESSION_EXPIRED), request, 401)
             }
 
             const userObj = toPlainObject(authenticatedUser)

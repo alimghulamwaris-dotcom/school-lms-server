@@ -41,6 +41,18 @@ const recipientSchema = new mongoose.Schema<IWhatsAppRecipient>(
             type: Date,
             default: null
         },
+        amountText: {
+            type: String,
+            default: ''
+        },
+        dueDateText: {
+            type: String,
+            default: ''
+        },
+        feeMonthText: {
+            type: String,
+            default: ''
+        },
         error: {
             type: String,
             default: ''
@@ -104,12 +116,33 @@ const whatsappCampaignSchema = new mongoose.Schema<IWhatsAppCampaign>(
         },
         sendMode: {
             type: String,
-            enum: ['now', 'daily'],
+            enum: ['now', 'daily', 'monthly'],
             default: 'now'
+        },
+        dayOfMonth: {
+            type: Number,
+            default: null
         },
         dailyTime: {
             type: String,
             default: null
+        },
+        purpose: {
+            type: String,
+            default: 'general'
+        },
+        whatsappTemplateId: {
+            type: String,
+            default: null
+        },
+        includeLateFee: {
+            type: Boolean,
+            default: false
+        },
+        recipientFilter: {
+            type: String,
+            enum: ['unpaid', 'overdue', 'all'],
+            default: 'unpaid'
         },
         nextRunAt: {
             type: Date,

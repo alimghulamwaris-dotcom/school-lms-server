@@ -10,17 +10,21 @@ import {
     audienceOptionsQuerySchema,
     campaignListQuerySchema,
     createCampaignSchema,
-    createTemplateSchema
+    createTemplateSchema,
+    updateTemplateSchema
     // createTestSchema
 } from './validation/validation.schema'
 import {
     createCampaignService,
     createTemplateService,
     createTestService,
+    deleteCampaignService,
+    deleteTemplateService,
     getAudienceOptionsService,
     getStatusService,
     listCampaignsService,
     listTemplatesService,
+    updateTemplateService,
     connectService,
     disconnectService
 } from './whatsapp.service'
@@ -32,6 +36,10 @@ import {
     ICreateCampaignRequest,
     ICreateTemplate,
     ICreateTemplateRequest,
+    IUpdateTemplate,
+    IUpdateTemplateRequest,
+    IDeleteTemplate,
+    IDeleteCampaign,
     // ICreateTestRequest,
     IListCampaigns,
     IListTemplates
@@ -77,9 +85,63 @@ export default {
     listTemplates: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
         try {
             const { query } = request as IListTemplates
-            const schoolId = query.schoolId || ''
-            const result = await listTemplatesService(schoolId)
+            const schoolId = resolveSchoolId(request, query.schoolId)
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+            const result = await listTemplatesService(schoolId, query.category)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    updateTemplate: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { params, body } = request as IUpdateTemplate
+            const { id } = params
+            if (!id) {
+                return httpError(next, new CustomError('Template ID is required', 400), request, 400)
+            }
+
+            const schoolId = resolveSchoolId(request, (body as { schoolId?: string })?.schoolId || (request.query?.schoolId as string))
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const { error, payload } = validateSchema<IUpdateTemplateRequest>(updateTemplateSchema, body)
+            if (error) {
+                return httpError(next, error, request, 422)
+            }
+
+            const result = await updateTemplateService(id, schoolId, payload)
+            httpResponse(response, request, 200, responseMessage.school.TEMPLATE_UPDATED, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    deleteTemplate: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { params } = request as IDeleteTemplate
+            const { id } = params
+            if (!id) {
+                return httpError(next, new CustomError('Template ID is required', 400), request, 400)
+            }
+
+            const schoolId = resolveSchoolId(request, (request.body as { schoolId?: string })?.schoolId || (request.query?.schoolId as string))
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const result = await deleteTemplateService(id, schoolId)
+            httpResponse(response, request, 200, responseMessage.school.TEMPLATE_DELETED, result)
         } catch (error) {
             if (error instanceof CustomError) {
                 httpError(next, error, request, error.statusCode)
@@ -160,6 +222,29 @@ export default {
 
             const result = await listCampaignsService(payload)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    deleteCampaign: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const { params } = request as IDeleteCampaign
+            const { id } = params
+            if (!id) {
+                return httpError(next, new CustomError('Campaign ID is required', 400), request, 400)
+            }
+
+            const schoolId = resolveSchoolId(request, (request.body as { schoolId?: string })?.schoolId || (request.query?.schoolId as string))
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const result = await deleteCampaignService(id, schoolId)
+            httpResponse(response, request, 200, responseMessage.school.WHATSAPP_CAMPAIGN_DELETED, result)
         } catch (error) {
             if (error instanceof CustomError) {
                 httpError(next, error, request, error.statusCode)

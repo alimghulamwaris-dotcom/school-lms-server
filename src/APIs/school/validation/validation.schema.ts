@@ -2,6 +2,7 @@ import joi from 'joi'
 import {
     ISchoolAcademicConfigRequest,
     ISchoolAdvanceSemesterRequest,
+    ISchoolBrandingRequest,
     ISchoolGrConfigRequest,
     ISchoolRegisterRequest,
     ISchoolRolloverAcademicYearRequest,
@@ -185,4 +186,14 @@ export const schoolRolloverAcademicYearSchema = joi.object<ISchoolRolloverAcadem
         }),
     totalSemesters: joi.number().integer().min(2).max(4).optional(),
     semesterNames: joi.array().items(joi.string().trim().min(2).max(80)).max(4).optional()
+})
+
+export const schoolBrandingQuerySchema = joi.object<{ schoolId: string }, true>({
+    schoolId: joi.string().required()
+})
+
+export const schoolBrandingSchema = joi.object<ISchoolBrandingRequest, true>({
+    schoolId: joi.string().required(),
+    logoUrl: joi.string().uri().allow(null, '').optional(),
+    address: joi.string().max(300).allow(null, '').optional()
 })

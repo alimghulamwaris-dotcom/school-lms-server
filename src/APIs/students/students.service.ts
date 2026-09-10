@@ -567,6 +567,29 @@ export const approveStudentService = async (id: string) => {
     }
 }
 
+export const bulkApproveStudentService = async (ids: string[]) => {
+    const approved: string[] = []
+    const failed: Array<{ id: string; reason: string }> = []
+
+    for (const id of ids) {
+        try {
+            await approveStudentService(id)
+            approved.push(id)
+        } catch (error) {
+            failed.push({
+                id,
+                reason: error instanceof Error ? error.message : 'Approval failed'
+            })
+        }
+    }
+
+    return {
+        success: true,
+        approved,
+        failed
+    }
+}
+
 export const deleteStudentService = async (id: string) => {
     const existingStudent = await studentRepo.findStudentById(id)
     if (!existingStudent) {

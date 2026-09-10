@@ -30,11 +30,6 @@ type TVoucherCandidate = {
     feeAmount: number
 }
 
-type TInvoiceNumberContext = {
-    year: number
-    sequence: number
-}
-
 const parsePositiveAmount = (value: number | undefined, fallback: number = 0) => {
     if (typeof value !== 'number' || Number.isNaN(value)) {
         return fallback
@@ -87,26 +82,8 @@ const getMonthRangeDates = (monthToken?: string, fromMonthToken?: string, toMont
     return { startDate, endDate }
 }
 
-const getInvoiceSequence = (invoiceNumber: string) => {
-    const match = invoiceNumber.match(/(\d+)$/)
-    if (!match) {
-        return 0
-    }
-    return Number(match[1]) || 0
-}
-
-const getInvoiceNumberContext = async (schoolId: string): Promise<TInvoiceNumberContext> => {
-    const latest = await feesRepo.findLatestInvoiceBySchool(schoolId)
-    const currentSequence = latest?.invoiceNumber ? getInvoiceSequence(latest.invoiceNumber) : 0
-    return {
-        year: new Date().getFullYear(),
-        sequence: currentSequence
-    }
-}
-
-const generateNextInvoiceNumber = (context: TInvoiceNumberContext) => {
-    context.sequence += 1
-    return `INV-${context.year}-${String(context.sequence).padStart(5, '0')}`
+const formatInvoiceNumber = (year: number, sequence: number) => {
+    return `INV-${year}-${String(sequence).padStart(5, '0')}`
 }
 
 const parseInvoiceDates = (issueDateInput: string | undefined, dueDateInput: string) => {
@@ -331,8 +308,9 @@ export const createFeeInvoiceService = async (payload: ICreateFeeInvoiceRequest)
     const student = await resolveStudentByGr(payload.schoolId, payload.grNumber)
     await assertInvoiceDoesNotExistForMonth(payload.schoolId, payload.month, payload.grNumber)
 
-    const invoiceContext = await getInvoiceNumberContext(payload.schoolId)
-    const invoiceNumber = generateNextInvoiceNumber(invoiceContext)
+    const currentYear = new Date().getFullYear()
+    const { start } = await feesRepo.getNextInvoiceSequence(payload.schoolId, currentYear, 1)
+    const invoiceNumber = formatInvoiceNumber(currentYear, start)
 
     const { issueDate, dueDate } = parseInvoiceDates(payload.issueDate, payload.dueDate)
     const cleanedItems = cleanInvoiceItems(payload.items)
@@ -387,49 +365,64 @@ export const bulkGenerateFeeInvoicesService = async (payload: IBulkGenerateFeeIn
     const existingInvoices = await feesRepo.findInvoicesBySchoolMonthAndGrNumbers(payload.schoolId, payload.month, grNumbers)
     const existingGrSet = new Set(existingInvoices.map((invoice) => invoice.grNumber))
 
+    const invoiceCandidates = candidates.filter((candidate) => !existingGrSet.has(candidate.grNumber))
+
+    if (invoiceCandidates.length === 0) {
+        return {
+            success: true,
+            summary: {
+                totalCandidates: candidates.length,
+                createdCount: 0,
+                skippedCount: existingGrSet.size,
+                skippedGrNumbers: Array.from(existingGrSet)
+            },
+            invoices: []
+        }
+    }
+
     const cleanedItems = cleanInvoiceItems(payload.items)
     const discount = parsePositiveAmount(payload.discount, 0)
     const lateFee = parsePositiveAmount(payload.lateFee, 0)
     const { issueDate, dueDate } = parseInvoiceDates(payload.issueDate, payload.dueDate)
 
-    const invoiceContext = await getInvoiceNumberContext(payload.schoolId)
+    const currentYear = new Date().getFullYear()
+    const { start } = await feesRepo.getNextInvoiceSequence(payload.schoolId, currentYear, invoiceCandidates.length)
 
-    const invoicePayloads = candidates
-        .filter((candidate) => !existingGrSet.has(candidate.grNumber))
-        .map((candidate) => {
-            const candidateItems = [
-                { label: 'Tuition Fee', amount: candidate.feeAmount || 0 },
-                ...cleanedItems.filter((item) => normalize(item.label) !== 'tuition fee')
-            ]
-            const candidateTotals = calculateTotals(candidateItems, discount, lateFee, 0)
+    const invoicePayloads = invoiceCandidates.map((candidate, idx) => {
+        const candidateItems = [
+            { label: 'Tuition Fee', amount: candidate.feeAmount || 0 },
+            ...cleanedItems.filter((item) => normalize(item.label) !== 'tuition fee')
+        ]
+        const candidateTotals = calculateTotals(candidateItems, discount, lateFee, 0)
+        const invoiceNumber = formatInvoiceNumber(currentYear, start + idx)
 
-            return {
-                schoolId: payload.schoolId,
-                invoiceNumber: generateNextInvoiceNumber(invoiceContext),
-                studentId: candidate.studentId,
-                grNumber: candidate.grNumber,
-                studentName: candidate.studentName,
-                guardianName: candidate.guardianName,
-                guardianPhone: candidate.guardianPhone,
-                className: candidate.className,
-                section: candidate.section,
-                month: payload.month,
-                issueDate,
-                dueDate,
-                items: candidateItems,
-                subtotal: candidateTotals.subtotal,
-                discount,
-                lateFee,
-                totalAmount: candidateTotals.totalAmount,
-                paidAmount: candidateTotals.paidAmount,
-                balanceAmount: candidateTotals.balanceAmount,
-                status: candidateTotals.status,
-                notes: payload.notes || '',
-                paymentHistory: []
-            }
-        })
+        return {
+            schoolId: payload.schoolId,
+            invoiceNumber,
+            studentId: candidate.studentId,
+            grNumber: candidate.grNumber,
+            studentName: candidate.studentName,
+            guardianName: candidate.guardianName,
+            guardianPhone: candidate.guardianPhone,
+            className: candidate.className,
+            section: candidate.section,
+            month: payload.month,
+            issueDate,
+            dueDate,
+            items: candidateItems,
+            subtotal: candidateTotals.subtotal,
+            discount,
+            lateFee,
+            totalAmount: candidateTotals.totalAmount,
+            paidAmount: candidateTotals.paidAmount,
+            balanceAmount: candidateTotals.balanceAmount,
+            status: candidateTotals.status,
+            notes: payload.notes || '',
+            paymentHistory: []
+        }
+    })
 
-    const createdInvoices = invoicePayloads.length > 0 ? await feesRepo.createInvoices(invoicePayloads) : []
+    const createdInvoices = await feesRepo.createInvoices(invoicePayloads)
 
     return {
         success: true,
@@ -525,9 +518,21 @@ export const recordFeeInvoicePaymentService = async (id: string, payload: IRecor
         throw new CustomError('Payment amount cannot exceed invoice balance.', 422)
     }
 
-    const paidAt = payload.paidAt ? new Date(payload.paidAt) : new Date()
-    if (Number.isNaN(paidAt.getTime())) {
-        throw new CustomError('Invalid payment date.', 422)
+    let paidAt = new Date()
+    if (payload.paidAt) {
+        const rawDate = typeof payload.paidAt === 'string' ? payload.paidAt.trim() : payload.paidAt
+        const isDateOnly = typeof rawDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(rawDate)
+        if (isDateOnly) {
+            const [year, month, day] = rawDate.split('-').map(Number)
+            const now = new Date()
+            paidAt = new Date(year, month - 1, day, now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds())
+        } else {
+            paidAt = new Date(rawDate)
+        }
+
+        if (Number.isNaN(paidAt.getTime())) {
+            throw new CustomError('Invalid payment date.', 422)
+        }
     }
 
     const paymentHistory = [
