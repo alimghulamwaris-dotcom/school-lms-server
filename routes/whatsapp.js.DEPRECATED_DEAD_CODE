@@ -13,14 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const whatsappService_1 = __importDefault(require("../services/whatsappService"));
+// Compatibility router: use the service emitted from src/services, never the
+// historical root-level services/whatsappService.js implementation.
+const whatsappService_1 = __importDefault(require("../dist/services/whatsappService"));
 const router = express_1.default.Router();
 router.get('/status', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { schoolId } = req.query;
         if (!schoolId)
             return res.status(400).json({ error: 'schoolId required' });
-        const session = yield whatsappService_1.default.getSession(schoolId);
+        const session = yield whatsappService_1.default.getStatus(schoolId);
         res.json({
             status: (session === null || session === void 0 ? void 0 : session.status) || 'disconnected',
             phoneNumber: session === null || session === void 0 ? void 0 : session.phoneNumber,

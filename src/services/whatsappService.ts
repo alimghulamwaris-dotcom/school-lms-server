@@ -11,6 +11,8 @@ import fs from 'fs'
 import path from 'path'
 import pino from 'pino'
 import whatsappSessionModel, { TWhatsAppSessionStatus } from '../APIs/whatsapp/_shared/models/whatsappSession.model'
+import appLogger from '../handlers/logger'
+import { reserveSendSlot, applyInterMessageDelay, simulatePresence } from './whatsappRateLimiter'
 
 type TStatusPayload = {
     status: TWhatsAppSessionStatus
@@ -24,6 +26,7 @@ type TConnectResult = TStatusPayload
 type TSendResult = {
     success: boolean
     error?: string
+    capped?: boolean
 }
 
 type TSessionLean = {
@@ -34,7 +37,31 @@ type TSessionLean = {
     errorMessage?: string
 }
 
-const logger = pino({ level: 'silent' })
+const baileysLogger = pino({ level: 'silent' })
+const PRESENCE_TIMEOUT_MS = 10000
+const SEND_TIMEOUT_MS = 30000
+
+const maskPhone = (phone: string) => (phone.length <= 4 ? '****' : `${phone.slice(0, 3)}***${phone.slice(-2)}`)
+
+const withLoggedTimeout = async <T>(operation: Promise<T>, timeoutMs: number, operationName: string, meta: Record<string, unknown>): Promise<T> => {
+    let timer: NodeJS.Timeout | undefined
+
+    try {
+        return await new Promise<T>((resolve, reject) => {
+            timer = setTimeout(() => {
+                const error = new Error(`${operationName} timeout after ${timeoutMs / 1000} seconds`)
+                appLogger.error(error.message, { meta })
+                reject(error)
+            }, timeoutMs)
+
+            void operation.then(resolve, reject)
+        })
+    } finally {
+        if (timer) {
+            clearTimeout(timer)
+        }
+    }
+}
 
 const normalizePhone = (input: string) => {
     const digits = input.replace(/\D/g, '')
@@ -59,6 +86,10 @@ class WhatsAppService {
     private readonly connectingSchools = new Set<string>()
     private readonly manualDisconnectSchools = new Set<string>()
     private readonly reconnectTimers = new Map<string, NodeJS.Timeout>()
+    // School-level lock: tracks which schools currently have a dispatch running
+    private readonly activeDispatches = new Map<string, boolean>()
+    // School-level queue: holds pending dispatch functions per schoolId
+    private readonly dispatchQueues = new Map<string, Array<() => Promise<void>>>()
 
     private getPrimaryAuthRoot() {
         const srcAuthRoot = path.join(process.cwd(), 'src', 'auth')
@@ -170,6 +201,17 @@ class WhatsAppService {
     private async handleConnectionUpdate(schoolId: string, socket: WASocket, update: Partial<ConnectionState>) {
         const { connection, lastDisconnect, qr } = update
 
+        if (connection || qr) {
+            appLogger.info('WhatsApp connection update', {
+                meta: {
+                    schoolId,
+                    connection: connection || 'qr',
+                    hasQr: Boolean(qr),
+                    disconnectStatusCode: this.getStatusCode(lastDisconnect?.error)
+                }
+            })
+        }
+
         if (qr) {
             await this.writeSession(schoolId, {
                 status: 'connecting',
@@ -185,12 +227,21 @@ class WhatsAppService {
             const rawId = socket.user?.id || ''
             const phoneNumber = rawId.split(':')[0]?.split('@')[0] || ''
 
+            // Set connectedAt only if this session was previously disconnected
+            // (i.e. a fresh connection, not a reconnect that was already counted)
+            const existingSession = await whatsappSessionModel.findOne({ schoolId }).lean<{ connectedAt?: Date | null } | null>()
+            const connectedAtUpdate: Record<string, unknown> = {}
+            if (!existingSession?.connectedAt) {
+                connectedAtUpdate.connectedAt = new Date()
+            }
+
             await this.writeSession(schoolId, {
                 status: 'connected',
                 phoneNumber,
                 qrCode: '',
-                errorMessage: ''
-            })
+                errorMessage: '',
+                ...connectedAtUpdate
+            } as Parameters<typeof this.writeSession>[1])
             return
         }
 
@@ -271,10 +322,10 @@ class WhatsAppService {
                 version,
                 auth: {
                     creds: state.creds,
-                    keys: makeCacheableSignalKeyStore(state.keys, logger)
+                    keys: makeCacheableSignalKeyStore(state.keys, baileysLogger)
                 },
                 printQRInTerminal: false,
-                logger,
+                logger: baileysLogger,
                 browser: ['School LMS', 'Chrome', '1.0.0']
             })
 
@@ -393,6 +444,10 @@ class WhatsAppService {
         const normalizedSchoolId = schoolId.trim()
         const normalizedPhone = normalizePhone(phoneNumber)
 
+        appLogger.info('WhatsApp send entered', {
+            meta: { schoolId: normalizedSchoolId, phone: maskPhone(normalizedPhone), socketPresent: this.sockets.has(normalizedSchoolId) }
+        })
+
         if (!normalizedPhone || normalizedPhone.length < 8) {
             return {
                 success: false,
@@ -401,11 +456,16 @@ class WhatsAppService {
         }
 
         if (!this.sockets.has(normalizedSchoolId) && this.hasAuthDir(normalizedSchoolId) && !this.connectingSchools.has(normalizedSchoolId)) {
+            appLogger.info('WhatsApp send reconnecting missing socket', { meta: { schoolId: normalizedSchoolId } })
             await this.connect(normalizedSchoolId)
         }
 
         const session = await this.readSession(normalizedSchoolId)
         const socket = this.sockets.get(normalizedSchoolId)
+
+        appLogger.info('WhatsApp send connection check', {
+            meta: { schoolId: normalizedSchoolId, sessionStatus: session?.status || 'missing', socketPresent: Boolean(socket) }
+        })
 
         if (!socket || session?.status !== 'connected') {
             return {
@@ -414,15 +474,48 @@ class WhatsAppService {
             }
         }
 
+        // Anti-ban: reserve a send slot (checks + atomically increments daily counter)
+        appLogger.info('WhatsApp send reserving daily slot', { meta: { schoolId: normalizedSchoolId } })
+        const slotGranted = await reserveSendSlot(normalizedSchoolId)
+        appLogger.info('WhatsApp send daily-slot result', { meta: { schoolId: normalizedSchoolId, slotGranted } })
+        if (!slotGranted) {
+            return {
+                success: false,
+                capped: true,
+                error: 'Daily send limit reached'
+            }
+        }
+
+        // Anti-ban: randomized inter-message delay
+        appLogger.info('WhatsApp send delay started', { meta: { schoolId: normalizedSchoolId } })
+        await applyInterMessageDelay()
+        appLogger.info('WhatsApp send delay finished', { meta: { schoolId: normalizedSchoolId } })
+
+        // Anti-ban: simulate human typing presence
+        const jid = `${normalizedPhone}@s.whatsapp.net`
+
         try {
-            await socket.sendMessage(`${normalizedPhone}@s.whatsapp.net`, {
-                text: message
+            appLogger.info('WhatsApp send presence started', { meta: { schoolId: normalizedSchoolId, phone: maskPhone(normalizedPhone) } })
+            await withLoggedTimeout(simulatePresence(socket, jid), PRESENCE_TIMEOUT_MS, 'WhatsApp presence update', {
+                schoolId: normalizedSchoolId,
+                phone: maskPhone(normalizedPhone)
             })
+            appLogger.info('WhatsApp send presence finished', { meta: { schoolId: normalizedSchoolId, phone: maskPhone(normalizedPhone) } })
+
+            appLogger.info('WhatsApp socket send started', { meta: { schoolId: normalizedSchoolId, phone: maskPhone(normalizedPhone) } })
+            await withLoggedTimeout(socket.sendMessage(jid, { text: message }), SEND_TIMEOUT_MS, 'WhatsApp socket send', {
+                schoolId: normalizedSchoolId,
+                phone: maskPhone(normalizedPhone)
+            })
+            appLogger.info('WhatsApp socket send finished', { meta: { schoolId: normalizedSchoolId, phone: maskPhone(normalizedPhone) } })
 
             return {
                 success: true
             }
         } catch (error) {
+            appLogger.error('WhatsApp send failed', {
+                meta: { schoolId: normalizedSchoolId, phone: maskPhone(normalizedPhone), error }
+            })
             return {
                 success: false,
                 error: error instanceof Error ? error.message : 'Failed to send WhatsApp message'
@@ -446,6 +539,78 @@ class WhatsAppService {
             }
 
             await this.connect(session.schoolId)
+        }
+    }
+
+    /**
+     * Acquires a school-level lock for campaign dispatch.
+     * @returns true if lock acquired, false if school already has active dispatch
+     */
+    acquireDispatchLock(schoolId: string): boolean {
+        if (this.activeDispatches.get(schoolId)) {
+            return false
+        }
+        this.activeDispatches.set(schoolId, true)
+        return true
+    }
+
+    /**
+     * Releases the school-level lock for campaign dispatch.
+     */
+    releaseDispatchLock(schoolId: string): void {
+        this.activeDispatches.delete(schoolId)
+    }
+
+    /**
+     * Checks if a school currently has an active dispatch.
+     */
+    hasActiveDispatch(schoolId: string): boolean {
+        return this.activeDispatches.get(schoolId) === true
+    }
+
+    /**
+     * Enqueues a dispatch function for a school.
+     * @returns true if enqueued successfully, false if queue capacity exceeded
+     */
+    enqueueDispatch(schoolId: string, dispatchFn: () => Promise<void>): boolean {
+        const queue = this.dispatchQueues.get(schoolId) || []
+
+        // Cap queue length at 5 per school
+        if (queue.length >= 5) {
+            return false
+        }
+
+        queue.push(dispatchFn)
+        this.dispatchQueues.set(schoolId, queue)
+        return true
+    }
+
+    /**
+     * Processes the next queued dispatch for a school, if any.
+     */
+    processNextInQueue(schoolId: string): void {
+        const queue = this.dispatchQueues.get(schoolId)
+
+        if (!queue || queue.length === 0) {
+            // Clean up empty queue
+            if (queue) {
+                this.dispatchQueues.delete(schoolId)
+            }
+            return
+        }
+
+        // Dequeue and execute the next dispatch
+        const nextDispatch = queue.shift()
+
+        if (queue.length === 0) {
+            this.dispatchQueues.delete(schoolId)
+        } else {
+            this.dispatchQueues.set(schoolId, queue)
+        }
+
+        if (nextDispatch) {
+            // Execute immediately (fire and forget - errors handled within the dispatch function)
+            void nextDispatch()
         }
     }
 }

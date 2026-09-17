@@ -8,6 +8,10 @@ export interface IWhatsAppSession extends Document {
     status: TWhatsAppSessionStatus
     qrCode?: string
     errorMessage?: string
+    // Rate-limit state (per Step 2 of anti-ban spec)
+    connectedAt?: Date | null
+    dailySendCount: number
+    dailySendDate: string | null
     createdAt: Date
     updatedAt: Date
 }
@@ -22,7 +26,11 @@ const whatsappSessionSchema = new Schema<IWhatsAppSession>(
             default: 'disconnected'
         },
         qrCode: { type: String, default: '' },
-        errorMessage: { type: String, default: '' }
+        errorMessage: { type: String, default: '' },
+        // Anti-ban rate-limit fields (Step 2)
+        connectedAt: { type: Date, default: null },
+        dailySendCount: { type: Number, default: 0 },
+        dailySendDate: { type: String, default: null }
     },
     {
         timestamps: true

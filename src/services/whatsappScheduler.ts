@@ -2,6 +2,7 @@
 import logger from '../handlers/logger'
 
 let schedulerHandle: NodeJS.Timeout | null = null
+let isRunning = false
 
 const INTERVAL_MS = 60 * 1000
 
@@ -12,6 +13,10 @@ export const startWhatsAppScheduler = () => {
 
     schedulerHandle = setInterval(() => {
         void (async () => {
+            if (isRunning) {
+                return
+            }
+            isRunning = true
             try {
                 const result = await runDueDailyCampaigns()
                 if (result.processed > 0) {
@@ -23,6 +28,8 @@ export const startWhatsAppScheduler = () => {
                 logger.error('Error while processing scheduled WhatsApp campaigns', {
                     meta: error
                 })
+            } finally {
+                isRunning = false
             }
         })()
     }, INTERVAL_MS)

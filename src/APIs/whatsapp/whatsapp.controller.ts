@@ -21,9 +21,12 @@ import {
     deleteCampaignService,
     deleteTemplateService,
     getAudienceOptionsService,
+    getCampaignByIdService,
+    getLatestAttendanceCampaignService,
     getStatusService,
     listCampaignsService,
     listTemplatesService,
+    resumeCampaignService,
     updateTemplateService,
     connectService,
     disconnectService
@@ -293,6 +296,74 @@ export default {
             if (!schoolId) return httpError(next, new CustomError('School ID required', 400), request, 400)
 
             const result = await disconnectService(schoolId)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    resumeCampaign: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const params = request.params as unknown as { id: string }
+            const { id } = params
+            if (!id) {
+                return httpError(next, new CustomError('Campaign ID is required', 400), request, 400)
+            }
+
+            const schoolId = resolveSchoolId(request, (request.body as { schoolId?: string })?.schoolId || (request.query?.schoolId as string))
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const result = await resumeCampaignService(id, schoolId)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    getCampaign: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const params = request.params as unknown as { id: string }
+            const { id } = params
+            if (!id) {
+                return httpError(next, new CustomError('Campaign ID is required', 400), request, 400)
+            }
+
+            const schoolId = resolveSchoolId(request, request.query?.schoolId as string)
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const result = await getCampaignByIdService(id, schoolId)
+            httpResponse(response, request, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            if (error instanceof CustomError) {
+                httpError(next, error, request, error.statusCode)
+            } else {
+                httpError(next, error, request, 500)
+            }
+        }
+    }),
+    getLatestAttendanceCampaign: asyncHandler(async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const schoolId = resolveSchoolId(request, request.query?.schoolId as string)
+            if (!schoolId) {
+                return httpError(next, new CustomError('School ID required', 400), request, 400)
+            }
+
+            const { className, section, date } = request.query as { className?: string; section?: string; date?: string }
+            if (!className || !section || !date) {
+                return httpError(next, new CustomError('className, section, and date query parameters are required', 400), request, 400)
+            }
+
+            const result = await getLatestAttendanceCampaignService(schoolId, className, section, date)
             httpResponse(response, request, 200, responseMessage.SUCCESS, result)
         } catch (error) {
             if (error instanceof CustomError) {

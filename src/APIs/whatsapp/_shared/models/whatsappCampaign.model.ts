@@ -20,11 +20,27 @@ const recipientSchema = new mongoose.Schema<IWhatsAppRecipient>(
             type: String,
             required: true
         },
+        studentName: {
+            type: String,
+            default: ''
+        },
+        guardianName: {
+            type: String,
+            default: ''
+        },
         className: {
             type: String,
             default: ''
         },
         section: {
+            type: String,
+            default: ''
+        },
+        statusText: {
+            type: String,
+            default: ''
+        },
+        dateText: {
             type: String,
             default: ''
         },
@@ -34,7 +50,7 @@ const recipientSchema = new mongoose.Schema<IWhatsAppRecipient>(
         },
         status: {
             type: String,
-            enum: ['queued', 'sent', 'failed'],
+            enum: ['queued', 'sent', 'failed', 'skipped_daily_limit'],
             default: 'queued'
         },
         sentAt: {
@@ -135,6 +151,10 @@ const whatsappCampaignSchema = new mongoose.Schema<IWhatsAppCampaign>(
             type: String,
             default: null
         },
+        attendanceDate: {
+            type: Date,
+            default: null
+        },
         includeLateFee: {
             type: Boolean,
             default: false
@@ -154,7 +174,7 @@ const whatsappCampaignSchema = new mongoose.Schema<IWhatsAppCampaign>(
         },
         status: {
             type: String,
-            enum: ['scheduled', 'sent', 'failed'],
+            enum: ['scheduled', 'sent', 'failed', 'sending', 'queued_behind_another'],
             default: 'sent'
         },
         recipientCount: {

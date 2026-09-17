@@ -9,6 +9,7 @@ import logger from '../../handlers/logger'
 import whatsappRepo from './_shared/repo/whatsapp.repository'
 import { sendWhatsAppText } from '../../services/whatsappProvider'
 import whatsappService from '../../services/whatsappService'
+import { determineCampaignFinalStatus } from './recovery'
 import { IWhatsAppAudience, IWhatsAppCampaign, IWhatsAppRecipient } from './_shared/types/whatsapp.interface'
 import {
     ICampaignListQuery,
@@ -259,10 +260,19 @@ const mergeRecipients = (recipients: IWhatsAppRecipient[]) => {
     return Array.from(phoneMap.values())
 }
 
-const sendWhatsAppMessage = async (schoolId: string, phoneNumber: string, message: string) => {
+const sendWhatsAppMessage = async (
+    schoolId: string,
+    phoneNumber: string,
+    message: string
+): Promise<{ success: boolean; error?: string; capped?: boolean }> => {
     const liveResult = await whatsappService.sendMessage(schoolId, phoneNumber, message)
 
     if (liveResult.success) {
+        return liveResult
+    }
+
+    // Cap hit on the Baileys path — propagate immediately, never fall through to provider
+    if (liveResult.capped) {
         return liveResult
     }
 
@@ -276,49 +286,154 @@ const sendWhatsAppMessage = async (schoolId: string, phoneNumber: string, messag
     })
 }
 
-const dispatchNow = async (body: string, recipients: IWhatsAppRecipient[], schoolId: string) => {
+const dispatchNow = async (
+    body: string,
+    recipients: IWhatsAppRecipient[],
+    schoolId: string,
+    campaignId?: string,
+    recipientIndices?: number[]
+): Promise<{
+    recipients: IWhatsAppRecipient[]
+    sentCount: number
+    failedCount: number
+    cappedAt: number
+    status: 'sent' | 'failed'
+}> => {
     const now = new Date()
     const dispatched: IWhatsAppRecipient[] = []
+    let cappedAt = -1 // index at which the daily cap was hit (-1 = not hit)
+    let sentCount = 0
+    let failedCount = 0
 
-    for (const item of recipients) {
-        if (item.phone.length < 8) {
+    for (let i = 0; i < recipients.length; i++) {
+        const item = recipients[i]
+        // Use recipientIndices if provided (for resume), otherwise use i (for first-time sends)
+        const globalIndex = recipientIndices ? recipientIndices[i] : i
+
+        logger.info('WhatsApp dispatch recipient loop entered', {
+            meta: { campaignId, schoolId, recipientIndex: globalIndex, recipientCount: recipients.length }
+        })
+
+        try {
+            if (item.phone.length < 8) {
+                dispatched.push({
+                    ...item,
+                    status: 'failed',
+                    sentAt: null,
+                    error: 'Invalid phone number'
+                })
+                if (campaignId) {
+                    await whatsappRepo.updateRecipientStatus(campaignId, globalIndex, 'failed', null, 'Invalid phone number')
+                }
+                failedCount++
+                continue
+            }
+
+            const personalizedBody = applyTemplateVariables(body, item)
+            logger.info('WhatsApp dispatch recipient send about to start', {
+                meta: { campaignId, schoolId, recipientIndex: globalIndex }
+            })
+            const result = await sendWhatsAppMessage(schoolId, item.phone, personalizedBody)
+
+            if (result.capped) {
+                // Daily cap hit — mark this recipient and break; remaining are bulk-marked below
+                dispatched.push({
+                    ...item,
+                    status: 'skipped_daily_limit',
+                    sentAt: null,
+                    error: 'Daily send limit reached'
+                })
+                if (campaignId) {
+                    await whatsappRepo.updateRecipientStatus(campaignId, globalIndex, 'skipped_daily_limit', null, 'Daily send limit reached')
+                }
+                cappedAt = i + 1 // remaining start here
+                break
+            }
+
+            if (result.success) {
+                dispatched.push({
+                    ...item,
+                    status: 'sent',
+                    sentAt: now,
+                    error: ''
+                })
+                if (campaignId) {
+                    await whatsappRepo.updateRecipientStatus(campaignId, globalIndex, 'sent', now, '')
+                }
+                sentCount++
+                // Incremental count update after each successful send
+                if (campaignId) {
+                    await whatsappRepo.updateCampaignCounts(campaignId, sentCount, failedCount)
+                }
+            } else {
+                dispatched.push({
+                    ...item,
+                    status: 'failed',
+                    sentAt: null,
+                    error: result.error || 'Failed to send message'
+                })
+                if (campaignId) {
+                    await whatsappRepo.updateRecipientStatus(campaignId, globalIndex, 'failed', null, result.error || 'Failed to send message')
+                }
+                failedCount++
+                // Incremental count update after each failure
+                if (campaignId) {
+                    await whatsappRepo.updateCampaignCounts(campaignId, sentCount, failedCount)
+                }
+            }
+        } catch (recipientError) {
+            // Per-iteration error handling: if processing this recipient fails (e.g. DB write error),
+            // mark it as failed and continue to next recipient instead of breaking entire batch
+            const errorMessage = recipientError instanceof Error ? recipientError.message : 'Unknown error processing recipient'
+            logger.error('Error processing recipient in dispatchNow', {
+                meta: { campaignId, recipientIndex: globalIndex, error: recipientError }
+            })
+
             dispatched.push({
                 ...item,
                 status: 'failed',
                 sentAt: null,
-                error: 'Invalid phone number'
+                error: errorMessage
             })
-            continue
-        }
 
-        const personalizedBody = applyTemplateVariables(body, item)
-        const result = await sendWhatsAppMessage(schoolId, item.phone, personalizedBody)
+            // Attempt to update DB, but don't fail if this also throws
+            try {
+                if (campaignId) {
+                    await whatsappRepo.updateRecipientStatus(campaignId, globalIndex, 'failed', null, errorMessage)
+                }
+            } catch (dbError) {
+                logger.error('Failed to update recipient status after error', {
+                    meta: { campaignId, recipientIndex: globalIndex, error: dbError }
+                })
+            }
 
-        if (result.success) {
-            dispatched.push({
-                ...item,
-                status: 'sent',
-                sentAt: now,
-                error: ''
-            })
-        } else {
-            dispatched.push({
-                ...item,
-                status: 'failed',
-                sentAt: null,
-                error: result.error || 'Failed to send message'
-            })
+            failedCount++
         }
     }
 
-    const sentCount = dispatched.filter((item) => item.status === 'sent').length
-    const failedCount = dispatched.length - sentCount
+    // Bulk-mark any remaining recipients that were never attempted
+    if (cappedAt !== -1) {
+        for (let i = cappedAt; i < recipients.length; i++) {
+            const globalIdx = recipientIndices ? recipientIndices[i] : i
+            dispatched.push({
+                ...recipients[i],
+                status: 'skipped_daily_limit',
+                sentAt: null,
+                error: 'Daily send limit reached'
+            })
+            if (campaignId) {
+                await whatsappRepo.updateRecipientStatus(campaignId, globalIdx, 'skipped_daily_limit', null, 'Daily send limit reached')
+            }
+        }
+    }
 
+    const finalStatus = determineCampaignFinalStatus(dispatched)
     return {
         recipients: dispatched,
         sentCount,
         failedCount,
-        status: sentCount > 0 ? ('sent' as const) : ('failed' as const)
+        cappedAt,
+        status: finalStatus === 'sending' ? 'failed' : finalStatus
     }
 }
 
@@ -616,28 +731,132 @@ export const createCampaignService = async (payload: ICreateCampaignRequest) => 
     }
 
     if (payload.sendMode === 'now') {
-        const dispatched = await dispatchNow(finalBody, recipients, payload.schoolId)
-        campaignPayload.recipients = dispatched.recipients
-        campaignPayload.sentCount = dispatched.sentCount
-        campaignPayload.failedCount = dispatched.failedCount
-        campaignPayload.status = dispatched.status
-        campaignPayload.nextRunAt = null
-        campaignPayload.dailyTime = null
-        campaignPayload.lastRunAt = new Date()
+        campaignPayload.status = 'sending'
+        campaignPayload.recipients = recipients.map((r) => ({ ...r, status: 'queued' as const }))
     }
 
     const campaign = await whatsappRepo.createCampaign(campaignPayload)
+    const campaignId = String(campaign._id)
+
+    if (payload.sendMode === 'now' && campaign._id) {
+        void dispatchNowInBackround(finalBody, recipients, payload.schoolId, campaignId)
+    }
+
+    const campaignDoc = 'toObject' in campaign && typeof campaign.toObject === 'function' ? campaign.toObject() : campaign
 
     return {
         success: true,
-        campaign,
+        campaignId,
+        campaign: {
+            ...campaignDoc,
+            _id: campaign._id,
+            recipients: campaignPayload.recipients
+        },
         summary: {
             recipientCount: campaign.recipientCount,
-            sentCount: campaign.sentCount,
-            failedCount: campaign.failedCount,
-            status: campaign.status,
+            sentCount: 0,
+            failedCount: 0,
+            status: payload.sendMode === 'now' ? 'sending' : campaign.status,
             sendMode: campaign.sendMode
         }
+    }
+}
+
+const dispatchNowInBackround = async (body: string, recipients: IWhatsAppRecipient[], schoolId: string, campaignId: string): Promise<void> => {
+    // School-level lock: enqueue if this school already has an active dispatch
+    const lockAcquired = whatsappService.acquireDispatchLock(schoolId)
+    if (!lockAcquired) {
+        // Try to enqueue this dispatch
+        const enqueued = whatsappService.enqueueDispatch(schoolId, () => dispatchNowInBackround(body, recipients, schoolId, campaignId))
+
+        if (enqueued) {
+            logger.info('Campaign queued behind another active dispatch for this school', {
+                meta: { schoolId, campaignId }
+            })
+            await whatsappRepo.updateCampaignStatus(campaignId, 'queued_behind_another')
+        } else {
+            logger.error('School-level dispatch queue capacity exceeded (max 5) - rejecting campaign', {
+                meta: { schoolId, campaignId }
+            })
+            await whatsappRepo.updateCampaignStatus(campaignId, 'failed')
+        }
+        return
+    }
+
+    try {
+        await dispatchNow(body, recipients, schoolId, campaignId)
+
+        const updatedCampaign = await whatsappRepo.findCampaignById(campaignId)
+        const allRecipients = updatedCampaign?.recipients || []
+        const sentCount = allRecipients.filter((r) => r.status === 'sent').length
+        const failedCount = allRecipients.filter((r) => r.status === 'failed').length
+        const finalStatus = determineCampaignFinalStatus(allRecipients)
+
+        await whatsappRepo.updateCampaignStatus(campaignId, finalStatus)
+        await whatsappRepo.updateCampaignCounts(campaignId, sentCount, failedCount)
+    } catch (err) {
+        logger.error('Error in background dispatchNow for campaign', {
+            meta: { campaignId, error: err }
+        })
+        await whatsappRepo.updateCampaignStatus(campaignId, 'failed')
+    } finally {
+        // Always release the lock, even if dispatch failed
+        whatsappService.releaseDispatchLock(schoolId)
+        // Process next queued dispatch for this school, if any
+        whatsappService.processNextInQueue(schoolId)
+    }
+}
+
+const dispatchNowInBackroundWithIndices = async (
+    body: string,
+    recipients: IWhatsAppRecipient[],
+    schoolId: string,
+    campaignId: string,
+    recipientIndices: number[]
+): Promise<void> => {
+    // School-level lock: enqueue if this school already has an active dispatch
+    const lockAcquired = whatsappService.acquireDispatchLock(schoolId)
+    if (!lockAcquired) {
+        // Try to enqueue this dispatch
+        const enqueued = whatsappService.enqueueDispatch(schoolId, () =>
+            dispatchNowInBackroundWithIndices(body, recipients, schoolId, campaignId, recipientIndices)
+        )
+
+        if (enqueued) {
+            logger.info('Campaign resume queued behind another active dispatch for this school', {
+                meta: { schoolId, campaignId }
+            })
+            await whatsappRepo.updateCampaignStatus(campaignId, 'queued_behind_another')
+        } else {
+            logger.error('School-level dispatch queue capacity exceeded (max 5) - rejecting campaign resume', {
+                meta: { schoolId, campaignId }
+            })
+            await whatsappRepo.updateCampaignStatus(campaignId, 'failed')
+        }
+        return
+    }
+
+    try {
+        await dispatchNow(body, recipients, schoolId, campaignId, recipientIndices)
+
+        const updatedCampaign = await whatsappRepo.findCampaignById(campaignId)
+        const allRecipients = updatedCampaign?.recipients || []
+        const sentCount = allRecipients.filter((r) => r.status === 'sent').length
+        const failedCount = allRecipients.filter((r) => r.status === 'failed').length
+        const finalStatus = determineCampaignFinalStatus(allRecipients)
+
+        await whatsappRepo.updateCampaignStatus(campaignId, finalStatus)
+        await whatsappRepo.updateCampaignCounts(campaignId, sentCount, failedCount)
+    } catch (err) {
+        logger.error('Error in background dispatchNow with indices for campaign', {
+            meta: { campaignId, error: err }
+        })
+        await whatsappRepo.updateCampaignStatus(campaignId, 'failed')
+    } finally {
+        // Always release the lock, even if dispatch failed
+        whatsappService.releaseDispatchLock(schoolId)
+        // Process next queued dispatch for this school, if any
+        whatsappService.processNextInQueue(schoolId)
     }
 }
 
@@ -662,6 +881,7 @@ export const runDueDailyCampaigns = async () => {
             messageType?: unknown
             includeLateFee?: unknown
             recipientFilter?: unknown
+            body?: unknown
         }
 
         const schoolId = getStringValue(data.schoolId)
@@ -682,25 +902,105 @@ export const runDueDailyCampaigns = async () => {
                 includeLateFee: !!data.includeLateFee,
                 recipientFilter: (data.recipientFilter as 'unpaid' | 'overdue' | 'all') || (data.includeLateFee ? 'overdue' : 'unpaid')
             })
-            const body = getStringValue((campaign as { body?: unknown }).body)
-            const dispatched = await dispatchNow(body, recipients, schoolId)
 
-            await whatsappRepo.updateCampaignById(campaignId, {
-                recipients: dispatched.recipients,
-                recipientCount: recipients.length,
-                sentCount: dispatched.sentCount,
-                failedCount: dispatched.failedCount,
-                status: 'scheduled',
-                dailyTime,
-                dayOfMonth,
+            const queuedRecipients = recipients.map((r) => ({ ...r, status: 'queued' as const }))
+
+            // Atomically claim the campaign from 'scheduled' to 'sending' and advance nextRunAt immediately
+            // to prevent duplicate executions from the recurring scheduler ticks.
+            const claimed = await whatsappRepo.claimScheduledCampaign(campaignId, {
+                status: 'sending',
+                nextRunAt: nextRun,
                 lastRunAt: new Date(),
-                nextRunAt: nextRun
-            })
-            processed += 1
-        } catch {
-            await whatsappRepo.updateCampaignById(campaignId, {
+                recipientCount: queuedRecipients.length,
                 sentCount: 0,
                 failedCount: 0,
+                recipients: queuedRecipients
+            })
+
+            if (!claimed) {
+                // Campaign was already claimed or is no longer scheduled
+                continue
+            }
+
+            if (queuedRecipients.length === 0) {
+                await whatsappRepo.updateCampaignById(campaignId, {
+                    recipients: [],
+                    recipientCount: 0,
+                    sentCount: 0,
+                    failedCount: 0,
+                    status: 'scheduled',
+                    dailyTime,
+                    dayOfMonth,
+                    lastRunAt: new Date(),
+                    nextRunAt: nextRun
+                })
+                processed += 1
+                continue
+            }
+
+            const body = getStringValue(data.body)
+
+            const lockAcquired = whatsappService.acquireDispatchLock(schoolId)
+            if (!lockAcquired) {
+                const enqueued = whatsappService.enqueueDispatch(schoolId, async () => {
+                    try {
+                        const dispatched = await dispatchNow(body, queuedRecipients, schoolId, campaignId)
+                        await whatsappRepo.updateCampaignById(campaignId, {
+                            recipients: dispatched.recipients,
+                            recipientCount: queuedRecipients.length,
+                            sentCount: dispatched.sentCount,
+                            failedCount: dispatched.failedCount,
+                            status: 'scheduled',
+                            dailyTime,
+                            dayOfMonth,
+                            lastRunAt: new Date(),
+                            nextRunAt: nextRun
+                        })
+                    } finally {
+                        whatsappService.releaseDispatchLock(schoolId)
+                        whatsappService.processNextInQueue(schoolId)
+                    }
+                })
+
+                if (enqueued) {
+                    await whatsappRepo.updateCampaignStatus(campaignId, 'queued_behind_another')
+                } else {
+                    await whatsappRepo.updateCampaignById(campaignId, {
+                        status: 'scheduled',
+                        dailyTime,
+                        dayOfMonth,
+                        lastRunAt: new Date(),
+                        nextRunAt: nextRun
+                    })
+                }
+                processed += 1
+                continue
+            }
+
+            try {
+                const dispatched = await dispatchNow(body, queuedRecipients, schoolId, campaignId)
+
+                await whatsappRepo.updateCampaignById(campaignId, {
+                    recipients: dispatched.recipients,
+                    recipientCount: queuedRecipients.length,
+                    sentCount: dispatched.sentCount,
+                    failedCount: dispatched.failedCount,
+                    status: 'scheduled',
+                    dailyTime,
+                    dayOfMonth,
+                    lastRunAt: new Date(),
+                    nextRunAt: nextRun
+                })
+                processed += 1
+            } finally {
+                whatsappService.releaseDispatchLock(schoolId)
+                whatsappService.processNextInQueue(schoolId)
+            }
+        } catch (err) {
+            logger.error('Error executing scheduled daily/monthly WhatsApp campaign', {
+                meta: { campaignId, schoolId, error: err }
+            })
+            await whatsappRepo.updateCampaignById(campaignId, {
                 status: 'scheduled',
                 dailyTime,
                 dayOfMonth,
@@ -745,6 +1045,56 @@ export const deleteCampaignService = async (id: string, schoolId: string) => {
     return {
         success: true,
         campaign: deletedCampaign
+    }
+}
+
+export const resumeCampaignService = async (id: string, schoolId: string) => {
+    const existingCampaign = await whatsappRepo.findCampaignById(id)
+    if (!existingCampaign) {
+        throw new CustomError(responseMessage.NOT_FOUND('Campaign'), 404)
+    }
+
+    if (existingCampaign.schoolId !== schoolId) {
+        throw new CustomError(responseMessage.UNAUTHORIZED, 401)
+    }
+
+    // Concurrency guard: prevent overlapping dispatchNow calls
+    if (existingCampaign.status === 'sending') {
+        throw new CustomError('Campaign is already being sent. Please wait for it to complete.', 409)
+    }
+
+    const recipients = existingCampaign.recipients
+
+    // Track original indices when filtering
+    const recipientsWithIndices = recipients
+        .map((r, idx) => ({ recipient: r, originalIndex: idx }))
+        .filter(({ recipient }) => recipient.status === 'queued' || recipient.status === 'skipped_daily_limit')
+
+    if (recipientsWithIndices.length === 0) {
+        return {
+            success: true,
+            message: 'No recipients to resume',
+            campaign: existingCampaign
+        }
+    }
+
+    const queuedRecipients = recipientsWithIndices.map((x) => x.recipient)
+    const originalIndices = recipientsWithIndices.map((x) => x.originalIndex)
+
+    const campaignId = String(existingCampaign._id)
+
+    // Update status to 'sending' before dispatching
+    await whatsappRepo.updateCampaignStatus(campaignId, 'sending')
+
+    void dispatchNowInBackroundWithIndices(existingCampaign.body, queuedRecipients, schoolId, campaignId, originalIndices)
+
+    return {
+        success: true,
+        message: 'Campaign resume started',
+        campaign: {
+            ...existingCampaign,
+            status: 'sending'
+        }
     }
 }
 
@@ -820,23 +1170,29 @@ export const sendAttendanceWhatsAppRemindersService = async (
 
         const formattedDate = date.toISOString().slice(0, 10)
 
+        const formatStatus = (s: string) => {
+            const lower = s.toLowerCase()
+            if (lower === 'present') return 'Present'
+            if (lower === 'absent') return 'Absent'
+            if (lower === 'on_leave') return 'On Leave'
+            return s
+        }
+
+        const recipients: IWhatsAppRecipient[] = []
         for (const rec of records) {
+            // Attendance reminders are only sent for students who were NOT present.
+            if (rec.status === 'present') {
+                continue
+            }
+
             const studentInfo = studentMap.get(rec.grNumber)
             const guardianPhone = studentInfo?.guardianPhone || ''
             if (!guardianPhone || guardianPhone.length < 8) {
                 continue
             }
 
-            const formatStatus = (s: string) => {
-                const lower = s.toLowerCase()
-                if (lower === 'present') return 'Present'
-                if (lower === 'absent') return 'Absent'
-                if (lower === 'on_leave') return 'On Leave'
-                return s
-            }
-
             const guardianName = studentInfo?.guardianName || ''
-            const recipient: IWhatsAppRecipient = {
+            recipients.push({
                 targetType: 'parent',
                 targetId: '',
                 name: guardianName ? `${guardianName} (Parent of ${rec.studentName})` : rec.studentName,
@@ -850,20 +1206,59 @@ export const sendAttendanceWhatsAppRemindersService = async (
                 status: 'queued',
                 sentAt: null,
                 error: ''
-            }
-
-            const personalizedBody = applyTemplateVariables(templateBody, recipient)
-            try {
-                await sendWhatsAppMessage(schoolId, guardianPhone, personalizedBody)
-            } catch (err) {
-                logger.error('Failed to send attendance reminder to phone', {
-                    meta: { phone: guardianPhone, error: err }
-                })
-            }
+            })
         }
+
+        if (recipients.length === 0) {
+            return
+        }
+
+        const dispatched = await dispatchNow(templateBody, recipients, schoolId)
+
+        await whatsappRepo.createCampaign({
+            schoolId,
+            title: `Attendance - ${className}-${section} - ${formattedDate}`,
+            body: templateBody,
+            messageType: 'attendance_update',
+            templateName: '',
+            audience: {
+                type: 'class_section',
+                className,
+                section
+            },
+            sendMode: 'now',
+            purpose: 'attendance',
+            whatsappTemplateId: whatsappTemplateId && whatsappTemplateId !== 'default' ? whatsappTemplateId : null,
+            attendanceDate: date,
+            status: dispatched.status,
+            recipientCount: recipients.length,
+            sentCount: dispatched.sentCount,
+            failedCount: dispatched.failedCount,
+            recipients: dispatched.recipients,
+            nextRunAt: null,
+            dailyTime: null,
+            lastRunAt: new Date()
+        })
     } catch (err) {
         logger.error('Error in sendAttendanceWhatsAppRemindersService', {
             meta: { schoolId, className, section, error: err }
         })
+    }
+}
+
+export const getCampaignByIdService = async (id: string, schoolId: string) => {
+    const campaign = await whatsappRepo.findCampaignById(id)
+    if (!campaign || String(campaign.schoolId) !== String(schoolId)) {
+        throw new CustomError(responseMessage.NOT_FOUND('Campaign'), 404)
+    }
+    return {
+        campaign
+    }
+}
+
+export const getLatestAttendanceCampaignService = async (schoolId: string, className: string, section: string, date: Date | string) => {
+    const campaign = await whatsappRepo.findLatestAttendanceCampaign(schoolId, className, section, date)
+    return {
+        campaign
     }
 }

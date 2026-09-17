@@ -20,11 +20,22 @@ router.route('/whatsapp/test').post(rateLimiter, authenticate, authorizeAccess('
 router.route('/whatsapp/audience-options').get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.audienceOptions)
 
 router
+    .route('/whatsapp/campaigns/latest-attendance')
+    .get(rateLimiter, authenticate, authorizeAccess(['Attendance', 'Messages']), whatsappController.getLatestAttendanceCampaign)
+
+router
     .route('/whatsapp/campaigns')
     .post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.createCampaign)
     .get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.listCampaigns)
 
-router.route('/whatsapp/campaigns/:id').delete(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.deleteCampaign)
+router
+    .route('/whatsapp/campaigns/:id')
+    .get(rateLimiter, authenticate, authorizeAccess(['Messages', 'Fees', 'Attendance']), whatsappController.getCampaign)
+    .delete(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.deleteCampaign)
+
+router
+    .route('/whatsapp/campaigns/:id/resume')
+    .post(rateLimiter, authenticate, authorizeAccess(['Messages', 'Fees', 'Attendance']), whatsappController.resumeCampaign)
 
 router.route('/whatsapp/status').get(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.getStatus)
 router.route('/whatsapp/connect').post(rateLimiter, authenticate, authorizeAccess('Messages'), whatsappController.connect)

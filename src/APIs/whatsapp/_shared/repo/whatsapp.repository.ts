@@ -47,13 +47,68 @@ export default {
             .sort({ nextRunAt: 1 })
             .limit(limit)
     },
+    claimScheduledCampaign: (id: string, payload: Partial<IWhatsAppCampaign>) => {
+        return whatsappCampaignModel.findOneAndUpdate({ _id: id, status: 'scheduled' }, { $set: payload }, { new: true })
+    },
     updateCampaignById: (id: string, payload: Partial<IWhatsAppCampaign>) => {
         return whatsappCampaignModel.findByIdAndUpdate(id, payload, { new: true })
+    },
+    updateRecipientStatus: (campaignId: string, recipientIndex: number, status: string, sentAt?: Date | null, error?: string) => {
+        const $set: Record<string, unknown> = {
+            [`recipients.${recipientIndex}.status`]: status,
+            [`recipients.${recipientIndex}.sentAt`]: sentAt || null
+        }
+        // Always set error field: clear it when status is 'sent', otherwise use provided error
+        if (status === 'sent') {
+            $set[`recipients.${recipientIndex}.error`] = ''
+        } else if (error) {
+            $set[`recipients.${recipientIndex}.error`] = error
+        }
+        return whatsappCampaignModel.findByIdAndUpdate(campaignId, { $set }, { new: true })
+    },
+    updateCampaignCounts: (id: string, sentCount: number, failedCount: number) => {
+        return whatsappCampaignModel.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    sentCount,
+                    failedCount
+                }
+            },
+            { new: true }
+        )
+    },
+    updateCampaignStatus: (id: string, status: string) => {
+        return whatsappCampaignModel.findByIdAndUpdate(
+            id,
+            {
+                $set: { status }
+            },
+            { new: true }
+        )
     },
     findCampaignById: (id: string) => {
         return whatsappCampaignModel.findById(id)
     },
+    findCampaignsByStatus: (status: string) => {
+        return whatsappCampaignModel.find({ status })
+    },
     deleteCampaignById: (id: string) => {
         return whatsappCampaignModel.findByIdAndDelete(id)
+    },
+    findLatestAttendanceCampaign: (schoolId: string, className: string, section: string, date: Date | string) => {
+        const targetDate = new Date(date)
+        const startOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate())
+        const endOfDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate() + 1)
+
+        return whatsappCampaignModel
+            .findOne({
+                schoolId,
+                messageType: 'attendance_update',
+                'audience.className': className,
+                'audience.section': section,
+                $or: [{ attendanceDate: { $gte: startOfDay, $lt: endOfDay } }, { createdAt: { $gte: startOfDay, $lt: endOfDay } }]
+            })
+            .sort({ createdAt: -1 })
     }
 }

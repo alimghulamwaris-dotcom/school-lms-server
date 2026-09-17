@@ -11,9 +11,9 @@ export type TWhatsAppAudienceType =
 
 export type TWhatsAppSendMode = 'now' | 'daily' | 'monthly'
 
-export type TWhatsAppRecipientStatus = 'queued' | 'sent' | 'failed'
+export type TWhatsAppRecipientStatus = 'queued' | 'sent' | 'failed' | 'skipped_daily_limit'
 
-export type TWhatsAppCampaignStatus = 'scheduled' | 'sent' | 'failed'
+export type TWhatsAppCampaignStatus = 'scheduled' | 'sent' | 'failed' | 'sending' | 'queued_behind_another'
 
 export interface IWhatsAppTemplate {
     schoolId: string
@@ -73,6 +73,7 @@ export interface IWhatsAppCampaign {
     dailyTime?: string | null
     purpose?: string
     whatsappTemplateId?: string | null
+    attendanceDate?: Date | null
     includeLateFee?: boolean
     recipientFilter?: 'unpaid' | 'overdue' | 'all'
     nextRunAt?: Date | null
