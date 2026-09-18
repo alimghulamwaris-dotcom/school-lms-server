@@ -244,7 +244,11 @@ const toStaffRecipient = (item: unknown): IWhatsAppRecipient => {
     }
 }
 
-const mergeRecipients = (recipients: IWhatsAppRecipient[]) => {
+const mergeRecipients = (recipients: IWhatsAppRecipient[], dedupeByPhone: boolean = true) => {
+    if (!dedupeByPhone) {
+        return recipients.filter((item) => Boolean(item.phone))
+    }
+
     const phoneMap = new Map<string, IWhatsAppRecipient>()
 
     for (const item of recipients) {
@@ -451,6 +455,7 @@ export const resolveRecipientsForAudience = async (
         messageType?: string
         includeLateFee?: boolean
         recipientFilter?: 'unpaid' | 'overdue' | 'all'
+        dedupeByPhone?: boolean
     }
 ) => {
     const [studentLikeRecords, staff] = await Promise.all([fetchStudentLikeRecords(schoolId), staffRepo.findStaffBySchool(schoolId)])
@@ -526,15 +531,18 @@ export const resolveRecipientsForAudience = async (
         error: ''
     }))
 
-    return mergeRecipients([...studentRecipients, ...staffRecipients, ...customRecipients])
+    const dedupeByPhone = options?.dedupeByPhone !== undefined ? options.dedupeByPhone : true
+    return mergeRecipients([...studentRecipients, ...staffRecipients, ...customRecipients], dedupeByPhone)
 }
 
 const buildCampaignRecipients = async (payload: ICreateCampaignRequest) => {
+    const dedupeByPhone = !['attendance_update', 'custom', 'fee_reminder'].includes(payload.messageType)
     const merged = await resolveRecipientsForAudience(payload.schoolId, payload.audience, {
         purpose: payload.purpose || (payload.messageType === 'fee_reminder' ? 'fee_reminder' : 'general'),
         messageType: payload.messageType,
         includeLateFee: !!payload.includeLateFee,
-        recipientFilter: payload.recipientFilter
+        recipientFilter: payload.recipientFilter,
+        dedupeByPhone
     })
 
     if (merged.length === 0) {
